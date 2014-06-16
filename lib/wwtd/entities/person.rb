@@ -1,9 +1,12 @@
 module WWTD
   class PersonNode
-    attr_reader :name
-    def initialize(name, strength)
-      @name = name
-      @strength = strength
+    attr_reader :name, :id
+    attr_accessor :strength, :inventory
+
+    def initialize(input)
+      @id = input[:id]
+      @name = input[:name]
+      @strength = input[:strength]
       @inventory = []
     end
 
