@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe WWTD::PersonNode do
   let(:person) {WWTD::PersonNode.new(id: 1, name: "ashley", strength: 100)}
+  let(:apple) {WWTD::ItemNode.new(id: 2, type: 'item', name: 'apple', actions: ['eat'])}
+  let(:apple2) {WWTD::ItemNode.new(id: 3, type: 'item', name: 'apple', actions: ['eat'])}
 
   describe 'initialize' do
     it "is a PersonNode class" do
@@ -25,32 +27,110 @@ describe WWTD::PersonNode do
     end
   end
 
-  describe 'addToInventory' do
-  end
+  describe 'Inventory' do
+    before(:each) do
+      person.addToInventory(apple)
+      person.addToInventory(apple2)
+    end
 
-  describe 'removeFromInventory' do
+    it "has a method inInventory? that checks if an item is in a personNode's inventory" do
+      apple3 = WWTD::ItemNode.new(id: 10, type: 'item', name: 'apple', actions: ['eat'])
+      expect(person.inInventory?(apple)).to eq(true)
+      expect(person.inInventory?(apple3)).to eq(false)
+    end
+
+    it "addToInventory adds an item to a PersonNode's inventory array" do
+      expect(person.inventory.size).to eq(2)
+      expect(person.inventory).to eq([apple, apple2])
+    end
+
+    it "removes an item from a PersonNode's inventory array" do
+      person.removeFromInventory(apple)
+      expect(person.inventory.size).to eq(1)
+      expect(person.inventory).to eq([apple2])
+    end
   end
 
   describe 'eat' do
-    xit "increases a person's strength by the amount that specific food gives" do
-      apple = WWTD::ItemNode('apple')
+    before(:each) do
+      person.addToInventory(apple)
     end
 
-    xit "doesn't increase a person's strength past 100" do
+    it "only allows a person to eat an item if it's in their inventory and returns true if the action was successful" do
+      expect(person.eat(apple)).to eq(true)
     end
 
-    xit "removes the food from the person's inventory" do
+    it "returns false if the person was unable to eat the item" do
+      expect(person.eat(apple2)).to eq(false)
+    end
+
+    it "increases a person's strength by 20%" do
+      person.strength = 70
+      person.eat(apple)
+      expect(person.strength).to eq(84)
+    end
+
+    it "doesn't increase a person's strength past 100" do
+      person.eat(apple)
+      expect(person.strength).to eq(100)
+      expect(person.inventory.size).to eq(0)
+    end
+
+    it "removes the food from the person's inventory" do
+      person.eat(apple)
+      expect(person.inventory.size).to eq(0)
     end
   end
 
   describe 'drink' do
-    xit "increase a person's strength by the drink's strength percentage" do
+    before(:each) do
+      @water = WWTD::ItemNode.new(id: 4, type: 'item', name: 'water', actions: ['drink', 'sip'])
+      @juice = WWTD::ItemNode.new(id: 5, type: 'item', name: 'juice', actions: ['drink'])
+      @coffee = WWTD::ItemNode.new(id: 6, type: 'item', name: 'coffee', actions: ['drink'])
+      person.addToInventory(@juice)
+      person.addToInventory(@water)
+      person.strength = 50
     end
 
-    xit "removes the drink from the person's inventory" do
+    it "increases a person's strength by 10% if it's not water" do
+      expect(person.drink(@juice)).to eq(true)
+      expect(person.strength).to eq(55)
+    end
+
+    it "increases a person's strength by 15% if it's water" do
+      expect(person.drink(@water)).to eq(true)
+      expect(person.strength).to eq(57.5)
+    end
+
+    it "only allows the person to 'drink' if it's in their inventory" do
+      expect(person.drink(@coffee)).to eq(false)
+      expect(person.strength).to eq(50)
+    end
+
+    it "removes the drink from the person's inventory" do
+      person.drink(@water)
+      expect(person.inventory).to eq([@juice])
     end
   end
 
+  # can only do this in a room that is locked and without opponents. Command will check for this
   describe 'rest' do
+    before(:each) do
+      person.strength = 50
+    end
+
+    it "increases a person's strength by 15" do
+      person.rest
+      expect(person.strength).to eq(65)
+    end
+
+    it "does not increase a person's strength over 100" do
+      person.rest
+      person.rest
+      person.rest
+      expect(person.strength).to eq(95)
+      person.rest
+      expect(person.strength).to eq(100)
+    end
   end
 end
