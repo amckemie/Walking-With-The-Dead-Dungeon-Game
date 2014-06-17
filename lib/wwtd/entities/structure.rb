@@ -26,8 +26,8 @@ module WWTD
       @canE = true
       @canS = true
       @canW = true
-      input[:people] == nil ? @people = [] : @people = input[:people]
-      input[:items] == nil ? @items = [] : @items = input[:items]
+      @people = input[:people] ||= []
+      @items = input[:items] ||= []
     end
 
     def addRoom(node, direction)
