@@ -4,7 +4,7 @@ describe 'world structure' do
   before(:each) do
     @head = WWTD::RoomNode.new(name: "Bedroom", description: "A room in which people sleep")
     @south = WWTD::RoomNode.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head)
-    @north = WWTD::RoomNode.new(id: 1, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head)
+    @north = WWTD::RoomNode.new(id: 1, questId: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head)
     @world = WWTD::World.new(@head)
   end
 
@@ -38,6 +38,10 @@ describe 'world structure' do
       expect(@north.id).to_not be(nil)
     end
 
+    it 'has a quest id' do
+      expect(@north.questId).to eq(10)
+    end
+
     it "has a north, east, south, and west direction that points to other nodes or nil" do
       expect(@north.south).to eq(@head)
       expect(@north.north).to eq(nil)
@@ -54,15 +58,15 @@ describe 'world structure' do
       expect(@head.items).to eq([jacket])
     end
 
-    it 'has a people array that stores person/zombie nodes of who is currently in the room' do
-      expect(@head.people).to be_an(Array)
+    it 'has a characters array that stores person/zombie nodes of who is currently in the room' do
+      expect(@head.characters).to be_an(Array)
 
-      ashley = WWTD::PersonNode.new(id: 1, name: "ashley", strength: 100)
-      clay = WWTD::PersonNode.new(id: 2, name: 'Clay', strength: 50)
-      @head.people << ashley
-      @head.people << clay
-      expect(@head.people.size).to eq(2)
-      expect(@head.people).to eq([ashley, clay])
+      ashley = WWTD::PlayerNode.new(id: 1, name: "ashley", strength: 100)
+      clay = WWTD::PlayerNode.new(id: 2, name: 'Clay', strength: 50)
+      @head.characters << ashley
+      @head.characters << clay
+      expect(@head.characters.size).to eq(2)
+      expect(@head.characters).to eq([ashley, clay])
     end
 
     it "has access values (canN, canE, canS, canW) that store boolean values and which are defaults of true" do

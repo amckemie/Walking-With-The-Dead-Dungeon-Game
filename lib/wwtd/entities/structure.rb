@@ -12,10 +12,11 @@ module WWTD
   # rooms are the individual nodes that make up a world. They do not have parents or children, but rather other nodes connected to them
   # via direction (n, e, s, w)
   class RoomNode
-    attr_accessor :name, :description, :north, :south, :east, :west, :canAccess, :locked, :people, :items
-    attr_accessor :id, :canN, :canE, :canS, :canW
+    attr_reader :name, :description, :characters, :items, :id, :canN, :canE, :canS, :canW, :questId
+    attr_accessor :north, :south, :east, :west
     def initialize(input)
       @id = input[:id]
+      @questId = input[:questId]
       @name = input[:name]
       @description = input[:description]
       @north = input[:north]
@@ -26,7 +27,7 @@ module WWTD
       @canE = true
       @canS = true
       @canW = true
-      @people = input[:people] ||= []
+      @characters = input[:characters] ||= []
       @items = input[:items] ||= []
     end
 
