@@ -2,11 +2,11 @@ require 'spec_helper.rb'
 
 
   describe 'ItemNode' do
-    let(:ashley) {WWTD::PersonNode.new(id: 1, name: 'Ashley', strength: 100)}
-    let(:jacket) {WWTD::ItemNode.new(type: 'item', id: 1, name: 'jacket', description: 'a warm wooly coat', actions: ['wear', 'put on'], location_type: ashley.class, location_id: ashley.id)}
+    let(:ashley) {WWTD::PlayerNode.new(id: 1, name: 'Ashley', strength: 100)}
+    let(:jacket) {WWTD::ItemNode.new(id: 1, name: 'jacket', description: 'a warm wooly coat', actions: ['wear', 'put on'], location_type: ashley.class, location_id: ashley.id)}
 
-    it "has a type of item" do
-      expect(jacket.type).to eq('item')
+    it "it an ItemNode" do
+      expect(jacket.class).to eq(WWTD::ItemNode)
     end
 
     it "has a name" do
@@ -30,11 +30,11 @@ require 'spec_helper.rb'
   describe 'WeaponNode' do
     before(:each) do
       @bedroom = WWTD::RoomNode.new(id: 1, name: 'Bedroom', description: 'A bedroom', items: [1])
-      @sword = WWTD::WeaponNode.new(type: 'weapon', id: 1, name: 'sword', actions: ['cut', 'stab'], location_type: @bedroom.class, location_id: @bedroom.id)
+      @sword = WWTD::WeaponNode.new(id: 1, name: 'sword', actions: ['cut', 'stab'], location_type: @bedroom.class, location_id: @bedroom.id)
     end
 
-    it "has a type of weapon" do
-      expect(@sword.type).to eq('weapon')
+    it "is a WeaponNode" do
+      expect(@sword.class).to eq(WWTD::WeaponNode)
     end
 
     # the following test inherited methods/attributes
