@@ -1,5 +1,5 @@
 module WWTD
-  class PersonNode
+  class CharacterNode
     attr_reader :name, :id, :description
     attr_accessor :strength, :inventory, :infected, :dead
 

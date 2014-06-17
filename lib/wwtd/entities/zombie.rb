@@ -1,18 +1,16 @@
 module WWTD
   class ZombieNode
-    attr_reader :id, :strength
-    attr_accessor :description, :canGrab, :canWalk, :killed
-    def initialize(input)
+    attr_reader :id, :strength, :description, :killed, :roomId, :questId
+    def initialize(input={})
       @id = input[:id]
       @description = input[:description]
       @strength = input[:strength]
+      @roomId = input[:roomId]
+      @questId = input[:questId]
       @killed = false
-      # Future Features...
-      # @canGrab = input[:canGrab]
-      # @canWalk = input[:canWalk]
     end
 
-    # bites uninfected player (PersonNode)
+    # bites uninfected player (CharacterNode)
     def bite(person)
       person.getBit
     end

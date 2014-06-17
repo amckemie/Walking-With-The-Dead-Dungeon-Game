@@ -6,7 +6,7 @@ end
 
 require_relative './entities/structure.rb'
 require_relative './entities/item.rb'
-require_relative './entities/person.rb'
+require_relative './entities/character.rb'
 require_relative './entities/zombie.rb'
 require_relative './database/active_record_db.rb'
 # require_relative './commands/fight.rb'

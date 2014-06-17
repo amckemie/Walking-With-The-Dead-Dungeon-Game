@@ -150,7 +150,7 @@ describe WWTD::ActiveRecordDatabase do
   end
 
   describe 'items' do
-    it "creates a item with default values of type 'item' and location_type WWTD::RoomNode" do
+    xit "creates a item with default values of type 'item' and location_type WWTD::RoomNode" do
       expect(item_1.id).to_not be_nil
       expect(item_1.type).to eq('item')
       expect(item_1.location_type).to eq(WWTD::RoomNode)
@@ -160,13 +160,13 @@ describe WWTD::ActiveRecordDatabase do
       expect(item_1.name).to eq('apple')
     end
 
-    it 'retrieves a item' do
+    xit 'retrieves a item' do
       retrieved_item = db.get_item(item_1.id)
       expect(retrieved_item.id).to eq(item_1.id)
       expect(retrieved_item.name).to eq('apple')
     end
 
-    it 'updates a item' do
+    xit 'updates a item' do
       db.update_item(item_1.id, description: "gross wormy apple", actions: 'throw')
       updated = db.get_item(item_1.id)
       expect(updated.name).to eq('apple')
@@ -175,12 +175,12 @@ describe WWTD::ActiveRecordDatabase do
       expect(updated.actions).to eq('throw')
     end
 
-    it 'deletes a item' do
+    xit 'deletes a item' do
       db.delete_item(item_1.id)
       expect(db.get_item(item_1.id)).to eq(nil)
     end
 
-    it 'returns items by room ID' do
+    xit 'returns items by room ID' do
       item2 = db.create_item(name: 'shirt', description: "threadbare", actions: 'wear, put on', location_id: 1)
       item3 = db.create_item(name: 'skirt', description: "full and pretty", actions: 'wear, put on', location_id: 3)
       room_1_items = db.get_items_by_room(10)
@@ -194,7 +194,7 @@ describe WWTD::ActiveRecordDatabase do
   end
 
   describe 'weapons' do
-    it 'creates a weapon with default values of type "weapon" and location_type WWTD::RoomNode' do
+    xit 'creates a weapon with default values of type "weapon" and location_type WWTD::RoomNode' do
       expect(weapon_1.id).to_not be_nil
       expect(weapon_1.type).to eq('weapon')
       expect(weapon_1.location_type).to eq(WWTD::RoomNode)
@@ -204,13 +204,13 @@ describe WWTD::ActiveRecordDatabase do
       expect(weapon_1.name).to eq('sword')
     end
 
-    it 'retrieves a weapon' do
+    xit 'retrieves a weapon' do
       retrieved_weapon = db.get_weapon(weapon_1.id)
       expect(retrieved_weapon.id).to eq(weapon_1.id)
       expect(retrieved_weapon.name).to eq('sword')
     end
 
-    it 'updates a weapon' do
+    xit 'updates a weapon' do
       db.update_weapon(weapon_1.id, description: "a dully useless object", actions: 'throw, drop')
       updated = db.get_weapon(weapon_1.id)
       expect(updated.name).to eq('sword')
@@ -219,12 +219,12 @@ describe WWTD::ActiveRecordDatabase do
       expect(updated.actions).to eq('throw, drop')
     end
 
-    it 'deletes a weapon' do
+    xit 'deletes a weapon' do
       db.delete_weapon(weapon_1.id)
       expect(db.get_weapon(weapon_1.id)).to eq(nil)
     end
 
-    it 'returns weapons by room ID' do
+    xit 'returns weapons by room ID' do
       weapon2 = db.create_weapon(name: 'bat', description: "babe ruth", actions: 'hit', location_id: 4)
       weapon3 = db.create_weapon(name: 'crossbow', description: "awesome and badass", actions: 'shoot, fire', location_id: 1)
       room_4_weapons = db.get_weapons_by_room(4)

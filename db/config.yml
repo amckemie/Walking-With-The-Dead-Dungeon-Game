@@ -1,0 +1,11 @@
+development:
+  adapter: postgresql
+  database: walking_with_the_dead_dev
+  pool: 5
+  timeout: 5000
+
+test:
+  adapter: postgresql
+  database: walking_with_the_dead_test
+  pool: 5
+  timeout: 5000
