@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'zombie' do
   before(:each) do
-    @zombie = WWTD::ZombieNode.new(id: 1, description: 'a gruesome zombie if there ever was one', strength: 70, canGrab: true, canWalk: true)
+    @zombie = WWTD::ZombieNode.new(id: 1, description: 'a gruesome zombie if there ever was one', strength: 70, killed: false)
   end
 
   describe 'initialize' do
@@ -18,14 +18,19 @@ describe 'zombie' do
       expect(@zombie.strength).to eq(70)
     end
 
-    it "has a canGrab attribute" do
+    it "has a default killed attribute of false" do
+      exect(@zombie.killed).to eq(false)
+    end
+
+    # The next 2 are future features
+    xit "has a canGrab attribute" do
       expect(@zombie.canGrab).to eq(true)
 
       @zombie.canGrab = false
       expect(@zombie.canGrab).to eq(false)
     end
 
-    it "has a canWalk attribute" do
+    xit "has a canWalk attribute" do
       expect(@zombie.canWalk).to eq(true)
 
       @zombie.canWalk = false

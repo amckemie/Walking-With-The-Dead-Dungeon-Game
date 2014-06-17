@@ -13,7 +13,7 @@ module WWTD
   # via direction (n, e, s, w)
   class RoomNode
     attr_accessor :name, :description, :north, :south, :east, :west, :canAccess, :locked, :people, :items
-    attr_reader :id
+    attr_accessor :id, :canN, :canE, :canS, :canW
     def initialize(input)
       @id = input[:id]
       @name = input[:name]
@@ -22,8 +22,10 @@ module WWTD
       @south = input[:south]
       @west = input[:west]
       @east = input[:east]
-      input[:canAccess] == nil ? @canAccess = {} : @canAccess = input[:canAccess]
-      input[:locked] == nil ? @locked = false : @locked = input[:locked]
+      @canN = true
+      @canE = true
+      @canS = true
+      @canW = true
       input[:people] == nil ? @people = [] : @people = input[:people]
       input[:items] == nil ? @items = [] : @items = input[:items]
     end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe WWTD::PersonNode do
-  let(:person) {WWTD::PersonNode.new(id: 1, name: "ashley", strength: 100)}
+  let(:person) {WWTD::PersonNode.new(id: 1, name: "ashley", strength: 100, description: 'badass zombie killer')}
   let(:apple) {WWTD::ItemNode.new(id: 2, type: 'item', name: 'apple', actions: ['eat'])}
   let(:apple2) {WWTD::ItemNode.new(id: 3, type: 'item', name: 'apple', actions: ['eat'])}
 
@@ -12,6 +12,10 @@ describe WWTD::PersonNode do
 
     it "has a name attribute" do
       expect(person.name).to eq('ashley')
+    end
+
+    it "has a description attribute" do
+      expect(person.description).to eq('badass zombie killer')
     end
 
     it 'has an id attribute' do
@@ -28,6 +32,10 @@ describe WWTD::PersonNode do
 
     it 'has an infected status set to false as default' do
       expect(person.infected).to eq(false)
+    end
+
+    it 'has an dead status set to false as default' do
+      expect(person.dead).to eq(false)
     end
   end
 

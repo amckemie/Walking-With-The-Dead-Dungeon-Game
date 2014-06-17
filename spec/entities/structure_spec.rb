@@ -3,8 +3,8 @@ require 'spec_helper'
 describe 'world structure' do
   before(:each) do
     @head = WWTD::RoomNode.new(name: "Bedroom", description: "A room in which people sleep")
-    @south = WWTD::RoomNode.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head, locked: true)
-    @north = WWTD::RoomNode.new(id: 1, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head, locked: false, canAccess: {north: true, east: false, south: true, west: false})
+    @south = WWTD::RoomNode.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head)
+    @north = WWTD::RoomNode.new(id: 1, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head)
     @world = WWTD::World.new(@head)
   end
 
@@ -45,18 +45,6 @@ describe 'world structure' do
       expect(@north.west).to eq(nil)
     end
 
-    it "returns true if a room is locked" do
-      expect(@south.locked).to eq(true)
-    end
-
-    it "returns false if a room is not locked" do
-      expect(@north.locked).to eq(false)
-    end
-
-    it "gives locked a default value  of false" do
-      expect(@head.locked).to eq(false)
-    end
-
     it "has an items inventory that is an array which stores item nodes" do
       expect(@head.items).to be_an(Array)
 
@@ -77,9 +65,11 @@ describe 'world structure' do
       expect(@head.people).to eq([ashley, clay])
     end
 
-    it "has a can_access hash that stores 4 boolean values for the 4 cardinal directions: true if you can go in a direction, false if not" do
-      expect(@north.canAccess[:north]).to eq(true)
-      expect(@north.canAccess[:west]).to eq(false)
+    it "has access values (canN, canE, canS, canW) that store boolean values and which are defaults of true" do
+      expect(@north.canE).to eq(true)
+      expect(@north.canN).to eq(true)
+      expect(@north.canS).to eq(true)
+      expect(@north.canW).to eq(true)
     end
   end
 
@@ -96,7 +86,7 @@ describe 'world structure' do
 
   describe 'removeRoom' do
     it "removes a RoomNode from it's parent based on specified direction" do
-      @south.removeRoom(north)
+      @south.removeRoom('north')
       expect(@south.north).to eq(nil)
     end
   end

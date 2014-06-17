@@ -1,14 +1,16 @@
 module WWTD
   class PersonNode
-    attr_reader :name, :id, :infected
-    attr_accessor :strength, :inventory
+    attr_reader :name, :id, :description
+    attr_accessor :strength, :inventory, :infected, :dead
 
     def initialize(input)
       @id = input[:id]
       @name = input[:name]
+      @description = input[:description]
       @strength = input[:strength]
       @inventory = []
       @infected = false
+      @dead = false
     end
 
     def getBit
