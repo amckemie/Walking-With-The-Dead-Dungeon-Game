@@ -25,6 +25,10 @@ describe WWTD::PersonNode do
     it "has an inventory that is set to an empty array by default" do
       expect(person.inventory).to eq([])
     end
+
+    it 'has an infected status set to false as default' do
+      expect(person.infected).to eq(false)
+    end
   end
 
   describe 'Inventory' do
@@ -131,6 +135,13 @@ describe WWTD::PersonNode do
       expect(person.strength).to eq(95)
       person.rest
       expect(person.strength).to eq(100)
+    end
+  end
+
+  describe 'getBit' do
+    it "changes a person's infected status to true" do
+      person.getBit
+      expect(person.infected).to eq(true)
     end
   end
 end

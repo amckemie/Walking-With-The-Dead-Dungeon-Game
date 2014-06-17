@@ -1,6 +1,6 @@
 module WWTD
   class PersonNode
-    attr_reader :name, :id
+    attr_reader :name, :id, :infected
     attr_accessor :strength, :inventory
 
     def initialize(input)
@@ -8,6 +8,11 @@ module WWTD
       @name = input[:name]
       @strength = input[:strength]
       @inventory = []
+      @infected = false
+    end
+
+    def getBit
+      @infected = true
     end
 
     def addToInventory(itemNode)
@@ -16,9 +21,6 @@ module WWTD
 
     def removeFromInventory(itemNode)
       @inventory.delete(itemNode)
-    end
-
-    def fight(opponent)
     end
 
     def eat(food)

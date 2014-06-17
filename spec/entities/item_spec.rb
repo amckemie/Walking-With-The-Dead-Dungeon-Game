@@ -17,19 +17,18 @@ require 'spec_helper.rb'
       expect(jacket.actions).to eq(['wear', 'put on'])
     end
 
-    xit "knows what PersonNode or RoomNode it belongs to" do
-      expect(jacket.location_type).to eq(PersonNode)
+    it "knows what PersonNode or RoomNode it belongs to" do
+      expect(jacket.location_type).to eq(WWTD::PersonNode)
       expect(jacket.location_id).to eq(1)
     end
   end
 
   describe 'WeaponNode' do
-    # let(:bedroom) {WWTD::RoomNode.new(id: 1, name: 'Bedroom', description: 'A bedroom', items: [sword.id])}
-    # let(:sword) {WWTD::WeaponNode.new(type: 'weapon', id: 1, name: 'sword', actions: ['cut', 'stab'], location_type: bedroom.class, location_id: bedroom.id)}
     before(:each) do
       @bedroom = WWTD::RoomNode.new(id: 1, name: 'Bedroom', description: 'A bedroom', items: [1])
       @sword = WWTD::WeaponNode.new(type: 'weapon', id: 1, name: 'sword', actions: ['cut', 'stab'], location_type: @bedroom.class, location_id: @bedroom.id)
     end
+
     xit "has a type of weapon" do
       expect(@sword.type).to eq('weapon')
     end

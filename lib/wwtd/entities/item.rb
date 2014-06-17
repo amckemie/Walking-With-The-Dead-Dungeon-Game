@@ -1,12 +1,14 @@
 module WWTD
   class ItemNode
     attr_reader :name, :id, :type
-    attr_accessor :actions
+    attr_accessor :actions, :location_type, :location_id
     def initialize(input)
       @id = input[:id]
       @type = input[:type]
       @name = input[:name]
       @actions = input[:actions]
+      @location_type = input[:location_type]
+      @location_id = input[:location_id]
     end
   end
 
