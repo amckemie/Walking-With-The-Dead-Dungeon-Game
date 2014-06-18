@@ -93,12 +93,12 @@ describe WWTD::ActiveRecordDatabase do
 
   # characters
   describe 'character' do
-    xit 'creates a game character with a name, description, strength, questID, roomId, and classification (either person (strength set to 0) or zombie)' do
+    it 'creates a game character with a name, description, strength, questID, roomId, and classification (either person (strength set to 0) or zombie)' do
       expect(character_1.id).to_not be_nil
       expect(character_1.name).to eq('Susie')
       expect(character_1.description).to eq('best friend')
       expect(character_1.class).to eq(WWTD::CharacterNode)
-      expect(character_1.roomId).to eq(kitchen.id)
+      expect(character_1.room_id).to eq(kitchen.id)
       expect(zombie_1.class).to eq(WWTD::ZombieNode)
       expect(zombie_1.strength).to eq(20)
       expect(zombie_1.quest_id).to eq(quest_1.id)
@@ -110,14 +110,14 @@ describe WWTD::ActiveRecordDatabase do
     end
 
     xit 'updates a character' do
-      db.update_character(character_1.id, infected: true)
+      db.update_character(character_1.id, dead: true)
       updated = db.get_character(character_1.id)
       expect(updated.name).to eq('Susie')
       expect(updated.id).to eq(character_1.id)
       expect(updated.infected).to eq(true)
 
       # check for multiple attributes updated
-      db.update_character(character_1.id, infected: false, roomId: 7)
+      db.update_character(character_1.id, dead: false, room_id: 7)
       updated2 = db.get_character(character_1.id)
       expect(updated2.name).to eq('Susie')
       expect(updated2.id).to eq(character_1.id)

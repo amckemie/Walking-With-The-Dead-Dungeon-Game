@@ -1,13 +1,13 @@
 module WWTD
   class CharacterNode
-    attr_reader :id, :name, :description, :questId, :roomId
+    attr_reader :id, :name, :description, :quest_id, :room_id
 
     def initialize(input)
       @id = input[:id]
       @name = input[:name]
       @description = input[:description]
       @questId = input[:questId]
-      @roomId = input[:roomId]
+      @room_id = input[:room_id]
     end
   end
 end

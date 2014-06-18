@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'zombie' do
   before(:each) do
-    @zombie = WWTD::ZombieNode.new(id: 1, name: 'scary zombie', description: 'a gruesome zombie if there ever was one', strength: 70, killed: false, roomId: 2, questId: 1)
+    @zombie = WWTD::ZombieNode.new(id: 1, name: 'scary zombie', description: 'a gruesome zombie if there ever was one', strength: 70, killed: false, room_id: 2, quest_id: 1)
   end
 
   describe 'initialize' do
@@ -23,11 +23,11 @@ describe 'zombie' do
     end
 
     it 'has a roomId' do
-      expect(@zombie.roomId).to eq(2)
+      expect(@zombie.room_id).to eq(2)
     end
 
     it 'has a questId' do
-      expect(@zombie.questId).to eq(1)
+      expect(@zombie.quest_id).to eq(1)
     end
   end
 
