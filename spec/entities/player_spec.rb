@@ -147,9 +147,9 @@ describe WWTD::PlayerNode do
   end
 
   describe 'getBit' do
-    it "changes a player's infected status to true" do
+    it "changes a player's dead status to true" do
       player.getBit
-      expect(player.infected).to eq(true)
+      expect(player.dead).to eq(true)
     end
   end
 end

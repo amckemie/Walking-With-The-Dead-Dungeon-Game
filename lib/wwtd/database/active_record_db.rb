@@ -1,18 +1,22 @@
 require 'active_record'
+require 'pry'
 
 module WWTD
   class ActiveRecordDatabase
     def initialize
       ActiveRecord::Base.establish_connection(
       :adapter => 'postgresql',
-      :database => 'wwtd-test.db'
+      :database => 'walking_with_the_dead_test'
       )
     end
 
+    # Move to other file?
     class Quest < ActiveRecord::Base
-      has_many :items, through: :questItems
-      has_many :characters, through: :questCharacters
-      has_many :players, through: :questProgress
+      has_many :quest_items, dependent: :destroy
+      has_many :quest_progresses, dependent: :destroy
+      has_many :items, through: :quest_items
+      # has_many :characters, through: :quest_characters
+      has_many :players, through: :quest_progress
     end
 
     class Character < ActiveRecord::Base
@@ -24,14 +28,19 @@ module WWTD
       validates :username, uniqueness: true
       validates :password, length: {minimum: 8}
       validates :username, :password, presence: true
-      has_many :quests, through: :questProgress
+      has_many :quest_progresses, dependent: :destroy
+      has_many :inventories, dependent: :destroy
+      has_many :quests, through: :quest_progress
       has_many :items, through: :inventory
     end
 
     class Item < ActiveRecord::Base
+      has_many :inventories, dependent: :destroy
+      has_many :quest_items, dependent: :destroy
+      has_many :room_items, dependent: :destroy
       has_many :players, through: :inventory
-      has_many :quests, through: :questItems
-      has_many :rooms, through: :roomItems
+      has_many :quests, through: :quest_items
+      has_many :rooms, through: :room_items
     end
 
     class QuestItem < ActiveRecord::Base
@@ -61,22 +70,76 @@ module WWTD
 
     class Room < ActiveRecord::Base
       has_many :players
-      has_many :items, through: :roomItems
-      has_many :characters, through: :roomCharacters
+      # may not need this: double check at end
+      has_many :room_items, dependent: :destroy
+      has_many :items, through: :room_items
+      has_many :characters, through: :quest_characters
     end
 
     def clear_tables
       Character.delete_all
-      Player.delete_all
+      # Player.delete_all
       Quest.delete_all
-      Room.delete_all
-      Item.delete_all
-      RoomCharacter.delete_all
-      RoomItem.delete_all
-      Inventory.delete_all
-      QuestProgress.delete_all
-      QuestCharacter.delete_all
-      QuestItem.delete_all
+      # Room.delete_all
+      # Item.delete_all
+      # RoomItem.delete_all
+      # Inventory.delete_all
+      # QuestProgress.delete_all
+      # QuestCharacter.delete_all
+      # QuestItem.delete_all
     end
+
+    # Quest Methods
+    def create_quest(attrs)
+      ar_quest = Quest.create(attrs)
+      build_quest(ar_quest)
+    end
+
+    def build_quest(quest)
+      WWTD::Quest.new(id: quest.id, name: quest.name)
+    end
+
+    def update_quest(q_id, data)
+      ar_quest = Quest.find(q_id)
+      ar_quest.update(data)
+      build_quest(ar_quest)
+    end
+
+    def get_quest(q_id)
+      ar_quest = Quest.find(q_id)
+      build_quest(ar_quest)
+    end
+
+    def delete_quest(q_id)
+      ar_quest = Quest.find(q_id)
+      ar_quest.destroy
+      return true if !Quest.exists?(q_id)
+    end
+
+    # Character Methods
+    def create_character(attrs)
+      ar_character = Character.create(attrs)
+      build_character(ar_character)
+    end
+
+    def build_character(character)
+      WWTD::CharacterNode.new(id: character.id,
+        name: character.name,
+        description: character.description,
+        quest_id: character.quest_id,
+        room_id: character.room_id
+      )
+    end
+
+    def build_zombie(zombie)
+      WWTD::ZombieNode.new(id: character.id,
+        name: character.name,
+        description: character.description,
+        quest_id: character.quest_id,
+        room_id: character.room_id
+      )
+    end
+
+    # def get_character
   end
 end

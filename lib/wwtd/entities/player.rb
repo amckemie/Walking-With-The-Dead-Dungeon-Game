@@ -14,7 +14,7 @@ module WWTD
     end
 
     def getBit
-      @infected = true
+      @dead = true
     end
 
     def addToInventory(itemNode)

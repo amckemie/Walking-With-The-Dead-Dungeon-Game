@@ -1,13 +1,13 @@
 module WWTD
   class ZombieNode
-    attr_reader :id, :strength, :description, :killed, :roomId, :questId
+    attr_reader :id, :strength, :description, :roomId, :questId, :name
     def initialize(input={})
       @id = input[:id]
+      @name = input[:name]
       @description = input[:description]
       @strength = input[:strength]
       @roomId = input[:roomId]
       @questId = input[:questId]
-      @killed = false
     end
 
     # bites uninfected player (CharacterNode)

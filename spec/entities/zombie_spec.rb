@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'zombie' do
   before(:each) do
-    @zombie = WWTD::ZombieNode.new(id: 1, description: 'a gruesome zombie if there ever was one', strength: 70, killed: false, roomId: 2, questId: 1)
+    @zombie = WWTD::ZombieNode.new(id: 1, name: 'scary zombie', description: 'a gruesome zombie if there ever was one', strength: 70, killed: false, roomId: 2, questId: 1)
   end
 
   describe 'initialize' do
@@ -18,8 +18,8 @@ describe 'zombie' do
       expect(@zombie.strength).to eq(70)
     end
 
-    it "has a default killed attribute of false" do
-      expect(@zombie.killed).to eq(false)
+    it "has a name attribute" do
+      expect(@zombie.name).to eq('scary zombie')
     end
 
     it 'has a roomId' do
@@ -33,12 +33,12 @@ describe 'zombie' do
 
   describe 'bite' do
     before do
-      @person = WWTD::CharacterNode.new(id: 1, name: "ashley", strength: 100, infected: false)
+      @person = WWTD::PlayerNode.new(id: 1, username: 'ashley', password: 'abc123', strength: 100, description: 'badass zombie killer')
     end
 
-    it "changes a Person's infected status to true" do
+    it "changes a Person's dead status to true" do
       @zombie.bite(@person)
-      expect(@person.infected).to eq(true)
+      expect(@person.dead).to eq(true)
     end
   end
 end

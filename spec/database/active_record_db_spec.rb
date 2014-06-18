@@ -18,32 +18,38 @@ describe WWTD::ActiveRecordDatabase do
 
   # quests
   describe 'Quest' do
-    xit 'it has a name and id' do
-      expect(quest_1.id).to_not be_nil
-      expect(quest_1.name).to eq('the holy grail')
+    describe 'create_quest' do
+      it 'returns a WWTD::Quest' do
+        expect(quest_1.class).to eq(WWTD::Quest)
+      end
+
+      it 'it has a name and id' do
+        expect(quest_1.id).to_not be_nil
+        expect(quest_1.name).to eq('the holy grail')
+      end
     end
 
-    xit 'can be updated' do
-      db.update_quest(quest_1.id, name: 'the unholiest of grails')
-      updated = db.get_quest(quest_1.id)
-      expect(updated.id).to eq(quest_1.id)
-      expect(updated.name).to eq('the unholiest of grails')
-    end
-
-    xit 'can be retrieved by id' do
+    it 'can be retrieved by id' do
       retrieved_quest = db.get_quest(quest_1.id)
-      expect(retrieved_quest.class).to eq(WWWTD::Quest)
+      expect(retrieved_quest.class).to eq(WWTD::Quest)
       expect(retrieved_quest.name).to eq('the holy grail')
     end
 
-    xit 'can be retrieved by name' do
-      retrieved_quest = db.get_quest(quest_1.name)
-      expect(retrieved_quest.id).to eq(quest_1.id)
+    it 'can be updated' do
+      test = db.update_quest(quest_1.id, name: 'the unholiest of grails')
+      updated = db.get_quest(quest_1.id)
+      expect(updated.id).to eq(quest_1.id)
+      expect(updated.name).to eq(test.name)
     end
 
-    xit 'can be deleted' do
-      db.delete_person(quest_1.id)
-      expect(db.get_person(quest_1.id)).to eq(nil)
+    # May Not Need - Don't Build Yet
+    # it 'can be retrieved by name' do
+    #   retrieved_quest = db.get_quest(quest_1.name)
+    #   expect(retrieved_quest.id).to eq(quest_1.id)
+    # end
+
+    it 'can be deleted' do
+      expect(db.delete_quest(quest_1.id)).to eq(true)
     end
   end
 
@@ -87,7 +93,7 @@ describe WWTD::ActiveRecordDatabase do
 
   # characters
   describe 'character' do
-    xit 'creates a game character with a name, description, strength, questID, roomId, and type (either person (strength set to 0) or zombie)' do
+    it 'creates a game character with a name, description, strength, questID, roomId, and type (either person (strength set to 0) or zombie)' do
       expect(character_1.id).to_not be_nil
       expect(character_1.name).to eq('Susie')
       expect(character_1.description).to eq('best friend')
@@ -126,9 +132,14 @@ describe WWTD::ActiveRecordDatabase do
     end
 
     xit 'gets all the characters for a quest' do
+
     end
 
     xit 'gets all the characters for a room' do
+
+    end
+
+    xit 'gets all the characters for a specific room in a quest' do
     end
   end
 
