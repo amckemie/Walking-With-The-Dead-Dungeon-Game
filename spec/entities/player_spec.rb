@@ -34,10 +34,6 @@ describe WWTD::PlayerNode do
       expect(player.inventory).to eq([])
     end
 
-    it 'has an infected status set to false as default' do
-      expect(player.infected).to eq(false)
-    end
-
     it 'has an dead status set to false as default' do
       expect(player.dead).to eq(false)
     end
