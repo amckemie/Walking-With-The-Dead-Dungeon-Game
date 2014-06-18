@@ -12,8 +12,8 @@ module WWTD
 
     # Move to other file?
     class Quest < ActiveRecord::Base
-      has_many :quest_items, dependent: :destroy
-      has_many :quest_progresses, dependent: :destroy
+      # has_many :quest_items, dependent: :destroy
+      # has_many :quest_progresses, dependent: :destroy
       has_many :items, through: :quest_items
       # has_many :characters, through: :quest_characters
       has_many :players, through: :quest_progress
@@ -119,7 +119,7 @@ module WWTD
     # Character Methods
     def create_character(attrs)
       ar_character = Character.create(attrs)
-      build_character(ar_character)
+      ar_character.type == 'person' ? build_character(ar_character) : build_zombie(ar_character)
     end
 
     def build_character(character)
@@ -132,11 +132,34 @@ module WWTD
     end
 
     def build_zombie(zombie)
-      WWTD::ZombieNode.new(id: character.id,
-        name: character.name,
-        description: character.description,
-        quest_id: character.quest_id,
-        room_id: character.room_id
+      WWTD::ZombieNode.new(id: zombie.id,
+        name: zombie.name,
+        description: zombie.description,
+        strength: zombie.strength,
+        quest_id: zombie.quest_id,
+        room_id: zombie.room_id
+      )
+    end
+
+    # Room Methods
+
+    def create_room(attrs)
+      ar_room = Room.create(attrs)
+      build_room(ar_room)
+    end
+
+    def build_room(room)
+      WWTD::RoomNode(id: room.id,
+        name: room.name,
+        description: room.description,
+        north: room.north,
+        east: room.east,
+        south: room.south,
+        west: room.west,
+        canN: room.canN,
+        canE: room.canE,
+        canS: room.canS,
+        canW: room.canW
       )
     end
 

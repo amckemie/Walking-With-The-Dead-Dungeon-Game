@@ -8,7 +8,7 @@ describe WWTD::ActiveRecordDatabase do
   let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", type: 'update_item')}
   let(:weapon_1) {db.create_item(name: 'sword', type: 'weapon', description: "a sharp pointy thing")}
   let(:kitchen) {db.create_room(name: 'kitchen', description: 'a bright sunny room with food')}
-  let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', north: kitchen, canW: false)}
+  let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', north: kitchen.id, canW: false)}
   let(:quest_1) {db.create_quest(name: 'the holy grail')}
   let(:zombie_1) {db.create_character(name: 'bloody clown zombie', type: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
   let(:character_1) {db.create_character(name: 'Susie', description: "best friend", type: 'person', quest_id: quest_1.id, roomId: kitchen.id)}
@@ -223,7 +223,7 @@ describe WWTD::ActiveRecordDatabase do
 
   # questItems join table
   describe 'room' do
-    xit 'creates a room with a name, description, id, and default values for all directions and all directions access' do
+    it 'creates a room with a name, description, id, and default values for all directions and all directions access' do
       expect(kitchen.id).to_not be_nil
       expect(kitchen.description).to eq('a bright sunny room with food')
       expect(kitchen.name).to eq('kitchen')
@@ -234,10 +234,9 @@ describe WWTD::ActiveRecordDatabase do
       expect(kitchen.canN).to eq(true)
       expect(kitchen.canS).to eq(true)
       expect(kitchen.canE).to eq(true)
-      expect(kitchen.canW).to eq(true)
 
       # testing non-default settings
-      expect(bedroom.north).to eq(kitchen)
+      expect(bedroom.north).to eq(kitchen.id)
       expect(kitchen.canW).to eq(false)
     end
 
@@ -250,11 +249,11 @@ describe WWTD::ActiveRecordDatabase do
     end
 
     xit 'updates a room' do
-      db.update_room(kitchen.id, description: "a suddenly dark and gloomy place", south: bedroom, canN: false)
+      db.update_room(kitchen.id, description: "a suddenly dark and gloomy place", south: bedroom.id, canN: false)
       updated = db.get_room(kitchen.id)
       expect(updated.id).to eq(kitchen.id)
       expect(updated.description).to eq("a suddenly dark and gloomy place")
-      expect(updated.south).to eq(bedroom)
+      expect(updated.south).to eq(bedroom.id)
       expect(updated.canN).to eq(true)
       expect(updated.name).to eq('kitchen')
     end

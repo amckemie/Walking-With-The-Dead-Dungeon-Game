@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618133236) do
+ActiveRecord::Schema.define(version: 20140618142954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,19 @@ ActiveRecord::Schema.define(version: 20140618133236) do
 
   create_table "quests", force: true do |t|
     t.string "name", null: false
+  end
+
+  create_table "rooms", force: true do |t|
+    t.string  "name",                       null: false
+    t.text    "description",                null: false
+    t.integer "north"
+    t.integer "east"
+    t.integer "south"
+    t.integer "west"
+    t.boolean "canN",        default: true
+    t.boolean "canE",        default: true
+    t.boolean "canS",        default: true
+    t.boolean "canW",        default: true
   end
 
 end
