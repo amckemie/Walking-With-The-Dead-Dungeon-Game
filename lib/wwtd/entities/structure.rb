@@ -22,10 +22,10 @@ module WWTD
       @south = input[:south]
       @west = input[:west]
       @east = input[:east]
-      @canN = input[:canN] ||= true
-      @canE = input[:canE] ||= true
-      @canS = input[:canS] ||= true
-      @canW = input[:canW] ||= true
+      @canN = input[:canN]
+      @canE = input[:canE]
+      @canS = input[:canS]
+      @canW = input[:canW]
       @characters = input[:characters] ||= []
       @items = input[:items] ||= []
     end

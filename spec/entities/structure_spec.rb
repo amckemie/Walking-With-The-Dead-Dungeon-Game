@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'world structure' do
   before(:each) do
-    @head = WWTD::RoomNode.new(name: "Bedroom", description: "A room in which people sleep")
-    @south = WWTD::RoomNode.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head)
-    @north = WWTD::RoomNode.new(id: 1, questId: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head)
+    @head = WWTD::RoomNode.new(name: "Bedroom", description: "A room in which people sleep", canN: true, canE: true, canS: true, canW: true)
+    @south = WWTD::RoomNode.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head, canN: true, canE: true, canS: true, canW: true)
+    @north = WWTD::RoomNode.new(id: 1, questId: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head, canN: true, canE: true, canS: true, canW: true)
     @world = WWTD::World.new(@head)
   end
 
@@ -69,7 +69,7 @@ describe 'world structure' do
       expect(@head.characters).to eq([ashley, clay])
     end
 
-    it "has access values (canN, canE, canS, canW) that store boolean values and which are defaults of true" do
+    it "has access values (canN, canE, canS, canW) that store boolean values" do
       expect(@north.canE).to eq(true)
       expect(@north.canN).to eq(true)
       expect(@north.canS).to eq(true)

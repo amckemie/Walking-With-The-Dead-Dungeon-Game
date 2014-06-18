@@ -11,7 +11,7 @@ describe WWTD::ActiveRecordDatabase do
   let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', north: kitchen.id, canW: false)}
   let(:quest_1) {db.create_quest(name: 'the holy grail')}
   let(:zombie_1) {db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
-  let(:character_1) {db.create_character(name: 'Susie', description: "best friend", classification: 'person', quest_id: quest_1.id, roomId: kitchen.id)}
+  let(:character_1) {db.create_character(name: 'Susie', description: "best friend", classification: 'person', quest_id: quest_1.id, room_id: kitchen.id)}
   let(:quest_2) {db.create_quest(name: 'beat the zombie!')}
   let(:room_item1) {db.create_room_item(player_id: player_1.id, q_id: quest_1.id, r_id: kitchen.id, item_id: item_1.id)}
   let(:room_item2) {db.create_room_item(player_id: player_1.id, q_id: quest_1.id, r_id: bedroom.id, item_id: weapon_1.id)}
@@ -93,14 +93,13 @@ describe WWTD::ActiveRecordDatabase do
 
   # characters
   describe 'character' do
-    it 'creates a game character with a name, description, strength, questID, roomId, and classification (either person (strength set to 0) or zombie)' do
+    xit 'creates a game character with a name, description, strength, questID, roomId, and classification (either person (strength set to 0) or zombie)' do
       expect(character_1.id).to_not be_nil
       expect(character_1.name).to eq('Susie')
       expect(character_1.description).to eq('best friend')
-      expect(character_1.classification).to eq('person')
-      expect(character_1.strength).to eq(0)
+      expect(character_1.class).to eq(WWTD::CharacterNode)
       expect(character_1.roomId).to eq(kitchen.id)
-      expect(zombie_1.classification).to eq('zombie')
+      expect(zombie_1.class).to eq(WWTD::ZombieNode)
       expect(zombie_1.strength).to eq(20)
       expect(zombie_1.quest_id).to eq(quest_1.id)
     end
@@ -237,7 +236,7 @@ describe WWTD::ActiveRecordDatabase do
 
       # testing non-default settings
       expect(bedroom.north).to eq(kitchen.id)
-      expect(kitchen.canW).to eq(false)
+      expect(bedroom.canW).to eq(false)
     end
 
     xit 'retrieves a room' do

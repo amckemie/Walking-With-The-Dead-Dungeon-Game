@@ -11,18 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618142954) do
+ActiveRecord::Schema.define(version: 20140618145332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "characters", force: true do |t|
-    t.string  "name",                    null: false
+    t.string  "name",                       null: false
     t.text    "description"
-    t.integer "strength",    default: 0
+    t.integer "strength",       default: 0
     t.integer "room_id"
     t.integer "quest_id"
-    t.string  "type",                    null: false
+    t.string  "classification",             null: false
   end
 
   add_index "characters", ["quest_id"], name: "index_characters_on_quest_id", using: :btree

@@ -119,7 +119,7 @@ module WWTD
     # Character Methods
     def create_character(attrs)
       ar_character = Character.create(attrs)
-      ar_character.type == 'person' ? build_character(ar_character) : build_zombie(ar_character)
+      ar_character.classification == 'person' ? build_character(ar_character) : build_zombie(ar_character)
     end
 
     def build_character(character)
