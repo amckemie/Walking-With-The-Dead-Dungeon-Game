@@ -5,13 +5,13 @@ describe WWTD::ActiveRecordDatabase do
   let(:db) {subject}
   let(:player_1) {db.create_player(username: 'zombiekilla', password: '123abc', description: 'a zombie killing machine')}
   let(:player_2) {db.create_player(username: 'zombieloser', password: 'test', description: 'a non-zombie killing machine')}
-  let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", type: 'update_item')}
-  let(:weapon_1) {db.create_item(name: 'sword', type: 'weapon', description: "a sharp pointy thing")}
+  let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'update_item')}
+  let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing")}
   let(:kitchen) {db.create_room(name: 'kitchen', description: 'a bright sunny room with food')}
   let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', north: kitchen.id, canW: false)}
   let(:quest_1) {db.create_quest(name: 'the holy grail')}
-  let(:zombie_1) {db.create_character(name: 'bloody clown zombie', type: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
-  let(:character_1) {db.create_character(name: 'Susie', description: "best friend", type: 'person', quest_id: quest_1.id, roomId: kitchen.id)}
+  let(:zombie_1) {db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
+  let(:character_1) {db.create_character(name: 'Susie', description: "best friend", classification: 'person', quest_id: quest_1.id, roomId: kitchen.id)}
   let(:quest_2) {db.create_quest(name: 'beat the zombie!')}
   let(:room_item1) {db.create_room_item(player_id: player_1.id, q_id: quest_1.id, r_id: kitchen.id, item_id: item_1.id)}
   let(:room_item2) {db.create_room_item(player_id: player_1.id, q_id: quest_1.id, r_id: bedroom.id, item_id: weapon_1.id)}
@@ -93,14 +93,14 @@ describe WWTD::ActiveRecordDatabase do
 
   # characters
   describe 'character' do
-    it 'creates a game character with a name, description, strength, questID, roomId, and type (either person (strength set to 0) or zombie)' do
+    it 'creates a game character with a name, description, strength, questID, roomId, and classification (either person (strength set to 0) or zombie)' do
       expect(character_1.id).to_not be_nil
       expect(character_1.name).to eq('Susie')
       expect(character_1.description).to eq('best friend')
-      expect(character_1.type).to eq('person')
+      expect(character_1.classification).to eq('person')
       expect(character_1.strength).to eq(0)
       expect(character_1.roomId).to eq(kitchen.id)
-      expect(zombie_1.type).to eq('zombie')
+      expect(zombie_1.classification).to eq('zombie')
       expect(zombie_1.strength).to eq(20)
       expect(zombie_1.quest_id).to eq(quest_1.id)
     end
@@ -192,12 +192,12 @@ describe WWTD::ActiveRecordDatabase do
 
   # items
   describe 'item' do
-    xit "creates a item with a name, description, and type (either item or weapon)" do
+    xit "creates a item with a name, description, and classification (either item or weapon)" do
       expect(item_1.id).to_not be_nil
-      expect(item_1.type).to eq('item')
+      expect(item_1.classification).to eq('item')
       expect(item_1.description).to eq('yummy red apple')
       expect(item_1.name).to eq('apple')
-      expect(weapon_1.type).to eq('weapon')
+      expect(weapon_1.classification).to eq('weapon')
     end
 
     xit 'retrieves a item' do

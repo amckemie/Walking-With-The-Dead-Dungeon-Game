@@ -6,7 +6,6 @@ module WWTD
     def initialize(head)
       @head = head
     end
-
   end
 
   # rooms are the individual nodes that make up a world. They do not have parents or children, but rather other nodes connected to them

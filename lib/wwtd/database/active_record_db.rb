@@ -69,7 +69,7 @@ module WWTD
     end
 
     class Room < ActiveRecord::Base
-      has_many :players
+      # has_many :players
       # may not need this: double check at end
       has_many :room_items, dependent: :destroy
       has_many :items, through: :room_items
@@ -80,7 +80,7 @@ module WWTD
       Character.delete_all
       # Player.delete_all
       Quest.delete_all
-      # Room.delete_all
+      Room.delete_all
       # Item.delete_all
       # RoomItem.delete_all
       # Inventory.delete_all
@@ -149,7 +149,7 @@ module WWTD
     end
 
     def build_room(room)
-      WWTD::RoomNode(id: room.id,
+      WWTD::RoomNode.new(id: room.id,
         name: room.name,
         description: room.description,
         north: room.north,

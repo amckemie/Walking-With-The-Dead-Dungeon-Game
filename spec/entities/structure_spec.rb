@@ -52,7 +52,7 @@ describe 'world structure' do
     it "has an items inventory that is an array which stores item nodes" do
       expect(@head.items).to be_an(Array)
 
-      jacket = WWTD::ItemNode.new(type: 'item', name: 'jacket')
+      jacket = WWTD::ItemNode.new(classification: 'item', name: 'jacket')
       @head.items << jacket
       expect(@head.items.size).to eq(1)
       expect(@head.items).to eq([jacket])
