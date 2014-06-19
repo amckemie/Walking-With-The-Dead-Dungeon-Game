@@ -10,13 +10,14 @@ module WWTD
       )
     end
 
-    # Move to other file?
+    # Move specific class methods to other files
     class Quest < ActiveRecord::Base
-      # has_many :quest_items, dependent: :destroy
+      has_many :quest_items, dependent: :destroy
       # has_many :quest_progresses, dependent: :destroy
       has_many :items, through: :quest_items
       # has_many :characters, through: :quest_characters
       has_many :players, through: :quest_progress
+      has_many :rooms, through: :quest_items
     end
 
     class Character < ActiveRecord::Base
@@ -36,16 +37,17 @@ module WWTD
 
     class Item < ActiveRecord::Base
       # has_many :inventories, dependent: :destroy
-      # has_many :quest_items, dependent: :destroy
+      has_many :quest_items, dependent: :destroy
       # has_many :room_items, dependent: :destroy
       has_many :players, through: :inventory
       has_many :quests, through: :quest_items
-      has_many :rooms, through: :room_items
+      has_many :rooms, through: :quest_items
     end
 
     class QuestItem < ActiveRecord::Base
       belongs_to :quest
       belongs_to :item
+      belongs_to :room
     end
 
     class QuestCharacter < ActiveRecord::Base
@@ -66,13 +68,16 @@ module WWTD
     class RoomItem < ActiveRecord::Base
       belongs_to :room
       belongs_to :item
+      # belongs_to :player
     end
 
     class Room < ActiveRecord::Base
       # has_many :players
       # may not need this: double check at end
       # has_many :room_items, dependent: :destroy
-      has_many :items, through: :room_items
+      has_many :quest_characters
+      has_many :quest_items
+      has_many :items, through: :quest_items
       has_many :characters, through: :quest_characters
     end
 
@@ -86,7 +91,7 @@ module WWTD
       # Inventory.delete_all
       # QuestProgress.delete_all
       # QuestCharacter.delete_all
-      # QuestItem.delete_all
+      QuestItem.delete_all
     end
 
     # Quest Methods
@@ -317,6 +322,47 @@ module WWTD
       ar_item = Item.find(item_id)
       ar_item.destroy
       return true if !Item.exists?(item_id)
+    end
+
+    # QuestItems methods (This table tracks all the items that are contained within a quest and the specific room it is in)
+    def create_quest_item(attrs)
+      QuestItem.create!(attrs)
+    end
+
+    def get_quests_for_item(item_id)
+      result = []
+      ar_item = Item.find(item_id)
+      quests = ar_item.quests.distinct
+      quests.each do |quest|
+        result << build_quest(quest)
+      end
+      result
+    end
+
+    def get_items_for_quest(quest_id)
+      result = []
+      ar_quest = Quest.find(quest_id)
+      items = ar_quest.items
+      items.each do |item|
+        result << build_item(item)
+      end
+      result
+    end
+
+    def get_items_for_room(room_id)
+      result = []
+      ar_room = Room.find(room_id)
+      items = ar_room.items
+      items.each do |item|
+        result << build_item(item)
+      end
+      result
+    end
+
+    def delete_quest_item(qi_id)
+      ar_quest_item = QuestItem.find(qi_id)
+      ar_quest_item.destroy
+      return true if !QuestItem.exists?(qi_id)
     end
   end
 end

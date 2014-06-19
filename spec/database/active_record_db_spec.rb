@@ -42,12 +42,6 @@ describe WWTD::ActiveRecordDatabase do
       expect(updated.name).to eq(test.name)
     end
 
-    # May Not Need - Don't Build Yet
-    # it 'can be retrieved by name' do
-    #   retrieved_quest = db.get_quest(quest_1.name)
-    #   expect(retrieved_quest.id).to eq(quest_1.id)
-    # end
-
     it 'can be deleted' do
       expect(db.delete_quest(quest_1.id)).to eq(true)
     end
@@ -55,39 +49,44 @@ describe WWTD::ActiveRecordDatabase do
 
   # rooms
   describe 'QuestItems' do
-    let(:quest_item_test) {db.create_quest_item(quest_1.id, item_1.id, kitchen.id)}
-    let(:quest_item_test2) {db.create_quest_item(quest_2.id, item_1.id, bedroom.id)}
-
-    xit 'creates a record of each item and quest association, in addition to the roomId' do
-      expect(quest_item_test.id).to_not be_nil
-      expect(quest_item_test.q_id).to eq(quest_1.id)
-      expect(quest_item_test.i_id).to eq(item_1.id)
-      expect(quest_item_test2.r_id).to eq(bedroom.id)
+    before(:each) do
+      @quest_item_test = db.create_quest_item(quest_id: quest_1.id, item_id: item_1.id, room_id: kitchen.id)
+      @quest_item_test2 = db.create_quest_item(quest_id: quest_2.id, item_id: item_1.id, room_id: bedroom.id)
+      @quest_item_test3 = db.create_quest_item(quest_id: quest_1.id, item_id: item_1.id, room_id: bedroom.id)
     end
 
-    xit 'gets all the quests of an item' do
+    it 'creates a record of each item and quest association, in addition to the room_id' do
+      expect(@quest_item_test.id).to_not be_nil
+      expect(@quest_item_test.quest_id).to eq(quest_1.id)
+      expect(@quest_item_test.item_id).to eq(item_1.id)
+      expect(@quest_item_test2.room_id).to eq(bedroom.id)
+    end
+
+    it 'gets all the quests for an item' do
       quests = db.get_quests_for_item(item_1.id)
       expect(quests.size).to eq(2)
-      expect(quests.include?(quest_1)).to eq(true)
-      expect(quests.include?(quest_2)).to eq(true)
+      expect(quests[0].class).to eq(WWTD::Quest)
+      expect(quests[1].class).to eq(WWTD::Quest)
+      quests2 = db.get_quests_for_item(item_1.id)
+      expect(quests2.size).to eq(2)
     end
 
-    xit "gets all the items in a quest" do
-      quests = db.get_items_for_quest(quest_2.id)
-      expect(quests.size).to eq(1)
-      expect(quests.include?(item_1)).to eq(true)
-    end
-
-    xit 'gets all the items in a room' do
-      items = db.get_items_for_room(bedroom.id)
+    it "gets all the items in a quest" do
+      items = db.get_items_for_quest(quest_2.id)
       expect(items.size).to eq(1)
-      expect(items.include?(item_1.id)).to eq(true)
+      expect(items[0].name).to eq(item_1.name)
     end
 
-    xit "deletes a record of a quest and an item" do
-      db.delete_quest_item(quest_item_test2.id)
+    it 'gets all the items in a room' do
+      items = db.get_items_for_room(bedroom.id)
+      expect(items.size).to eq(2)
+      expect(items[0].name).to eq(item_1.name)
+    end
+
+    it "deletes a record of a quest and an item" do
+      expect(db.delete_quest_item(@quest_item_test2.id)).to eq(true)
       quests = db.get_quests_for_item(item_1.id)
-      expect(quests.include?(quest_2)).to eq(false)
+      expect(quests.size).to eq(1)
     end
   end
 
@@ -244,7 +243,6 @@ describe WWTD::ActiveRecordDatabase do
     end
   end
 
-  # questItems join table
   describe 'room' do
     it 'creates a room with a name, description, id, and default values for all directions and all directions access' do
       expect(kitchen.id).to_not be_nil
