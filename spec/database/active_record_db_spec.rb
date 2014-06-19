@@ -104,41 +104,57 @@ describe WWTD::ActiveRecordDatabase do
       expect(zombie_1.quest_id).to eq(quest_1.id)
     end
 
-    xit 'retrieves a character' do
+    it 'retrieves a character' do
       retrieved_character = db.get_character(character_1.id)
       expect(retrieved_character.name).to eq('Susie')
     end
 
-    xit 'updates a character' do
+    it 'updates a character' do
       db.update_character(character_1.id, dead: true)
       updated = db.get_character(character_1.id)
       expect(updated.name).to eq('Susie')
       expect(updated.id).to eq(character_1.id)
-      expect(updated.infected).to eq(true)
+      expect(updated.dead).to eq(true)
 
       # check for multiple attributes updated
       db.update_character(character_1.id, dead: false, room_id: 7)
       updated2 = db.get_character(character_1.id)
       expect(updated2.name).to eq('Susie')
       expect(updated2.id).to eq(character_1.id)
-      expect(updated2.infected).to eq(false)
-      expect(updated2.roomId).to eq(7)
+      expect(updated2.dead).to eq(false)
+      expect(updated2.room_id).to eq(7)
     end
 
-    xit 'deletes a character' do
-      db.delete_character(character_1.id)
-      expect(db.get_character(character_1.id)).to eq(nil)
+    it 'deletes a character' do
+      expect(db.delete_character(character_1.id)).to eq(true)
     end
 
-    xit 'gets all the characters for a quest' do
-
+    it 'gets all the characters for a quest' do
+      zombie_1
+      character_1
+      chars = db.get_all_quest_characters(quest_1.id)
+      expect(chars.size).to eq(2)
+      chars2 = db.get_all_quest_characters(quest_2.id)
+      expect(chars2.size).to eq(0)
     end
 
-    xit 'gets all the characters for a room' do
-
+    it 'gets all the characters for a room' do
+      zombie_1
+      character_1
+      chars = db.get_all_room_characters(kitchen.id)
+      expect(chars.size).to eq(1)
+      expect(chars[0].name).to eq("Susie")
+      chars = db.get_all_room_characters(bedroom.id)
+      expect(chars.size).to eq(1)
+      expect(chars[0].name).to eq("bloody clown zombie")
     end
 
-    xit 'gets all the characters for a specific room in a quest' do
+    it 'gets all the characters for a specific room in a quest' do
+      zombie_1
+      character_1
+      chars = db.get_room_and_quest_characters(quest_1.id, kitchen.id)
+      expect(chars.size).to eq(1)
+      expect(chars[0].name).to eq(character_1.name)
     end
   end
 
