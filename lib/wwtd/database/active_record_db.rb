@@ -35,9 +35,9 @@ module WWTD
     end
 
     class Item < ActiveRecord::Base
-      has_many :inventories, dependent: :destroy
-      has_many :quest_items, dependent: :destroy
-      has_many :room_items, dependent: :destroy
+      # has_many :inventories, dependent: :destroy
+      # has_many :quest_items, dependent: :destroy
+      # has_many :room_items, dependent: :destroy
       has_many :players, through: :inventory
       has_many :quests, through: :quest_items
       has_many :rooms, through: :room_items
@@ -81,7 +81,7 @@ module WWTD
       Player.delete_all
       Quest.delete_all
       Room.delete_all
-      # Item.delete_all
+      Item.delete_all
       # RoomItem.delete_all
       # Inventory.delete_all
       # QuestProgress.delete_all
@@ -271,6 +271,15 @@ module WWTD
       build_player(ar_player)
     end
 
+    def get_all_players
+      result = []
+      players = Player.all
+      players.each do |player|
+        result << build_player(player)
+      end
+      result
+    end
+
     def update_player(player_id, data)
       ar_player = Player.find(player_id)
       ar_player.update(data)
@@ -281,6 +290,22 @@ module WWTD
       ar_player = Player.find(player_id)
       ar_player.destroy
       return true if !Player.exists?(player_id)
+    end
+
+    # Items Methods
+    def create_item(attrs)
+      ar_item = Item.create!(attrs)
+      build_item(ar_item)
+    end
+
+    def build_item(item)
+      WWTD::ItemNode.new(id: item.id,
+        classification: item.classification,
+        name: item.name,
+        description: item.description,
+        actions: item.actions,
+        parent_item: item.parent_item
+      )
     end
   end
 end

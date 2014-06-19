@@ -5,8 +5,8 @@ describe WWTD::ActiveRecordDatabase do
   let(:db) {subject}
   let(:player_1) {db.create_player(username: 'zombiekilla', password: 'eightletters', description: 'a zombie killing machine', room_id: 1)}
   let(:player_2) {db.create_player(username: 'zombieloser', password: 'areabitch', description: 'a non-zombie killing machine', room_id: 1)}
-  let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'update_item')}
-  let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing")}
+  let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'item', actions: 'take, eat')}
+  let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing", actions: 'take, stab, cut', parent_item: item_1.id)}
   let(:kitchen) {db.create_room(name: 'kitchen', description: 'a bright sunny room with food')}
   let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', north: kitchen.id, canW: false)}
   let(:quest_1) {db.create_quest(name: 'the holy grail')}
@@ -202,16 +202,26 @@ describe WWTD::ActiveRecordDatabase do
     it 'deletes a player' do
       expect(db.delete_player(player_1.id)).to eq(true)
     end
+
+    it 'gets all players' do
+      player_1
+      player_2
+      players = db.get_all_players
+      expect(players.size).to eq(2)
+    end
   end
 
   # items
   describe 'item' do
-    xit "creates a item with a name, description, and classification (either item or weapon)" do
+    it "creates a item with a name, description, performable actions, a parent item id (0 if no parent), and classification (either item or weapon)" do
       expect(item_1.id).to_not be_nil
       expect(item_1.classification).to eq('item')
       expect(item_1.description).to eq('yummy red apple')
       expect(item_1.name).to eq('apple')
+      expect(item_1.parent_item).to eq(0)
       expect(weapon_1.classification).to eq('weapon')
+      expect(weapon_1.actions).to eq('take, stab, cut')
+      expect(weapon_1.parent_item).to eq(item_1.id)
     end
 
     xit 'retrieves a item' do
