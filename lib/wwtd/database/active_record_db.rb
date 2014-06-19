@@ -71,7 +71,7 @@ module WWTD
     class Room < ActiveRecord::Base
       # has_many :players
       # may not need this: double check at end
-      has_many :room_items, dependent: :destroy
+      # has_many :room_items, dependent: :destroy
       has_many :items, through: :room_items
       has_many :characters, through: :quest_characters
     end
@@ -220,5 +220,21 @@ module WWTD
       )
     end
 
+    def get_room(room_id)
+      ar_room = Room.find(room_id)
+      build_room(ar_room)
+    end
+
+    def update_room(room_id, data)
+      ar_room = Room.find(room_id)
+      ar_room.update(data)
+      build_room(ar_room)
+    end
+
+    def delete_room(q_id)
+      ar_room = Room.find(q_id)
+      ar_room.destroy
+      return true if !Room.exists?(q_id)
+    end
   end
 end

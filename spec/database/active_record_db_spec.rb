@@ -255,7 +255,7 @@ describe WWTD::ActiveRecordDatabase do
       expect(bedroom.canW).to eq(false)
     end
 
-    xit 'retrieves a room' do
+    it 'retrieves a room' do
       retrieved_room = db.get_room(kitchen.id)
       expect(retrieved_room).to be_a(WWTD::RoomNode)
       expect(retrieved_room.id).to_not be_nil
@@ -263,19 +263,18 @@ describe WWTD::ActiveRecordDatabase do
       expect(retrieved_room.name).to eq('kitchen')
     end
 
-    xit 'updates a room' do
+    it 'updates a room' do
       db.update_room(kitchen.id, description: "a suddenly dark and gloomy place", south: bedroom.id, canN: false)
       updated = db.get_room(kitchen.id)
       expect(updated.id).to eq(kitchen.id)
       expect(updated.description).to eq("a suddenly dark and gloomy place")
       expect(updated.south).to eq(bedroom.id)
-      expect(updated.canN).to eq(true)
+      expect(updated.canN).to eq(false)
       expect(updated.name).to eq('kitchen')
     end
 
-    xit 'deletes a room' do
-      db.delete_room(kitchen.id)
-      expect(db.get_room(kitchen.id)).to eq(nil)
+    it 'deletes a room' do
+      expect(db.delete_room(kitchen.id)).to eq(true)
     end
   end
 
