@@ -224,13 +224,13 @@ describe WWTD::ActiveRecordDatabase do
       expect(weapon_1.parent_item).to eq(item_1.id)
     end
 
-    xit 'retrieves a item' do
+    it 'retrieves a item' do
       retrieved_item = db.get_item(item_1.id)
       expect(retrieved_item.id).to eq(item_1.id)
       expect(retrieved_item.name).to eq('apple')
     end
 
-    xit 'updates a item' do
+    it 'updates a item' do
       db.update_item(item_1.id, description: "gross wormy apple", actions: 'throw')
       updated = db.get_item(item_1.id)
       expect(updated.name).to eq('apple')
@@ -239,9 +239,8 @@ describe WWTD::ActiveRecordDatabase do
       expect(updated.actions).to eq('throw')
     end
 
-    xit 'deletes a item' do
-      db.delete_item(item_1.id)
-      expect(db.get_item(item_1.id)).to eq(nil)
+    it 'deletes a item' do
+      expect(db.delete_item(item_1.id)).to eq(true)
     end
   end
 

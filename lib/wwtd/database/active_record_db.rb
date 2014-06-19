@@ -259,12 +259,6 @@ module WWTD
       build_player(ar_player)
     end
 
-    def get_player(player_id)
-      ar_player = Player.find(player_id)
-      # binding.pry
-      build_player(ar_player)
-    end
-
     def get_player_by_username(player_un)
       ar_player = Player.find_by(username: player_un)
       # binding.pry
@@ -306,6 +300,23 @@ module WWTD
         actions: item.actions,
         parent_item: item.parent_item
       )
+    end
+
+    def get_item(item_id)
+      ar_item = Item.find(item_id)
+      build_item(ar_item)
+    end
+
+    def update_item(item_id, data)
+      ar_item = Item.find(item_id)
+      ar_item.update(data)
+      build_item(ar_item)
+    end
+
+    def delete_item(item_id)
+      ar_item = Item.find(item_id)
+      ar_item.destroy
+      return true if !Item.exists?(item_id)
     end
   end
 end
