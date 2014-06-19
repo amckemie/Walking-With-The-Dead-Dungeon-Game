@@ -1,6 +1,6 @@
 module WWTD
   class PlayerNode
-    attr_reader :username, :password, :id, :description, :inventory, :dead
+    attr_reader :username, :password, :id, :description, :inventory, :dead, :room_id
     attr_accessor :strength
 
     def initialize(input)
@@ -10,6 +10,7 @@ module WWTD
       @description = input[:description]
       @strength = input[:strength]
       @inventory = []
+      @room_id = input[:room_id]
       @dead = false
     end
 

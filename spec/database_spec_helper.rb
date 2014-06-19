@@ -12,6 +12,6 @@ describe 'WWTD database singleton' do
   end
 
   it "resets for every test" do
-    # expect(WWTD.db..count).to eq 0
+    # expect(WWTD.db.get_all_players.count).to eq 0
   end
 end

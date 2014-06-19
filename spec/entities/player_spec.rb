@@ -1,7 +1,7 @@
 require 'spec_helper.rb'
 
 describe WWTD::PlayerNode do
-  let(:player) {WWTD::PlayerNode.new(id: 1, username: 'ashley', password: 'abc123', strength: 100, description: 'badass zombie killer')}
+  let(:player) {WWTD::PlayerNode.new(id: 1, username: 'ashley', password: 'abc123', strength: 100, description: 'badass zombie killer', room_id: 1)}
   let(:apple) {WWTD::ItemNode.new(id: 2, type: 'item', name: 'apple', actions: ['eat'])}
   let(:apple2) {WWTD::ItemNode.new(id: 3, type: 'item', name: 'apple', actions: ['eat'])}
 
@@ -36,6 +36,10 @@ describe WWTD::PlayerNode do
 
     it 'has an dead status set to false as default' do
       expect(player.dead).to eq(false)
+    end
+
+    it 'has a room id attribute' do
+      expect(player.room_id).to eq(1)
     end
   end
 

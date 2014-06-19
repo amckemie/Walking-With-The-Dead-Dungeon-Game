@@ -3,8 +3,8 @@ require 'spec_helper'
 describe WWTD::ActiveRecordDatabase do
   before { db.clear_tables }
   let(:db) {subject}
-  let(:player_1) {db.create_player(username: 'zombiekilla', password: '123abc', description: 'a zombie killing machine')}
-  let(:player_2) {db.create_player(username: 'zombieloser', password: 'test', description: 'a non-zombie killing machine')}
+  let(:player_1) {db.create_player(username: 'zombiekilla', password: 'eightletters', description: 'a zombie killing machine', room_id: 1)}
+  let(:player_2) {db.create_player(username: 'zombieloser', password: 'areabitch', description: 'a non-zombie killing machine', room_id: 1)}
   let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'update_item')}
   let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing")}
   let(:kitchen) {db.create_room(name: 'kitchen', description: 'a bright sunny room with food')}
@@ -160,48 +160,47 @@ describe WWTD::ActiveRecordDatabase do
 
   # players
   describe 'player' do
-    xit 'creates a player with username, password, description, and default values of strength 100 and dead false' do
+    it 'creates a player with username, password, description, and default values of strength 100 and dead false' do
       expect(player_1).to be_a WWTD::PlayerNode
       expect(player_1.id).to_not be_nil
-      expect(player_1.username).to eq('zombiakilla')
-      expect(player_1.has_password? '123abc').to eq(true)
+      expect(player_1.username).to eq('zombiekilla')
+      expect(player_1.password).to eq('eightletters')
       expect(player_1.description).to eq('a zombie killing machine')
       expect(player_1.strength).to eq(100)
       expect(player_1.dead).to eq(false)
     end
 
-    xit 'retrieves a player' do
+    it 'retrieves a player' do
       retrieved_player = db.get_player(player_1.id)
       expect(retrieved_player.username).to eq('zombiekilla')
-      expect(retrieved_player.password).to eq('123abc')
+      expect(retrieved_player.password).to eq('eightletters')
     end
 
-    xit "retrieves a player by their username" do
+    it "retrieves a player by their username" do
       retrieved_player = db.get_player_by_username(player_1.username)
       expect(retrieved_player.username).to eq('zombiekilla')
-      expect(retrieved_player.password).to eq('123abc')
+      expect(retrieved_player.password).to eq('eightletters')
     end
 
-    xit 'updates a player' do
+    it 'updates a player' do
       db.update_player(player_1.id, strength: 50)
       updated_player = db.get_player(player_1.id)
-      expect(updated_player.username).to eq('zombiakilla')
-      expect(updated_player.password).to eq('123abc')
+      expect(updated_player.username).to eq('zombiekilla')
+      expect(updated_player.password).to eq('eightletters')
       expect(updated_player.description).to eq('a zombie killing machine')
       expect(updated_player.strength).to eq(50)
-      expect(updated_player.roomId).to eq(1)
+      expect(updated_player.dead).to eq(false)
 
       # Checking that it updates multiple attributes at once
-      db.update_player(strength: 75, roomId: 2)
+      db.update_player(player_1.id, strength: 75, room_id: 2)
       update2 = db.get_player(player_1.id)
-      expect(update2.username).to eq('zombiakilla')
+      expect(update2.username).to eq('zombiekilla')
       expect(update2.strength).to eq(75)
-      expect(update2.roomId).to eq(2)
+      expect(update2.room_id).to eq(2)
     end
 
-    xit 'deletes a player' do
-      db.delete_player(player_1.id)
-      expect(db.get_player(player_1.id)).to eq(nil)
+    it 'deletes a player' do
+      expect(db.delete_player(player_1.id)).to eq(true)
     end
   end
 

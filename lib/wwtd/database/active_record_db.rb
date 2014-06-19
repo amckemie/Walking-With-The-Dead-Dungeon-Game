@@ -28,8 +28,8 @@ module WWTD
       validates :username, uniqueness: true
       validates :password, length: {minimum: 8}
       validates :username, :password, presence: true
-      has_many :quest_progresses, dependent: :destroy
-      has_many :inventories, dependent: :destroy
+      # has_many :quest_progresses, dependent: :destroy
+      # has_many :inventories, dependent: :destroy
       has_many :quests, through: :quest_progress
       has_many :items, through: :inventory
     end
@@ -78,7 +78,7 @@ module WWTD
 
     def clear_tables
       Character.delete_all
-      # Player.delete_all
+      Player.delete_all
       Quest.delete_all
       Room.delete_all
       # Item.delete_all
@@ -235,6 +235,52 @@ module WWTD
       ar_room = Room.find(q_id)
       ar_room.destroy
       return true if !Room.exists?(q_id)
+    end
+
+    # Player methods
+    def create_player(attrs)
+      ar_player = Player.create!(attrs)
+      build_player(ar_player)
+    end
+
+    def build_player(player)
+      WWTD::PlayerNode.new(id: player.id,
+        username: player.username,
+        password: player.password,
+        description: player.description,
+        strength: player.strength,
+        dead: player.dead,
+        room_id: player.room_id
+      )
+    end
+
+    def get_player(player_id)
+      ar_player = Player.find(player_id)
+      build_player(ar_player)
+    end
+
+    def get_player(player_id)
+      ar_player = Player.find(player_id)
+      # binding.pry
+      build_player(ar_player)
+    end
+
+    def get_player_by_username(player_un)
+      ar_player = Player.find_by(username: player_un)
+      # binding.pry
+      build_player(ar_player)
+    end
+
+    def update_player(player_id, data)
+      ar_player = Player.find(player_id)
+      ar_player.update(data)
+      build_player(ar_player)
+    end
+
+    def delete_player(player_id)
+      ar_player = Player.find(player_id)
+      ar_player.destroy
+      return true if !Player.exists?(player_id)
     end
   end
 end
