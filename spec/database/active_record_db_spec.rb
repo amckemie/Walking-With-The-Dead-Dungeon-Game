@@ -330,18 +330,19 @@ describe WWTD::ActiveRecordDatabase do
     before(:each) do
       room_item1
       room_item2
-      @inventory_item = db.create_inventory(player_id: player_1.id, quest_id: quest_1.id, item_id: weapon_1.id)
-      @inventory_item2 = db.create_inventory(player_id: player_1.id, quest_id: quest_2.id, item_id: weapon_1.id)
+      @inventory_item = db.create_inventory(room_item1)
+      @inventory_item2 = db.create_inventory(room_item2)
     end
 
     describe 'createNewInventoryItem' do
       it 'successfully creates a record of a userId and itemId/adds an item to a persons inventory' do
         expect(@inventory_item.id).to_not be_nil
         expect(@inventory_item.player_id).to eq(player_1.id)
+        expect(db.get_player_inventory(player_1.id).size).to eq(2)
       end
 
       it 'deletes that item from the room_items table for that player' do
-        expect(db.get_player_room_items(player_1.id, kitchen.id).size).to eq(1)
+        expect(db.get_player_room_items(player_1.id, kitchen.id).size).to eq(0)
       end
     end
 
@@ -390,17 +391,17 @@ describe WWTD::ActiveRecordDatabase do
       expect(items_left[0].class).to eq(WWTD::ItemNode)
     end
 
-    xit 'gets all the items left in a quest for a player' do
-      items_left = db.get_player_quest_items(player_1.id, quest_1.id)
-      expect(items_left.size).to eq(2)
-      expect(items_left.include?(item_1)).to eq(true)
-      expect(items_left.include?(weapon_1)).to eq(true)
+    it 'gets all the items left in a quest for a player' do
+      items_left = db.get_quest_items_left(player_1.id, quest_1.id)
+      expect(items_left.size).to eq(1)
+      expect(items_left[0].class).to eq(WWTD::ItemNode)
     end
 
-    xit 'gets all items left for a player in quests started/completed' do
-      items_left = db.get_player_items(player_1.id)
-      expect(items_left.size).to eq(2)
-    end
+    # Don't build until sure you need this
+    # xit 'gets all items left for a player in quests started/completed' do
+    #   items_left = db.get_player_items(player_1.id)
+    #   expect(items_left.size).to eq(2)
+    # end
 
     it 'removes a record of an item in a room for a specific player' do
       room_item1

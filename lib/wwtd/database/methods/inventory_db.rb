@@ -1,20 +1,23 @@
 module WWTD
   class ActiveRecordDatabase
     # may be able to refactor by grabbing room_item ar object
-    def create_inventory(attrs)
-      room_id = get_item(attrs[:item_id]).room_id
-      delete_player_room_item(attrs[:player_id], room_id, attrs[:item_id])
-      Inventory.create!(attrs)
+    def create_inventory(room_item)
+      delete_player_room_item(room_item.player_id, room_item.room_id, room_item.item_id)
+      Inventory.create!(player_id: room_item.player_id, item_id: room_item.item_id, quest_id: room_item.quest_id)
     end
 
-    def get_player_inventory(player_id)
+    def build_inventory(inventory_arr)
       result = []
-      ar_player = Player.find(player_id)
-      inventory_items = ar_player.items
-      inventory_items.each do |item|
+      inventory_arr.each do |item|
         result << build_item(item)
       end
       result
+    end
+
+    def get_player_inventory(player_id)
+      ar_player = Player.find(player_id)
+      inventory_items = ar_player.items
+      build_inventory(inventory_items)
     end
 
     def delete_inventory_item(player_id, item_id)
