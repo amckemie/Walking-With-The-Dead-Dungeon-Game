@@ -13,8 +13,8 @@ describe WWTD::ActiveRecordDatabase do
   let(:zombie_1) {db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
   let(:character_1) {db.create_character(name: 'Susie', description: "best friend", classification: 'person', quest_id: quest_1.id, room_id: kitchen.id)}
   let(:quest_2) {db.create_quest(name: 'beat the zombie!')}
-  let(:room_item1) {db.create_room_item(player_id: player_1.id, q_id: quest_1.id, r_id: kitchen.id, item_id: item_1.id)}
-  let(:room_item2) {db.create_room_item(player_id: player_1.id, q_id: quest_1.id, r_id: bedroom.id, item_id: weapon_1.id)}
+  let(:room_item1) {db.create_room_item(player_id: player_1.id, quest_id: quest_1.id, r_id: kitchen.id, item_id: item_1.id)}
+  let(:room_item2) {db.create_room_item(player_id: player_1.id, quest_id: quest_1.id, r_id: bedroom.id, item_id: weapon_1.id)}
 
   # quests
   describe 'Quest' do
@@ -286,42 +286,40 @@ describe WWTD::ActiveRecordDatabase do
 
   # questCharacters join table (state table for players)
   describe 'questCharacters' do
-    let(:quest_character1) {db.create_quest_character(player_id: player_1.id, char_id: character_1.id, q_id: quest_1.id, r_id: kitchen.id)}
-    let(:quest_character2) {db.create_quest_character(player_id: player_2.id, char_id: character_1.id, q_id: quest_1.id, r_id: kitchen.id)}
-    let(:quest_character3) {db.create_quest_character(player_id: player_1.id, char_id: zombie_1.id, q_id: quest_1.id, r_id: bedroom.id)}
-
-    xit 'creates a record that stores a character id, questId, roomId, and playerId (acts as a game state saver)' do
-      expect(quest_character1.id).to_not be_nil
-      expect(quest_character1.player_id).to eq(player_1.id)
-      expect(quest_character2.q_id).to eq(quest_1.id)
-      expect(quest_character3.char_id).to eq(zombie_1.id)
-      expect(quest_character3.r_id).to eq(bedroom.id)
+    before(:each) do
+      @quest_character1 = db.create_quest_character(player_id: player_1.id, character_id: character_1.id, quest_id: quest_1.id, room_id: kitchen.id)
+      @quest_character2 = db.create_quest_character(player_id: player_2.id, character_id: character_1.id, quest_id: quest_1.id, room_id: kitchen.id)
+      @quest_character3 = db.create_quest_character(player_id: player_1.id, character_id: zombie_1.id, quest_id: quest_1.id, room_id: bedroom.id)
     end
 
-    xit 'returns an array of all the characters for a player and quest' do
-      chars = db.get_quest_characters(player_1.id, quest_1.id,)
-      chars2 = db.get_characters_for_quest(player_2.id, quest_1.id,)
+    it 'creates a record that stores a character id, quest_id, room _id, and player id (acts as a game state saver)' do
+      expect(@quest_character1.id).to_not be_nil
+      expect(@quest_character1.player_id).to eq(player_1.id)
+      expect(@quest_character2.quest_id).to eq(quest_1.id)
+      expect(@quest_character3.character_id).to eq(zombie_1.id)
+      expect(@quest_character3.room_id).to eq(bedroom.id)
+    end
+
+    it 'returns an array of all the characters for a player and quest' do
+      chars = db.get_players_quest_characters(player_1.id, quest_1.id)
+      chars2 = db.get_players_quest_characters(player_2.id, quest_1.id)
       expect(chars.size).to eq(2)
       expect(chars2.size).to eq(1)
-      expect(chars.include?(character_1)).to eq(true)
-      expect(chars.include?(zombie_1)).to eq(true)
-      expect(chars2.include?(character_1)).to eq(true)
-      expect(chars2.include?(zombie_1)).to eq(false)
+      p chars
+      expect(chars2[0].class).to eq(WWTD::CharacterNode)
     end
 
+    # may not need
     # xit 'returns all the characters for a room' do
     # end
 
-    xit 'deletes a record of a quest and character for a player' do
-      db.delete_quest_character(player_1.id, quest_1.id, character_1.id)
-      chars = db.get_quest_characters(player_1.id, quest_1.id)
-      expect(chars.include?(character_1)).to eq(false)
-      expect(chars.include?(zombie_1)).to eq(true)
+    it 'deletes a record of a quest and character for a player' do
+      expect(db.delete_quest_character(player_1.id, character_1.id)).to eq(true)
     end
 
-    xit 'deletes all records for a player' do
+    it 'deletes all records for a player' do
       db.delete_all_quest_characters(player_1.id, quest_1.id)
-      expect(db.get_quest_characters(player_1.id, quest_1.id).size).to eq(0)
+      expect(db.get_players_quest_characters(player_1.id, quest_1.id).size).to eq(0)
     end
   end
 

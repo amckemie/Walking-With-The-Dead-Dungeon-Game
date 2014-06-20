@@ -17,6 +17,7 @@ require_relative './database/methods/room_db.rb'
 require_relative './database/methods/item_db.rb'
 require_relative './database/methods/player_db.rb'
 require_relative './database/methods/quest_item_db.rb'
+require_relative './database/methods/quest_characters_db.rb'
 
 # require_relative './commands/fight.rb'
 # require_relative './commands/sign_in.rb'

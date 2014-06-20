@@ -35,6 +35,7 @@ module WWTD
       result
     end
 
+    # may need to change this to quest and item id
     def delete_quest_item(qi_id)
       ar_quest_item = QuestItem.find(qi_id)
       ar_quest_item.destroy
