@@ -39,7 +39,7 @@ describe 'world structure' do
     end
 
     it 'has a quest id' do
-      expect(@north.questId).to eq(10)
+      expect(@north.quest_id).to eq(10)
     end
 
     it "has a north, east, south, and west direction that points to other nodes or nil" do

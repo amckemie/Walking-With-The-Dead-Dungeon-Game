@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.1.0'
 
 gem 'pg'
-gem 'activerecord', '~> 4.1.0'
+gem 'activerecord', '~> 4.1.1'
 gem 'active_record_tasks', '~> 1.1.0'
 gem 'bcrypt', '~> 3.1.7'
 

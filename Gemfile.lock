@@ -62,7 +62,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_record_tasks (~> 1.1.0)
-  activerecord (~> 4.1.0)
+  activerecord (~> 4.1.1)
   bcrypt (~> 3.1.7)
   pg
   pry-debugger (~> 0.2.2)

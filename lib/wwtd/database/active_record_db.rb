@@ -33,9 +33,6 @@ module WWTD
     end
 
     class Player < ActiveRecord::Base
-      validates :username, uniqueness: true
-      validates :password, length: {minimum: 8}
-      validates :username, :password, presence: true
       has_many :quest_progress, dependent: :destroy
       has_many :inventory, dependent: :destroy
       has_many :quests, through: :quest_progress

@@ -444,38 +444,51 @@ describe WWTD::ActiveRecordDatabase do
 
     it 'can retrieve a particular users progress through a certain quest' do
       quest_1_progress = db.get_quest_progress(player_1.id, quest_1.id)
-      expect(quest_1_progress.quest_id).to eq(quest_1_id)
+      expect(quest_1_progress.quest_id).to eq(quest_1.id)
       expect(quest_1_progress.player_id).to eq(player_1.id)
       expect(quest_1_progress.complete). to eq(false)
       expect(quest_1_progress.data).to be_a(Hash)
-      expect(quest_1_progress.data[answer_phone]).to eq(false)
-      expect(quest_1_progress.data[enter_lr]).to eq(false)
+      expect(quest_1_progress.data["answer_phone"]).to eq(false)
+      expect(quest_1_progress.data["enter_lr"]).to eq(false)
     end
 
-    xit 'returns all records for a player' do
+    it 'returns all records for a player' do
       quests = db.get_player_quests(player_1.id)
       expect(quests.size).to eq(2)
     end
 
-    xit 'returns the latest quest for a player' do
+    it 'returns the latest quest for a player' do
       latest_quest = db.get_latest_quest(player_1.id)
-      expect(latest_quest.id).to eq(quest_2.id)
+      expect(latest_quest.quest_id).to eq(quest_2.id)
     end
 
-    xit 'deletes a record' do
+    it 'deletes a record' do
       db.delete_quest_progress(player_1.id, quest_1.id)
-      expect(db.get_quest_progress(player_1.id, quest_1.id)).to eq(nil)
+      expect(db.get_player_quests(player_1.id).size).to eq(1)
     end
 
-    xit 'deletes all records for a user' do
-      db.delete_player_quests(player_1.id)
-      expect(db.get_player_quests(player_1.id)).to eq([])
-    end
+    # only need if allow player to start new games
+    # it 'deletes all records for a user' do
+    #   db.delete_player_quests(player_1.id)
+    #   expect(db.get_player_quests(player_1.id)).to eq([])
+    # end
 
-    xit 'can be updated' do
+    it 'can be updated' do
       db.update_quest_progress(player_1.id, quest_1.id, complete: true)
       updated = db.get_quest_progress(player_1.id, quest_1.id)
       expect(updated.complete).to eq(true)
+    end
+
+    it 'can update and add new data' do
+      # update
+      db.change_data(player_1.id, quest_1.id, answer_phone: true)
+      updated = db.get_quest_progress(player_1.id, quest_1.id)
+      expect(updated.data["answer_phone"]).to eq(true)
+
+      # add
+      db.change_data(player_1.id, quest_2.id, save_friend: false)
+      updated2 = db.get_quest_progress(player_1.id, quest_2.id)
+      expect(updated2.data.keys).to eq(["kill_zombie", "save_friend"])
     end
   end
 end

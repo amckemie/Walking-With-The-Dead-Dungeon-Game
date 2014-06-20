@@ -23,9 +23,11 @@ require_relative './database/methods/inventory_db.rb'
 require_relative './database/methods/room_item_db.rb'
 require_relative './database/methods/quest_progress_db.rb'
 
+# require_relative './commands/use_case_validations.rb'
+
 # require_relative './commands/fight.rb'
 # require_relative './commands/sign_in.rb'
-# require_relative './commands/sign_up.rb'
+require_relative './commands/sign_up.rb'
 # require_relative './commands/unlock_door.rb'
 
 
