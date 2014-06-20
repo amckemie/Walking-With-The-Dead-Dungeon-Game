@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620065151) do
+ActiveRecord::Schema.define(version: 20140620074450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20140620065151) do
     t.integer "quest_id",  null: false
   end
 
+  add_index "inventory", ["player_id", "item_id"], name: "index_inventory_on_player_id_and_item_id", using: :btree
   add_index "inventory", ["player_id", "quest_id"], name: "index_inventory_on_player_id_and_quest_id", using: :btree
 
   create_table "items", force: true do |t|

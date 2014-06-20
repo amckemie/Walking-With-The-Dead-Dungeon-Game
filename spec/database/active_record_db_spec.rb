@@ -6,15 +6,15 @@ describe WWTD::ActiveRecordDatabase do
   let(:player_1) {db.create_player(username: 'zombiekilla', password: 'eightletters', description: 'a zombie killing machine', room_id: 1)}
   let(:player_2) {db.create_player(username: 'zombieloser', password: 'areabitch', description: 'a non-zombie killing machine', room_id: 1)}
   let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'item', actions: 'take, eat', room_id: 1)}
-  let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing", actions: 'take, stab, cut', parent_item: item_1.id, room_id: 10)}
   let(:kitchen) {db.create_room(name: 'kitchen', description: 'a bright sunny room with food')}
+  let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing", actions: 'take, stab, cut', parent_item: item_1.id, room_id: kitchen.id)}
   let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', north: kitchen.id, canW: false)}
   let(:quest_1) {db.create_quest(name: 'the holy grail')}
   let(:zombie_1) {db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
   let(:character_1) {db.create_character(name: 'Susie', description: "best friend", classification: 'person', quest_id: quest_1.id, room_id: kitchen.id)}
   let(:quest_2) {db.create_quest(name: 'beat the zombie!')}
   let(:room_item1) {db.create_room_item(player_id: player_1.id, quest_id: quest_1.id, room_id: kitchen.id, item_id: item_1.id)}
-  let(:room_item2) {db.create_room_item(player_id: player_1.id, quest_id: quest_1.id, room_id: kitchen.id, item_id: weapon_1.id, parent_item_id: item_1.id)}
+  let(:room_item2) {db.create_room_item(player_id: player_1.id, quest_id: quest_2.id, room_id: kitchen.id, item_id: weapon_1.id, parent_item_id: item_1.id)}
 
   # quests
   describe 'Quest' do
@@ -327,13 +327,14 @@ describe WWTD::ActiveRecordDatabase do
 
   # inventory join table
   describe 'inventory' do
-    describe 'createNewInventoryItem' do
-      before(:each) do
-        room_item1
-        room_item2
-        @inventory_item = db.create_inventory(player_id: player_1.id, quest_id: quest_1.id, item_id: weapon_1.id)
-      end
+    before(:each) do
+      room_item1
+      room_item2
+      @inventory_item = db.create_inventory(player_id: player_1.id, quest_id: quest_1.id, item_id: weapon_1.id)
+      @inventory_item2 = db.create_inventory(player_id: player_1.id, quest_id: quest_2.id, item_id: weapon_1.id)
+    end
 
+    describe 'createNewInventoryItem' do
       it 'successfully creates a record of a userId and itemId/adds an item to a persons inventory' do
         expect(@inventory_item.id).to_not be_nil
         expect(@inventory_item.player_id).to eq(player_1.id)
@@ -344,25 +345,32 @@ describe WWTD::ActiveRecordDatabase do
       end
     end
 
-    xit 'gets all the items in a persons inventory' do
+    it 'gets all the items in a persons inventory' do
       inventory = db.get_player_inventory(player_1.id)
-      expect(inventory.size).to eq(1)
+      expect(inventory.size).to eq(2)
       expect(inventory[0].class).to eq(WWTD::ItemNode)
     end
 
-    xit 'removes a record from a persons inventory' do
+    it 'removes a record from a persons inventory' do
       db.delete_inventory_item(player_1.id, weapon_1.id)
       inventory = db.get_player_inventory(player_1.id)
-      expect(inventory.size).to eq(0)
+      expect(inventory.size).to eq(1)
     end
 
-
-    xit 'deletes all records for a player' do
-      db.create_inventory(player_1.id, quest_1.id, kitchen.id, item_1.id)
-      db.delete_all_inventory(player_1.id)
+    it 'deletes all items gathered from one quest' do
+      db.delete_inventory_from_quest(player_1.id, quest_1.id)
       inventory = db.get_player_inventory(player_1.id)
-      expect(inventory.size).to eq(0)
+      expect(inventory.size).to eq(1)
+      expect(inventory[0].id).to eq(weapon_1.id)
     end
+
+    # Will only need this if decide to completely start players over or allow them to start new games
+    # it 'deletes all records for a player' do
+    #   db.create_inventory(player_1.id, quest_1.id, kitchen.id, item_1.id)
+    #   db.delete_all_inventory(player_1.id)
+    #   inventory = db.get_player_inventory(player_1.id)
+    #   expect(inventory.size).to eq(0)
+    # end
   end
 
   # roomItems join table
