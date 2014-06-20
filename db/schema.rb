@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140619221745) do
+ActiveRecord::Schema.define(version: 20140619224658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(version: 20140619221745) do
 
   add_index "characters", ["quest_id"], name: "index_characters_on_quest_id", using: :btree
   add_index "characters", ["room_id"], name: "index_characters_on_room_id", using: :btree
+
+  create_table "inventory", force: true do |t|
+    t.integer "player_id", null: false
+    t.integer "item_id",   null: false
+    t.integer "quest_id",  null: false
+  end
+
+  add_index "inventory", ["player_id", "quest_id"], name: "index_inventory_on_player_id_and_quest_id", using: :btree
 
   create_table "items", force: true do |t|
     t.string  "name",                       null: false
@@ -72,6 +80,17 @@ ActiveRecord::Schema.define(version: 20140619221745) do
   create_table "quests", force: true do |t|
     t.string "name", null: false
   end
+
+  create_table "room_items", force: true do |t|
+    t.integer "quest_id",       null: false
+    t.integer "room_id",        null: false
+    t.integer "player_id",      null: false
+    t.integer "item_id",        null: false
+    t.integer "parent_item_id"
+  end
+
+  add_index "room_items", ["player_id", "quest_id"], name: "index_room_items_on_player_id_and_quest_id", using: :btree
+  add_index "room_items", ["player_id", "room_id", "item_id"], name: "index_room_items_on_player_id_and_room_id_and_item_id", using: :btree
 
   create_table "rooms", force: true do |t|
     t.string  "name",                       null: false

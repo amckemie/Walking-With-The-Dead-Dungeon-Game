@@ -3,8 +3,8 @@ require 'spec_helper.rb'
 
   describe 'ItemNode' do
     let(:ashley) {WWTD::PlayerNode.new(id: 1, name: 'Ashley', strength: 100)}
-    let(:jacket) {WWTD::ItemNode.new(id: 1, name: 'jacket', classification: 'item', description: 'a warm wooly coat', actions: ['wear', 'put on'], location_type: ashley.class, location_id: ashley.id)}
-    let(:sword)  {WWTD::ItemNode.new(id: 1, name: 'sword', classification: 'weapon', actions: ['cut', 'stab'], location_type: ashley.class, location_id: ashley.id, parent_item: jacket.id)}
+    let(:jacket) {WWTD::ItemNode.new(id: 1, name: 'jacket', classification: 'item', description: 'a warm wooly coat', actions: ['wear', 'put on'], room_id: 1)}
+    let(:sword)  {WWTD::ItemNode.new(id: 1, name: 'sword', classification: 'weapon', actions: ['cut', 'stab'], parent_item: jacket.id)}
 
     it "is an ItemNode" do
       expect(jacket.class).to eq(WWTD::ItemNode)
@@ -27,10 +27,10 @@ require 'spec_helper.rb'
       expect(jacket.actions).to eq(['wear', 'put on'])
     end
 
-    # it "knows what PersonNode or RoomNode it belongs to" do
-    #   expect(jacket.location_type).to eq(WWTD::PlayerNode)
-    #   expect(jacket.location_id).to eq(1)
-    # end
+    it 'has a room_id that is set to the room it is in or nil if it is in a persons possession or gone from the game' do
+      expect(jacket.room_id).to_not be_nil
+      expect(sword.room_id).to be_nil
+    end
 
     it 'has a parent_item id set to 0 if no parent and the id of another item if it has a parent' do
       expect(jacket.parent_item).to eq(0)

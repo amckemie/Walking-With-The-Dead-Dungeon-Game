@@ -2,6 +2,10 @@ require 'active_record'
 require 'pry'
 
 module WWTD
+  ActiveSupport::Inflector.inflections(:en) do |inflect|
+    inflect.uncountable 'inventory'
+  end
+
   class ActiveRecordDatabase
     def initialize
       ActiveRecord::Base.establish_connection(
@@ -32,15 +36,16 @@ module WWTD
       validates :password, length: {minimum: 8}
       validates :username, :password, presence: true
       # has_many :quest_progresses, dependent: :destroy
-      # has_many :inventories, dependent: :destroy
+      has_many :inventory, dependent: :destroy
       has_many :quests, through: :quest_progress
       has_many :items, through: :inventory
     end
 
     class Item < ActiveRecord::Base
-      # has_many :inventories, dependent: :destroy
+      has_many :inventory, dependent: :destroy
       has_many :quest_items, dependent: :destroy
-      # has_many :room_items, dependent: :destroy
+      # may need to get rid
+      has_many :room_items, dependent: :destroy
       has_many :players, through: :inventory
       has_many :quests, through: :quest_items
       has_many :rooms, through: :quest_items
@@ -71,7 +76,7 @@ module WWTD
     class Room < ActiveRecord::Base
       # has_many :players
       # may not need this: double check at end
-      # has_many :room_items, dependent: :destroy
+      has_many :room_items, dependent: :destroy
       has_many :quest_characters
       has_many :quest_items
       has_many :items, through: :quest_items
@@ -89,12 +94,11 @@ module WWTD
       Quest.delete_all
       Room.delete_all
       Item.delete_all
-      # RoomItem.delete_all
-      # Inventory.delete_all
+      RoomItem.delete_all
+      Inventory.delete_all
       # QuestProgress.delete_all
       QuestCharacter.delete_all
       QuestItem.delete_all
-      # PlayerQuestCharacter.delete_all
     end
   end
 end

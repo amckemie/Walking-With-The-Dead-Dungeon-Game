@@ -4,7 +4,7 @@ describe 'world structure' do
   before(:each) do
     @head = WWTD::RoomNode.new(name: "Bedroom", description: "A room in which people sleep", canN: true, canE: true, canS: true, canW: true)
     @south = WWTD::RoomNode.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head, canN: true, canE: true, canS: true, canW: true)
-    @north = WWTD::RoomNode.new(id: 1, questId: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head, canN: true, canE: true, canS: true, canW: true)
+    @north = WWTD::RoomNode.new(id: 1, quest_id: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head, canN: true, canE: true, canS: true, canW: true)
     @world = WWTD::World.new(@head)
   end
 

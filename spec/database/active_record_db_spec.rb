@@ -13,8 +13,8 @@ describe WWTD::ActiveRecordDatabase do
   let(:zombie_1) {db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
   let(:character_1) {db.create_character(name: 'Susie', description: "best friend", classification: 'person', quest_id: quest_1.id, room_id: kitchen.id)}
   let(:quest_2) {db.create_quest(name: 'beat the zombie!')}
-  let(:room_item1) {db.create_room_item(player_id: player_1.id, quest_id: quest_1.id, r_id: kitchen.id, item_id: item_1.id)}
-  let(:room_item2) {db.create_room_item(player_id: player_1.id, quest_id: quest_1.id, r_id: bedroom.id, item_id: weapon_1.id)}
+  let(:room_item1) {db.create_room_item(player_id: player_1.id, quest_id: quest_1.id, room_id: kitchen.id, item_id: item_1.id)}
+  let(:room_item2) {db.create_room_item(player_id: player_1.id, quest_id: quest_1.id, room_id: kitchen.id, item_id: weapon_1.id, parent_item_id: item_1.id)}
 
   # quests
   describe 'Quest' do
@@ -329,22 +329,23 @@ describe WWTD::ActiveRecordDatabase do
       before(:each) do
         room_item1
         room_item2
-        @success = db.create_inventory(player_1.id, quest_1.id, bedroom.id, weapon_1.id)
+        @inventory_item = db.create_inventory(player_id: player_1.id, quest_id: quest_1.id, item_id: weapon_1.id)
       end
 
-      xit 'gets all the items in a persons inventory' do
-        inventory = db.get_player_inventory(player_1.id)
-        expect(inventory.size).to eq(1)
-        expect(inventory.include?(weapon_1)).to eq(true)
+      it 'successfully creates a record of a userId and itemId/adds an item to a persons inventory' do
+        expect(@inventory_item.id).to_not be_nil
+        expect(@inventory_item.player_id).to eq(player_1.id)
       end
 
-      xit 'successfully creates a record of a userId and itemId/adds an item to a persons inventory' do
-        expect(@success).to eq(true)
+      it 'deletes that item from the room_items table for that player' do
+        expect(db.get_player_room_items(player_1.id, kitchen.id).size).to eq(1)
       end
+    end
 
-      xit 'deletes that item from the roomItems table for that player' do
-        expect(db.get_room_item(player_1.id, quest_1.id, bedroom.id, weapon_1.id)).to eq(nil)
-      end
+    xit 'gets all the items in a persons inventory' do
+      inventory = db.get_player_inventory(player_1.id)
+      expect(inventory.size).to eq(1)
+      expect(inventory[0].class).to eq(WWTD::ItemNode)
     end
 
     xit 'removes a record from a persons inventory' do
@@ -364,15 +365,19 @@ describe WWTD::ActiveRecordDatabase do
 
   # roomItems join table
   describe 'roomItems' do
-    xit 'successfully creates a record of items that are in each room for a player (room, player, and item ids) and returns true' do
-      expect(room_item1).to eq(true)
-      expect(room_item2).to eq(true)
+    before(:each) do
+      room_item1
+      room_item2
+    end
+    it 'successfully creates a record of items that are in each room for a player (room, player, and item ids) and returns true' do
+      expect(room_item1.id).to_not be_nil
+      expect(room_item2.id).to_not be_nil
     end
 
-    xit 'gets the items left in a room for a player' do
-      items_left = db.get_room_items(player_1.id, kitchen.id)
-      expect(items_left.size).to eq(1)
-      expect(items_left.include?(item_1)).to eq(true)
+    it 'gets the items left in a room for a player' do
+      items_left = db.get_player_room_items(player_1.id, kitchen.id)
+      expect(items_left.size).to eq(2)
+      expect(items_left[0].class).to eq(WWTD::ItemNode)
     end
 
     xit 'gets all the items left in a quest for a player' do
@@ -387,14 +392,17 @@ describe WWTD::ActiveRecordDatabase do
       expect(items_left.size).to eq(2)
     end
 
-    xit 'removes a record of an item in a quest and room for a specific player' do
-      db.delete_room_item(player_1.id, quest_1.id, bedroom.id, weapon_1.id)
-      items = db.get_room_items(player_1.id, bedroom.id)
-      expect(items.include?(weapon_1)).to eq(false)
+    it 'removes a record of an item in a room for a specific player' do
+      room_item1
+      room_item2
+      db.delete_player_room_item(player_1.id, kitchen.id, weapon_1.id)
+      items = db.get_player_room_items(player_1.id, kitchen.id)
+      expect(items.size).to eq(1)
+      expect(items[0].id).to eq(item_1.id)
     end
 
     xit 'deletes all records for a player for specific quest' do
-      db.delete_room_items(play_1.id, quest_1.id)
+      db.delete_player_room_items(player_1.id, quest_1.id)
       items = db.get_player_quest_items(player_1.id, quest_1.id)
       expect(items.size).to eq(0)
     end
