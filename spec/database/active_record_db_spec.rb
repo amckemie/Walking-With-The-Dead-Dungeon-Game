@@ -412,15 +412,17 @@ describe WWTD::ActiveRecordDatabase do
       expect(items[0].id).to eq(item_1.id)
     end
 
-    xit 'deletes all records for a player for specific quest' do
+    it 'deletes all records for a player for specific quest' do
       db.delete_player_room_items(player_1.id, quest_1.id)
-      items = db.get_player_quest_items(player_1.id, quest_1.id)
+      items = db.get_quest_items_left(player_1.id, quest_1.id)
       expect(items.size).to eq(0)
+      items_left = db.get_quest_items_left(player_1.id, quest_2.id)
+      expect(items_left.size).to eq(1)
     end
 
-    xit 'deletes all records for a player' do
+    it 'deletes all records for a player' do
       db.delete_all_player_items(player_1.id)
-      items = db.get_player_items(player_1.id)
+      items = db.get_all_player_items(player_1.id)
       expect(items.size).to eq(0)
     end
   end

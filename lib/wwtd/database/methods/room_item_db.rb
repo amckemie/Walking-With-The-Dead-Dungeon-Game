@@ -23,13 +23,30 @@ module WWTD
       create_item_objects(items)
     end
 
+    def get_all_player_items(player_id)
+      items = RoomItem.where("player_id = ? ", player_id)
+      create_item_objects(items)
+    end
+
     def delete_player_room_item(player_id, room_id, item_id)
       item = RoomItem.where('player_id = ? AND room_id = ? AND item_id = ?', player_id, room_id, item_id).first
-      # binding.pry
       item.destroy
     end
 
-    def delete_player_room_items
+    def delete_player_room_items(player_id, quest_id)
+      items = RoomItem.where('player_id = ? AND quest_id = ?', player_id, quest_id)
+      destroy_items(items)
+    end
+
+    def delete_all_player_items(player_id)
+      items = RoomItem.where("player_id = ? ", player_id)
+      destroy_items(items)
+    end
+
+    def destroy_items(items_arr)
+      items_arr.each do |item|
+        item.destroy
+      end
     end
   end
 end
