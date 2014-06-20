@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140619224658) do
+ActiveRecord::Schema.define(version: 20140620065151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20140619224658) do
     t.string  "classification"
     t.string  "actions"
     t.integer "parent_item",    default: 0
+    t.integer "room_id"
   end
 
   create_table "players", force: true do |t|

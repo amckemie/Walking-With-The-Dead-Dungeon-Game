@@ -5,8 +5,8 @@ describe WWTD::ActiveRecordDatabase do
   let(:db) {subject}
   let(:player_1) {db.create_player(username: 'zombiekilla', password: 'eightletters', description: 'a zombie killing machine', room_id: 1)}
   let(:player_2) {db.create_player(username: 'zombieloser', password: 'areabitch', description: 'a non-zombie killing machine', room_id: 1)}
-  let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'item', actions: 'take, eat')}
-  let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing", actions: 'take, stab, cut', parent_item: item_1.id)}
+  let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'item', actions: 'take, eat', room_id: 1)}
+  let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing", actions: 'take, stab, cut', parent_item: item_1.id, room_id: 10)}
   let(:kitchen) {db.create_room(name: 'kitchen', description: 'a bright sunny room with food')}
   let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', north: kitchen.id, canW: false)}
   let(:quest_1) {db.create_quest(name: 'the holy grail')}
@@ -212,8 +212,9 @@ describe WWTD::ActiveRecordDatabase do
 
   # items
   describe 'item' do
-    it "creates a item with a name, description, performable actions, a parent item id (0 if no parent), and classification (either item or weapon)" do
+    it "creates a item with a name, description, performable actions, room_id, a parent item id (0 if no parent), and classification (either item or weapon)" do
       expect(item_1.id).to_not be_nil
+      expect(item_1.room_id).to eq(1)
       expect(item_1.classification).to eq('item')
       expect(item_1.description).to eq('yummy red apple')
       expect(item_1.name).to eq('apple')
@@ -230,12 +231,13 @@ describe WWTD::ActiveRecordDatabase do
     end
 
     it 'updates a item' do
-      db.update_item(item_1.id, description: "gross wormy apple", actions: 'throw')
+      db.update_item(item_1.id, description: "gross wormy apple", actions: 'throw', room_id: nil)
       updated = db.get_item(item_1.id)
       expect(updated.name).to eq('apple')
       expect(updated.id).to eq(item_1.id)
       expect(updated.description).to eq('gross wormy apple')
       expect(updated.actions).to eq('throw')
+      expect(updated.room_id).to be_nil
     end
 
     it 'deletes a item' do

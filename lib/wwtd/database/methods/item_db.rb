@@ -11,7 +11,8 @@ module WWTD
         name: item.name,
         description: item.description,
         actions: item.actions,
-        parent_item: item.parent_item
+        parent_item: item.parent_item,
+        room_id: item.room_id
       )
     end
 
