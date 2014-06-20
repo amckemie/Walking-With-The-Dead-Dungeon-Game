@@ -4,6 +4,7 @@ require 'pry'
 module WWTD
   ActiveSupport::Inflector.inflections(:en) do |inflect|
     inflect.uncountable 'inventory'
+    inflect.uncountable 'quest_progress'
   end
 
   class ActiveRecordDatabase
@@ -17,7 +18,7 @@ module WWTD
     # Move specific class methods to other files
     class Quest < ActiveRecord::Base
       has_many :quest_items, dependent: :destroy
-      # has_many :quest_progresses, dependent: :destroy
+      has_many :quest_progress, dependent: :destroy
       has_many :quest_characters, dependent: :destroy
       has_many :items, through: :quest_items
       has_many :characters, through: :quest_characters
@@ -35,7 +36,7 @@ module WWTD
       validates :username, uniqueness: true
       validates :password, length: {minimum: 8}
       validates :username, :password, presence: true
-      # has_many :quest_progresses, dependent: :destroy
+      has_many :quest_progress, dependent: :destroy
       has_many :inventory, dependent: :destroy
       has_many :quests, through: :quest_progress
       has_many :items, through: :inventory
@@ -96,7 +97,7 @@ module WWTD
       Item.delete_all
       RoomItem.delete_all
       Inventory.delete_all
-      # QuestProgress.delete_all
+      QuestProgress.delete_all
       QuestCharacter.delete_all
       QuestItem.delete_all
     end

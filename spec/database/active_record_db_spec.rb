@@ -430,15 +430,19 @@ describe WWTD::ActiveRecordDatabase do
   # questProgress join table
   describe 'questProgress' do
     before(:each) do
-      @success = db.create_quest_progress(quest_id: quest_1.id, player_id: player_1.id, complete: false, data: {answer_phone: false, enter_lr: false})
+      @quest_progress = db.create_quest_progress(quest_id: quest_1.id, player_id: player_1.id, complete: false, data: {answer_phone: false, enter_lr: false})
       db.create_quest_progress(quest_id: quest_2.id, player_id: player_1.id, complete: false, data: {kill_zombie: true})
     end
     # make more specific about what record contains
-    xit 'creates a record of player progress with quest id, player id, a complete status, and critical quest data (converted to json in database)' do
-      expect(@success).to eq(true)
+    it 'creates a record of player progress with quest id, player id, a complete status, and critical quest data (converted to json in database)' do
+      expect(@quest_progress.id).to_not be_nil
+      expect(@quest_progress.quest_id).to eq(quest_1.id)
+      expect(@quest_progress.player_id).to eq(player_1.id)
+      expect(@quest_progress.complete).to be_false
+      expect(@quest_progress.data).to be_a(String)
     end
 
-    xit 'can retrieve a particular users progress through a certain quest' do
+    it 'can retrieve a particular users progress through a certain quest' do
       quest_1_progress = db.get_quest_progress(player_1.id, quest_1.id)
       expect(quest_1_progress.quest_id).to eq(quest_1_id)
       expect(quest_1_progress.player_id).to eq(player_1.id)
