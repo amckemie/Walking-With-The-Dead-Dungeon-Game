@@ -12,7 +12,7 @@ describe WWTD::SignUp do
     expect(WWTD::SignUp).to be_a(Class)
   end
 
-  xit 'returns an error message if a person does not enter a username' do
+  it 'returns an error message if a person does not enter a username' do
     @test_player[:username] = ''
     result = @sign_up.run(@test_player)
     expect(result.success?).to eq(false)
@@ -20,7 +20,7 @@ describe WWTD::SignUp do
     expect(result.reasons).to eq(username: ["can't be blank"])
   end
 
-  xit 'returns an error message if a person does not enter a password or enters one that is not long enough' do
+  it 'returns an error message if a person does not enter a password or enters one that is not long enough' do
     @test_player[:password] = nil
     result = @sign_up.run(@test_player)
     expect(result.success?).to eq(false)
@@ -28,7 +28,7 @@ describe WWTD::SignUp do
     expect(result.reasons).to eq(password: ["can't be blank", "is too short (minimum is 8 characters)"])
   end
 
-  xit 'returns an error message if a person does not enter a description' do
+  it 'returns an error message if a person does not enter a description' do
     @test_player[:description] = nil
     result = @sign_up.run(@test_player)
     expect(result.success?).to eq(false)
@@ -36,7 +36,7 @@ describe WWTD::SignUp do
     expect(result.reasons).to eq(description: ["can't be blank"])
   end
 
-  xit "returns an error message if a player with that email already exists" do
+  it "returns an error message if a player with that email already exists" do
     player
     result = @sign_up.run(@test_player)
     expect(result.success?).to eq(false)

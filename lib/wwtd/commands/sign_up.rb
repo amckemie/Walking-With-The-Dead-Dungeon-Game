@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 module WWTD
   class SignUp < UseCase
     def run(params)
@@ -15,7 +17,10 @@ module WWTD
         if player && player.username
           return failure(:invalid_params, :reasons => { :username => ["is already taken"] })
         else
-          new_player = WWTD.db.create_player(username: params[:username], password: params[:password], description: params[:description])
+          password = params.delete(:password)
+          password_digest = BCrypt::Password.create(password)
+          params[:password_digest] = password_digest
+          new_player = WWTD.db.create_player(username: params[:username], password: params[:password_digest], description: params[:description])
           return success(:player => new_player, :message => "Player successfully signed up.")
         end
       end
