@@ -26,8 +26,9 @@ class UseCase
     validate_class.new(params)
   end
 
-  def failure(data)
-    return OpenStruct.new(data.merge(:success? => false, :error => error_name))
+  def failure(error_name, extra)
+    hash = { :success? => false, :error => error_name }
+    return OpenStruct.new(hash.merge(extra))
   end
 
   def success(data)

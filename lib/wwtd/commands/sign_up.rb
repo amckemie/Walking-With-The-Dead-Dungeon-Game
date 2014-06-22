@@ -2,7 +2,7 @@ module WWTD
   class SignUp < UseCase
     def run(params)
       result = validate_params(params) do
-        allow :username, :password, :description
+        allow :username, :password, :description, :room_id
         validates :username, presence: true
         validates :password, presence: true, :length => {minimum: 8}
         validates :description, presence: true
@@ -10,13 +10,13 @@ module WWTD
 
       if !result.valid?
         return failure(:invalid_params, :reasons => result.errors.messages)
-      elsif
+      else
         player = WWTD.db.get_player_by_username(params[:username])
-        if player.username
-          return failure()
+        if player && player.username
+          return failure(:invalid_params, :reasons => { :username => ["is already taken"] })
         else
-          player = WWTD.db.create_player(username: params[:username], password: params[:password], description: params[:description])
-          return success(:player => player, :message => "Player successfully signed up.")
+          new_player = WWTD.db.create_player(username: params[:username], password: params[:password], description: params[:description])
+          return success(:player => new_player, :message => "Player successfully signed up.")
         end
       end
     end

@@ -169,16 +169,30 @@ describe WWTD::ActiveRecordDatabase do
       expect(player_1.dead).to eq(false)
     end
 
-    it 'retrieves a player' do
-      retrieved_player = db.get_player(player_1.id)
-      expect(retrieved_player.username).to eq('zombiekilla')
-      expect(retrieved_player.password).to eq('eightletters')
+    describe 'get_player' do
+      it 'retrieves a player' do
+        retrieved_player = db.get_player(player_1.id)
+        expect(retrieved_player.username).to eq('zombiekilla')
+        expect(retrieved_player.password).to eq('eightletters')
+      end
+
+      it 'returns nil if there is no player with that id' do
+        result = db.get_player(99999)
+        expect(result).to eq(nil)
+      end
     end
 
-    it "retrieves a player by their username" do
-      retrieved_player = db.get_player_by_username(player_1.username)
-      expect(retrieved_player.username).to eq('zombiekilla')
-      expect(retrieved_player.password).to eq('eightletters')
+    describe 'get_player_by_username' do
+      it "retrieves a player by their username" do
+        retrieved_player = db.get_player_by_username(player_1.username)
+        expect(retrieved_player.username).to eq('zombiekilla')
+        expect(retrieved_player.password).to eq('eightletters')
+      end
+
+      it 'returns nil if there is no player with that username' do
+        result = db.get_player_by_username('Ashley')
+        expect(result).to eq(nil)
+      end
     end
 
     it 'updates a player' do

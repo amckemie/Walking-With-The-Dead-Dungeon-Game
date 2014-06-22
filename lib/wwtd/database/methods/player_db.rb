@@ -17,14 +17,13 @@ module WWTD
     end
 
     def get_player(player_id)
-      ar_player = Player.find(player_id)
-      build_player(ar_player)
+      ar_player = Player.find_by(id: player_id)
+      ar_player ? build_player(ar_player) : nil
     end
 
     def get_player_by_username(player_un)
       ar_player = Player.find_by(username: player_un)
-      # binding.pry
-      build_player(ar_player)
+      ar_player ? build_player(ar_player) : nil
     end
 
     def get_all_players
