@@ -19,7 +19,9 @@
 Basic Commands
 
 -- help : Shows list of certain game commands
+
 -- info : Displays description of current room
+
 -- N/E/S/W (North, East, South, West) : Sends player in that direction (if possible)
 
 -----------------------------------------------------------------------------------------------------------------------
