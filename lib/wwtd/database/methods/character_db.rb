@@ -17,7 +17,7 @@ module WWTD
 
     def get_character(char_id)
       ar_character = Character.find(char_id)
-      build_character(ar_character)
+      ar_character.classification == 'person' ? build_character(ar_character) : build_zombie(ar_character)
     end
 
     def build_zombie(zombie)
@@ -33,13 +33,13 @@ module WWTD
     def update_character(char_id, data)
       ar_character = Character.find(char_id)
       ar_character.update(data)
-      build_character(ar_character)
+      ar_character.classification == 'person' ? build_character(ar_character) : build_zombie(ar_character)
     end
 
-    def delete_character(q_id)
-      ar_character = Character.find(q_id)
+    def delete_character(char_id)
+      ar_character = Character.find(char_id)
       ar_character.destroy
-      return true if !Character.exists?(q_id)
+      return true if !Character.exists?(char_id)
     end
 
     def get_all_quest_characters(q_id)
