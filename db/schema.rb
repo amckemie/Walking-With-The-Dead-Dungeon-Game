@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620115134) do
+ActiveRecord::Schema.define(version: 20140625140505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,8 +67,6 @@ ActiveRecord::Schema.define(version: 20140620115134) do
 
   add_index "quest_characters", ["player_id", "character_id"], name: "index_quest_characters_on_player_id_and_character_id", using: :btree
   add_index "quest_characters", ["player_id", "quest_id", "room_id"], name: "index_quest_characters_on_player_id_and_quest_id_and_room_id", using: :btree
-  add_index "quest_characters", ["player_id", "quest_id"], name: "index_quest_characters_on_player_id_and_quest_id", using: :btree
-  add_index "quest_characters", ["player_id"], name: "index_quest_characters_on_player_id", using: :btree
 
   create_table "quest_items", force: true do |t|
     t.integer "item_id",  null: false
