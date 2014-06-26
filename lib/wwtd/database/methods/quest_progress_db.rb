@@ -3,12 +3,7 @@ require 'json'
 module WWTD
   class ActiveRecordDatabase
     def build_quest_progress(quest_progress)
-      WWTD::QuestProgress.new(id: quest_progress.id,
-        player_id: quest_progress.player_id,
-        quest_id: quest_progress.quest_id,
-        complete: quest_progress.complete,
-        data: quest_progress.data
-      )
+      WWTD::QuestProgress.new(quest_progress)
     end
 
     def create_quest_progress(attrs)
@@ -25,13 +20,11 @@ module WWTD
     end
 
     def get_player_quests(player_id)
-      result = []
       quests = QuestProgress.where('player_id = ? ', player_id)
-      quests.each do |quest|
+      quests.map {|quest|
         quest.data = parse_data_attribute(quest)
-        result << build_quest_progress(quest)
-      end
-      result
+        build_quest_progress(quest)
+      }
     end
 
     def get_latest_quest(player_id)
