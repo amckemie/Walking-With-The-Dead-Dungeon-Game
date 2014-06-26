@@ -6,14 +6,7 @@ module WWTD
     end
 
     def build_player(player)
-      WWTD::PlayerNode.new(id: player.id,
-        username: player.username,
-        password: player.password,
-        description: player.description,
-        strength: player.strength,
-        dead: player.dead,
-        room_id: player.room_id
-      )
+      WWTD::PlayerNode.new(player)
     end
 
     def get_player(player_id)
@@ -27,12 +20,8 @@ module WWTD
     end
 
     def get_all_players
-      result = []
       players = Player.all
-      players.each do |player|
-        result << build_player(player)
-      end
-      result
+      players.map {|player| build_player(player)}
     end
 
     def update_player(player_id, data)

@@ -169,6 +169,7 @@ describe WWTD::ActiveRecordDatabase do
       expect(player_1.description).to eq('a zombie killing machine')
       expect(player_1.strength).to eq(100)
       expect(player_1.dead).to eq(false)
+      expect(player_1.room_id).to eq(1)
     end
 
     describe 'get_player' do
