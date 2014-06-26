@@ -6,13 +6,7 @@ module WWTD
     end
 
     def build_character(character)
-      WWTD::CharacterNode.new(id: character.id,
-        name: character.name,
-        description: character.description,
-        quest_id: character.quest_id,
-        room_id: character.room_id,
-        dead: character.dead
-      )
+      WWTD::CharacterNode.new(character)
     end
 
     def get_character(char_id)
@@ -21,13 +15,7 @@ module WWTD
     end
 
     def build_zombie(zombie)
-      WWTD::ZombieNode.new(id: zombie.id,
-        name: zombie.name,
-        description: zombie.description,
-        strength: zombie.strength,
-        quest_id: zombie.quest_id,
-        room_id: zombie.room_id
-      )
+      WWTD::ZombieNode.new(zombie)
     end
 
     def update_character(char_id, data)
@@ -44,35 +32,17 @@ module WWTD
 
     def get_all_quest_characters(q_id)
       chars = Character.where('quest_id = ?', q_id)
-      chars.map {|i|
-        if i.classification == 'person'
-           build_character(i)
-        else
-          build_zombie(i)
-        end
-      }
+      chars.map {|char| char.classification == 'person' ? build_character(char) : build_zombie(char) }
     end
 
     def get_all_room_characters(room_id)
       chars = Character.where('room_id = ?', room_id)
-      chars.map {|i|
-        if i.classification == 'person'
-           build_character(i)
-        else
-          build_zombie(i)
-        end
-        }
+      chars.map {|char| char.classification == 'person' ? build_character(char) : build_zombie(char) }
     end
 
     def get_room_and_quest_characters(q_id, room_id)
       chars = Character.where('quest_id = ? AND room_id = ?', q_id, room_id)
-      chars.map {|i|
-        if i.classification == 'person'
-           build_character(i)
-        else
-          build_zombie(i)
-        end
-        }
+      chars.map {|char| char.classification == 'person' ? build_character(char) : build_zombie(char) }
     end
   end
 end

@@ -98,7 +98,9 @@ describe WWTD::ActiveRecordDatabase do
       expect(character_1.description).to eq('best friend')
       expect(character_1.class).to eq(WWTD::CharacterNode)
       expect(character_1.room_id).to eq(kitchen.id)
+      expect(character_1.dead).to eq(false)
       expect(zombie_1.class).to eq(WWTD::ZombieNode)
+      expect(zombie_1.description).to eq("a scary zombie")
       expect(zombie_1.strength).to eq(20)
       expect(zombie_1.quest_id).to eq(quest_1.id)
     end
