@@ -5,12 +5,10 @@ module WWTD
     end
 
     def create_item_objects(room_item_arr)
-      result = []
-      room_item_arr.each do |item|
+      room_item_arr.map {|item|
         item = Item.find(item.item_id)
-        result << build_item(item)
-      end
-      result
+        build_item(item)
+      }
     end
 
     def get_player_room_items(player_id, room_id)

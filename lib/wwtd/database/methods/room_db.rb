@@ -6,6 +6,7 @@ module WWTD
     end
 
     def build_room(room)
+      # WWTD::RoomNode.new(room)
       WWTD::RoomNode.new(id: room.id,
         name: room.name,
         description: room.description,
