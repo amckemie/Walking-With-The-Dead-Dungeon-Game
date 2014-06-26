@@ -6,14 +6,7 @@ module WWTD
     end
 
     def build_item(item)
-      WWTD::ItemNode.new(id: item.id,
-        classification: item.classification,
-        name: item.name,
-        description: item.description,
-        actions: item.actions,
-        parent_item: item.parent_item,
-        room_id: item.room_id
-      )
+      WWTD::ItemNode.new(item)
     end
 
     def get_item(item_id)
