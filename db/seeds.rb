@@ -37,18 +37,15 @@ WWTD.db.create_character(name: "HOLY SHIT! IT'S A REAL ZOMBIE AGAIN!",
                         room_id: living_room.id,
                         quest_id: quest1.id
                         )
-def build_item(item)
-      WWTD::ItemNode.new(id: item.id,
-        classification: item.classification,
-        name: item.name,
-        description: item.description,
-        actions: item.actions,
-        parent_item: item.parent_item,
-        room_id: item.room_id
-      )
-    end
+WWTD.db.create_character(name: "Susie",
+                        description: "Your best friend at the hospital.",
+                        classification: 'person',
+                        room_id: 10,
+                        quest_id: quest1.id
+                        )
+
 # items
-WWTD.db.create_item(classification: 'item',
+cell = WWTD.db.create_item(classification: 'item',
                                 name: 'Your cell phone',
                                 description: "An iPhone that's been dropped nearly one too many times",
                                 actions: 'answer, pick up, call',
@@ -60,53 +57,65 @@ dresser = WWTD.db.create_item(classification: 'item',
                                 actions: 'open',
                                 room_id: bedroom.id
                                 )
-WWTD.db.create_item(classification: 'item',
+jacket = WWTD.db.create_item(classification: 'item',
                                 name: 'Jacket',
                                 description: "A comfy UT jacket left over from the good ole days",
                                 actions: 'put on, wear, pick up, take',
                                 room_id: bedroom.id
                                 )
-WWTD.db.create_item(classification: 'item',
+socks = WWTD.db.create_item(classification: 'item',
                                 name: 'White socks',
                                 description: "A pair of grungy white socks that have held up over the years",
                                 actions: 'put on, wear, pick up, take',
                                 parent_item: dresser.id,
                                 room_id: bedroom.id
                                 )
-WWTD.db.create_item(classification: 'item',
+underwear = WWTD.db.create_item(classification: 'item',
                                 name: 'Underwear',
                                 description: "Your last clean pair of underwear (it really is time to do some laundry)",
                                 actions: 'put on, wear, pick up, take',
                                 parent_item: dresser.id,
                                 room_id: bedroom.id
                                 )
-WWTD.db.create_item(classification: 'item',
+shower = WWTD.db.create_item(classification: 'item',
                                 name: 'Your bathroom shower',
                                 description: "You know what it is. ",
                                 actions: 'get in, use, take, shower',
                                 room_id: bathroom.id
                                 )
-WWTD.db.create_item(classification: 'item',
+toothpaste = WWTD.db.create_item(classification: 'item',
                                 name: 'Toothpaste',
                                 description: "So fresh and so clean, clean. ",
                                 actions: 'use, put on, take',
                                 room_id: bathroom.id
                                 )
-WWTD.db.create_item(classification: 'item',
+toothbrush = WWTD.db.create_item(classification: 'item',
                                 name: 'Toothbrush',
                                 description: "Don't you think you're a little old for a Spiderman toothbrush? Nah.... ",
                                 actions: 'use, take, brush',
                                 room_id: bathroom.id
                                 )
-WWTD.db.create_item(classification: 'item',
+tv = WWTD.db.create_item(classification: 'item',
                                 name: 'TV',
                                 description: "A badass 80inch TV that a roommate once left in your lucky lucky possession.",
                                 actions: 'turn on, watch',
                                 room_id: living_room.id
                                 )
-WWTD.db.create_item(classification: 'item',
+backpack = WWTD.db.create_item(classification: 'item',
                                 name: 'backpack',
                                 description: "A trusty backpack that can fit a surprising number of calculus textbooks",
                                 actions: 'use, take, brush',
                                 room_id: living_room.id
                                 )
+
+WWTD.db.create_quest_item(item_id: backpack.id, quest_id: quest1.id, room_id: backpack.room_id)
+WWTD.db.create_quest_item(item_id: tv.id, quest_id: quest1.id, room_id: tv.room_id)
+WWTD.db.create_quest_item(item_id: toothbrush.id, quest_id: quest1.id, room_id: toothbrush.room_id)
+WWTD.db.create_quest_item(item_id: toothpaste.id, quest_id: quest1.id, room_id: toothpaste.room_id)
+WWTD.db.create_quest_item(item_id: shower.id, quest_id: quest1.id, room_id: shower.room_id)
+WWTD.db.create_quest_item(item_id: underwear.id, quest_id: quest1.id, room_id: underwear.room_id)
+WWTD.db.create_quest_item(item_id: socks.id, quest_id: quest1.id, room_id: socks.room_id)
+WWTD.db.create_quest_item(item_id: jacket.id, quest_id: quest1.id, room_id: jacket.room_id)
+WWTD.db.create_quest_item(item_id: dresser.id, quest_id: quest1.id, room_id: dresser.room_id)
+WWTD.db.create_quest_item(item_id: cell.id, quest_id: quest1.id, room_id: cell.room_id)
+
