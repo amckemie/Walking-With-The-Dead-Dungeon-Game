@@ -6,33 +6,21 @@ module WWTD
     end
 
     def get_quests_for_item(item_id)
-      result = []
       ar_item = Item.find(item_id)
-      quests = ar_item.quests.distinct
-      quests.each do |quest|
-        result << build_quest(quest)
-      end
-      result
+      ar_quests = ar_item.quests.distinct
+      ar_quests.map {|quest| build_quest(quest) }
     end
 
     def get_items_for_quest(quest_id)
-      result = []
       ar_quest = Quest.find(quest_id)
       items = ar_quest.items
-      items.each do |item|
-        result << build_item(item)
-      end
-      result
+      items.map {|item| build_item(item) }
     end
 
     def get_items_for_room(room_id)
-      result = []
       ar_room = Room.find(room_id)
       items = ar_room.items
-      items.each do |item|
-        result << build_item(item)
-      end
-      result
+      items.map {|item| build_item(item) }
     end
 
     # may need to change this to quest and item id

@@ -43,42 +43,36 @@ module WWTD
     end
 
     def get_all_quest_characters(q_id)
-      result = []
       chars = Character.where('quest_id = ?', q_id)
-      chars.each do |i|
+      chars.map {|i|
         if i.classification == 'person'
-          result << build_character(i)
+           build_character(i)
         else
-          result << build_zombie(i)
+          build_zombie(i)
         end
-      end
-      result
+      }
     end
 
     def get_all_room_characters(room_id)
-      result = []
       chars = Character.where('room_id = ?', room_id)
-      chars.each do |i|
+      chars.map {|i|
         if i.classification == 'person'
-          result << build_character(i)
+           build_character(i)
         else
-          result << build_zombie(i)
+          build_zombie(i)
         end
-      end
-      result
+        }
     end
 
     def get_room_and_quest_characters(q_id, room_id)
-      result = []
       chars = Character.where('quest_id = ? AND room_id = ?', q_id, room_id)
-      chars.each do |i|
+      chars.map {|i|
         if i.classification == 'person'
-          result << build_character(i)
+           build_character(i)
         else
-          result << build_zombie(i)
+          build_zombie(i)
         end
-      end
-      result
+        }
     end
   end
 end
