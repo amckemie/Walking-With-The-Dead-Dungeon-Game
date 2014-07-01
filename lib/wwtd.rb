@@ -29,7 +29,7 @@ require_relative './wwtd/commands/command_class.rb'
 require_relative './wwtd/commands/fight.rb'
 require_relative './wwtd/commands/sign_in.rb'
 require_relative './wwtd/commands/sign_up.rb'
-require_relative './wwtd/commands/new_quest.rb'
+require_relative './wwtd/commands/enter_room.rb'
 # require_relative './commands/unlock_door.rb'
 
 

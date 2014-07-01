@@ -7,8 +7,8 @@ module WWTD
       self.new.run(inputs)
     end
 
-    def failure(error_sym, data={})
-      CommandFailure.new(data.merge :error => error_sym)
+    def failure(error, data={})
+      CommandFailure.new(data.merge :error => error)
     end
 
     def success(data={})
