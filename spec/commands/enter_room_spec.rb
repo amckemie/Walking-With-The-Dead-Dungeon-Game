@@ -7,7 +7,7 @@ describe WWTD::EnterRoom do
     @room1 = db.create_room(name: 'Bedroom', description: 'test', quest_id: @quest.id, start_new_quest: true, canW: false)
     @room2 = db.create_room(name: 'Kitchen', description: 'room with food', south: @room1.id, quest_id: @quest.id)
     @locked_room = db.create_room(name: "secret room", description: "locked room", west: @room1.id, quest_id: @quest.id)
-    db.update_room(@room1.id, north: @room2.id)
+    db.update_room(@room1.id, north: @room2.id, east: @locked_room)
     @player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player")
   end
 
@@ -21,8 +21,19 @@ describe WWTD::EnterRoom do
 
     it 'checks room for an available room in inputted direction and returns false if there is no room in that direction' do
       result = subject.run('south', @room1, @player.id)
+      result2 = subject.run('NORTH', @room2, @player.id)
+      result3 = subject.run('e', @room1, @player.id)
+      result4 = subject.run('W', @room2, @player.id)
+
       expect(result.success?).to eq(false)
+      expect(result2.success?).to eq(false)
+      expect(result3.success?).to eq(false)
+      expect(result4.success?).to eq(false)
+
       expect(result.error).to eq("Silly you. There is nothing there; You can't go that way")
+      expect(result2.error).to eq("Silly you. There is nothing there; You can't go that way")
+      expect(result3.error).to eq("Silly you. There is nothing there; You can't go that way")
+      expect(result4.error).to eq("Silly you. There is nothing there; You can't go that way")
     end
 
     xit 'checks the rooms can* direction attribute if there is a room in that direction and returns false if the attribute = false' do
