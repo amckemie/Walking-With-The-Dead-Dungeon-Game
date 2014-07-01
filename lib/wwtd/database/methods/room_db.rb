@@ -28,6 +28,11 @@ module WWTD
       build_room(ar_room)
     end
 
+    def get_first_room
+      ar_room = Room.first
+      build_room(ar_room)
+    end
+
     def update_room(room_id, data)
       ar_room = Room.find(room_id)
       ar_room.update(data)

@@ -283,6 +283,12 @@ describe WWTD::ActiveRecordDatabase do
       expect(bedroom.start_new_quest).to eq(true)
     end
 
+    it 'gets the first room in the database (which is the start room)' do
+      kitchen
+      start_room = db.get_first_room
+      expect(start_room.id).to eq(kitchen.id)
+    end
+
     it 'retrieves a room' do
       retrieved_room = db.get_room(kitchen.id)
       expect(retrieved_room).to be_a(WWTD::RoomNode)

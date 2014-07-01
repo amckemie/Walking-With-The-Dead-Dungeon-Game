@@ -67,4 +67,13 @@ describe WWTD::EnterRoom do
       expect(result.start_new_quest?).to eq(false)
     end
   end
+
+  describe 'hedge case for starting the game' do
+    it "updates a player's room_id to the 'first' room if the dir is start and they have no room_id" do
+      player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player")
+      result = subject.run('start', player)
+      expect(result.success?).to eq(true)
+      expect(result.room.id).to eq()
+    end
+  end
 end

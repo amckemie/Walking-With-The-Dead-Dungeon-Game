@@ -24,6 +24,8 @@ living_room = WWTD.db.create_room(name: "Player's Living Room",
                     canW: false
                     )
 
+# Create world structure
+
 WWTD.db.update_room(bedroom.id, west: bathroom.id, north: living_room.id)
 
 # Quests
