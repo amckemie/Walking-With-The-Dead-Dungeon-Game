@@ -32,6 +32,8 @@ describe WWTD::NewQuest do
     end
 
     it 'does not create a new quest if the room returns false for new_quest?' do
+      result = subject.run(@room2, @player.id)
+      expect(result.quest_progress).to eq(false)
     end
   end
 end
