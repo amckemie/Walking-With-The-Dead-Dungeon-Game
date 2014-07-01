@@ -5,8 +5,8 @@ describe WWTD::ActiveRecordDatabase do
   let(:db) {subject}
   let(:player_1) {db.create_player(username: 'zombiekilla', password: 'eightletters', description: 'a zombie killing machine', room_id: 1)}
   let(:player_2) {db.create_player(username: 'zombieloser', password: 'areabitch', description: 'a non-zombie killing machine', room_id: 1)}
+  let(:kitchen) {db.create_room(name: 'kitchen', quest_id: quest_2.id, description: 'a bright sunny room with food')}
   let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'item', actions: 'take, eat', room_id: 1)}
-  let(:kitchen) {db.create_room(name: 'kitchen', description: 'a bright sunny room with food')}
   let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing", actions: 'take, stab, cut', parent_item: item_1.id, room_id: kitchen.id)}
   let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', start_new_quest: true, north: kitchen.id, canW: false)}
   let(:quest_1) {db.create_quest(name: 'the holy grail')}
@@ -267,6 +267,7 @@ describe WWTD::ActiveRecordDatabase do
       expect(kitchen.id).to_not be_nil
       expect(kitchen.description).to eq('a bright sunny room with food')
       expect(kitchen.name).to eq('kitchen')
+      expect(kitchen.quest_id).to eq(quest_2.id)
       expect(kitchen.north).to eq(nil)
       expect(kitchen.south).to eq(nil)
       expect(kitchen.east).to eq(nil)
