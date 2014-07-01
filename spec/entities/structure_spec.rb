@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'world structure' do
   before(:each) do
-    @head = WWTD::RoomNode.new(name: "Bedroom", description: "A room in which people sleep", canN: true, canE: true, canS: true, canW: true)
-    @south = WWTD::RoomNode.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head, canN: true, canE: true, canS: true, canW: true)
-    @north = WWTD::RoomNode.new(id: 1, quest_id: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head, canN: true, canE: true, canS: true, canW: true)
+    @head = WWTD::RoomNode.new(name: "Bedroom", description: "A room in which people sleep", canN: true, canE: true, canS: true, canW: true, start_new_quest: true)
+    @south = WWTD::RoomNode.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head, canN: true, canE: true, canS: true, canW: true, start_new_quest: false)
+    @north = WWTD::RoomNode.new(id: 1, quest_id: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head, canN: true, canE: true, canS: true, canW: true, start_new_quest: false)
     @world = WWTD::World.new(@head)
   end
 
@@ -40,6 +40,11 @@ describe 'world structure' do
 
     it 'has a quest id' do
       expect(@north.quest_id).to eq(10)
+    end
+
+    it 'has a start_new_quest attribute that points to a boolean' do
+      expect(@head.start_new_quest).to eq(true)
+      expect(@north.start_new_quest).to eq(false)
     end
 
     it "has a north, east, south, and west direction that points to other nodes or nil" do

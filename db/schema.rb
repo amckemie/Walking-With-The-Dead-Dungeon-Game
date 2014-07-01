@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140625140505) do
+ActiveRecord::Schema.define(version: 20140630174914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20140625140505) do
     t.integer "player_id",                 null: false
     t.boolean "complete",  default: false
     t.text    "data"
+    t.integer "room_id"
   end
 
   add_index "quest_progress", ["player_id", "quest_id"], name: "index_quest_progress_on_player_id_and_quest_id", using: :btree
@@ -102,16 +103,18 @@ ActiveRecord::Schema.define(version: 20140625140505) do
   add_index "room_items", ["player_id", "room_id", "item_id"], name: "index_room_items_on_player_id_and_room_id_and_item_id", using: :btree
 
   create_table "rooms", force: true do |t|
-    t.string  "name",                       null: false
-    t.text    "description",                null: false
+    t.string  "name",                            null: false
+    t.text    "description",                     null: false
     t.integer "north"
     t.integer "east"
     t.integer "south"
     t.integer "west"
-    t.boolean "canN",        default: true
-    t.boolean "canE",        default: true
-    t.boolean "canS",        default: true
-    t.boolean "canW",        default: true
+    t.boolean "canN",            default: true
+    t.boolean "canE",            default: true
+    t.boolean "canS",            default: true
+    t.boolean "canW",            default: true
+    t.integer "quest_id"
+    t.boolean "start_new_quest", default: false
   end
 
 end
