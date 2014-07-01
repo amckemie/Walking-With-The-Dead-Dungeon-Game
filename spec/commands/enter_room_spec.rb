@@ -47,6 +47,7 @@ describe WWTD::EnterRoom do
       result = subject.run('north', @player)
       expect(result.success?).to eq(true)
       expect(result.player.room_id).to eq(@room2.id)
+      expect(result.room.id).to eq(@room2.id)
     end
   end
 
