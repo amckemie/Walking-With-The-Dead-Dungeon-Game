@@ -8,7 +8,7 @@ describe WWTD::ActiveRecordDatabase do
   let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'item', actions: 'take, eat', room_id: 1)}
   let(:kitchen) {db.create_room(name: 'kitchen', description: 'a bright sunny room with food')}
   let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing", actions: 'take, stab, cut', parent_item: item_1.id, room_id: kitchen.id)}
-  let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', north: kitchen.id, canW: false)}
+  let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', start_new_quest: true, north: kitchen.id, canW: false)}
   let(:quest_1) {db.create_quest(name: 'the holy grail')}
   let(:zombie_1) {db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
   let(:character_1) {db.create_character(name: 'Susie', description: "best friend", classification: 'person', quest_id: quest_1.id, room_id: kitchen.id)}
@@ -263,7 +263,7 @@ describe WWTD::ActiveRecordDatabase do
   end
 
   describe 'room' do
-    it 'creates a room with a name, description, id, and default values for all directions and all directions access' do
+    it 'creates a room with a name, description, id, and default values for start_new_quest, all directions and all directions access' do
       expect(kitchen.id).to_not be_nil
       expect(kitchen.description).to eq('a bright sunny room with food')
       expect(kitchen.name).to eq('kitchen')
@@ -274,10 +274,12 @@ describe WWTD::ActiveRecordDatabase do
       expect(kitchen.canN).to eq(true)
       expect(kitchen.canS).to eq(true)
       expect(kitchen.canE).to eq(true)
+      expect(kitchen.start_new_quest).to eq(false)
 
       # testing non-default settings
       expect(bedroom.north).to eq(kitchen.id)
       expect(bedroom.canW).to eq(false)
+      expect(bedroom.start_new_quest).to eq(true)
     end
 
     it 'retrieves a room' do

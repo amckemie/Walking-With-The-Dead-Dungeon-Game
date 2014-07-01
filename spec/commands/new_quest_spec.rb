@@ -13,12 +13,12 @@ describe WWTD::NewQuest do
   describe 'Check room' do
     it "returns new_quest? true if the room is supposed to start a new quest" do
       result = subject.run(@room1)
-      expect(result.success?).to eq(true)
+      expect(result.start_new_quest?).to eq(true)
     end
 
     it "returns new_quest? falase if the room is not supposed to start a new quest" do
       result2 = subject.run(@room2)
-      expect(result2.success?).to eq(false)
+      expect(result2.start_new_quest?).to eq(false)
     end
   end
 

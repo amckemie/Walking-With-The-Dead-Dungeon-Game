@@ -10,6 +10,7 @@ module WWTD
       WWTD::RoomNode.new(id: room.id,
         name: room.name,
         description: room.description,
+        start_new_quest: room.start_new_quest,
         north: room.north,
         east: room.east,
         south: room.south,
