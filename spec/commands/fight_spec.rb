@@ -4,7 +4,7 @@ describe 'fight' do
   let(:db) {WWTD.db}
 
   before(:each) do
-    WWTD.db.clear_tables
+    db.clear_tables
     @zombie = db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: 1, room_id: 2, strength: 20)
     @player_1 = db.create_player(username: 'zombiekilla', password: 'eightletters', description: 'a zombie killing machine', room_id: 1)
     @quest_character1 = db.create_quest_character(player_id: @player_1.id, character_id: @zombie.id, quest_id: 1, room_id: 2)

@@ -3,19 +3,19 @@ require 'spec_helper'
 describe WWTD::EnterRoom do
   let(:db) {WWTD.db}
   before(:each) do
+    db.clear_tables
     @quest = db.create_quest(name: 'Quest Test (haha)')
-    room1 = db.create_room(name: 'Bedroom', description: 'test', quest_id: 0, canE: false)
-    @room2 = db.create_room(name: 'Kitchen', description: 'room with food', south: room1.id, quest_id: @quest.id, start_new_quest: true)
-    @room3 = db.create_room(name: 'New Room', description: 'eff these tests', east: room1.id, quest_id: @quest.id)
-    @locked_room = db.create_room(name: "secret room", description: "locked room", west: room1.id, quest_id: @quest.id)
-    @updated_room1 = db.update_room(room1.id, north: @room2.id, east: @locked_room.id, west: @room3.id)
+    @room1 = db.create_room(name: 'Bedroom', description: 'test', quest_id: 0, canE: false, start_new_quest: true)
+    @room2 = db.create_room(name: 'Kitchen', description: 'room with food', south: @room1.id, quest_id: @quest.id, start_new_quest: true)
+    @room3 = db.create_room(name: 'New Room', description: 'eff these tests', east: @room1.id, quest_id: @quest.id)
+    @locked_room = db.create_room(name: "secret room", description: "locked room", west: @room1.id, quest_id: @quest.id)
+    @updated_room1 = db.update_room(@room1.id, north: @room2.id, east: @locked_room.id, west: @room3.id)
     @player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player", room_id: @updated_room1.id)
   end
 
   describe 'move to new room' do
     it 'returns success false and error message of direction not recognized if the dir is not N/E/S/W' do
       result = subject.run('test', @player)
-      # binding.pry
       expect(result.success?).to eq(false)
       expect(result.error).to eq("Sorry, that is not a known direction. Which way do you want to go?")
     end
@@ -60,7 +60,7 @@ describe WWTD::EnterRoom do
       expect(result.start_new_quest?).to eq(true)
     end
 
-    it "returns new_quest? falase if the room is not supposed to start a new quest" do
+    it "returns new_quest? false if the room is not supposed to start a new quest" do
       result = subject.run('west', @player)
       expect(result.success?).to eq(true)
       expect(result.room.id).to eq(@room3.id)
@@ -73,7 +73,8 @@ describe WWTD::EnterRoom do
       player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player")
       result = subject.run('start', player)
       expect(result.success?).to eq(true)
-      expect(result.room.id).to eq()
+      expect(result.room.id).to eq(@room1.id)
+      expect(result.start_new_quest?).to eq(true)
     end
   end
 end

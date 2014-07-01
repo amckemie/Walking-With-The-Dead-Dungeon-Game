@@ -4,7 +4,11 @@ module WWTD
   class EnterRoom < Command
     def run(dir, player)
       dir.downcase!
-      room = WWTD.db.get_room(player.room_id)
+
+      if dir != 'start'
+        room = WWTD.db.get_room(player.room_id)
+      end
+
       if dir == 'north' || dir == 'n'
         if room.north && room.canN
           new_room = WWTD.db.get_room(room.north)
@@ -49,6 +53,11 @@ module WWTD
         else
           return failure("Sorry, that direction is not currently accessible.")
         end
+      elsif dir == 'start'
+        new_room = WWTD.db.get_first_room
+        new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
+        is_new_quest = start_new_quest?(new_room, player)
+        return success :player => new_player, :room => new_room, :start_new_quest? => is_new_quest
       else
         return failure("Sorry, that is not a known direction. Which way do you want to go?")
       end
