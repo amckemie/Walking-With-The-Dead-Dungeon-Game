@@ -11,7 +11,7 @@ module WWTD
         elsif !room.north
           return failure("Silly you. There is nothing there; You can't go that way")
         else
-          return {enter: false, error: ''}
+          return failure("Sorry, that direction is not currently accessible.")
         end
       elsif dir == 'south' || dir == 's'
         if room.south && room.canS
@@ -19,7 +19,7 @@ module WWTD
         elsif !room.south
           return failure("Silly you. There is nothing there; You can't go that way")
         else
-          return {enter: false, error: ''}
+          return failure("Sorry, that direction is not currently accessible.")
         end
       elsif dir == 'east' || dir == 'e'
         if room.east && room.canE
@@ -27,7 +27,7 @@ module WWTD
         elsif !room.east
           return failure("Silly you. There is nothing there; You can't go that way")
         else
-          return {enter: false, error: ''}
+          return failure("Sorry, that direction is not currently accessible.")
         end
       elsif dir == 'west' || dir == 'w'
         if room.west && room.canW
@@ -35,7 +35,7 @@ module WWTD
         elsif !room.west
           return failure("Silly you. There is nothing there; You can't go that way")
         else
-          return {enter: false, error: ''}
+          return failure("Sorry, that direction is not currently accessible.")
         end
       else
         return failure("Sorry, that is not a known direction. Which way do you want to go?")
