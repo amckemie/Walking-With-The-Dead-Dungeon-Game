@@ -7,8 +7,9 @@ module WWTD
       room = WWTD.db.get_room(player.room_id)
       if dir == 'north' || dir == 'n'
         if room.north && room.canN
-
-          return success
+          new_room = WWTD.db.get_room(room.north)
+          new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
+          return success :player => new_player
         elsif !room.north
           return failure("Silly you. There is nothing there; You can't go that way")
         else
@@ -16,7 +17,9 @@ module WWTD
         end
       elsif dir == 'south' || dir == 's'
         if room.south && room.canS
-          return true
+          new_room = WWTD.db.get_room(room.south)
+          new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
+          return success :player => new_player
         elsif !room.south
           return failure("Silly you. There is nothing there; You can't go that way")
         else
@@ -24,7 +27,9 @@ module WWTD
         end
       elsif dir == 'east' || dir == 'e'
         if room.east && room.canE
-          return true
+          new_room = WWTD.db.get_room(room.east)
+          new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
+          return success :player => new_player
         elsif !room.east
           return failure("Silly you. There is nothing there; You can't go that way")
         else
@@ -32,7 +37,9 @@ module WWTD
         end
       elsif dir == 'west' || dir == 'w'
         if room.west && room.canW
-          return true
+          new_room = WWTD.db.get_room(room.west)
+          new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
+          return success :player => new_player
         elsif !room.west
           return failure("Silly you. There is nothing there; You can't go that way")
         else

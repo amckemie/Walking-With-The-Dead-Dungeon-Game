@@ -44,7 +44,7 @@ describe WWTD::EnterRoom do
     end
 
     it 'updates a players room id to the new room if there was a room and the can* attribute was true' do
-      result = subject.run('north', @updated_room1, @player)
+      result = subject.run('north', @player)
       expect(result.success?).to eq(true)
       expect(result.player.room_id).to eq(@room2.id)
     end
