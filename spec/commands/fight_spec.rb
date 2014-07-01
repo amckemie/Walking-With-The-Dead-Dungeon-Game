@@ -57,4 +57,8 @@ describe 'fight' do
       p shoot_result
     end
   end
+
+  after(:each) do
+    db.clear_tables
+  end
 end

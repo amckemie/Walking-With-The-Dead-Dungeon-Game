@@ -517,4 +517,7 @@ describe WWTD::ActiveRecordDatabase do
       expect(updated2.data.keys).to eq(["kill_zombie", "save_friend"])
     end
   end
+  after(:each) do
+    db.clear_tables
+  end
 end

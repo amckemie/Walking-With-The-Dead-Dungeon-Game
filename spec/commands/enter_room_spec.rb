@@ -77,4 +77,8 @@ describe WWTD::EnterRoom do
       expect(result.start_new_quest?).to eq(true)
     end
   end
+
+  after(:each) do
+    db.clear_tables
+  end
 end

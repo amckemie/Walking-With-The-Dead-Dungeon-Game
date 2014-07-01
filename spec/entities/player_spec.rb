@@ -1,7 +1,7 @@
 require 'spec_helper.rb'
 
 describe WWTD::PlayerNode do
-  let(:player) {WWTD::PlayerNode.new(id: 1, username: 'ashley', password: 'abc123', strength: 100, description: 'badass zombie killer', room_id: 1)}
+  let(:player) {WWTD::PlayerNode.new(id: 1, username: 'ashley', strength: 100, description: 'badass zombie killer', room_id: 1)}
   let(:apple) {WWTD::ItemNode.new(id: 2, type: 'item', name: 'apple', actions: ['eat'])}
   let(:apple2) {WWTD::ItemNode.new(id: 3, type: 'item', name: 'apple', actions: ['eat'])}
 
@@ -12,10 +12,6 @@ describe WWTD::PlayerNode do
 
     it "has a username attribute" do
       expect(player.username).to eq('ashley')
-    end
-
-    it "has a password attribute" do
-      expect(player.password).to eq('abc123')
     end
 
     it "has a description attribute" do

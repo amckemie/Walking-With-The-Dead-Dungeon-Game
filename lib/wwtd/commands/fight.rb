@@ -1,4 +1,4 @@
-module WWTD
+ module WWTD
   class Fight
     def run(player, opponent, shoot)
       fate = 0

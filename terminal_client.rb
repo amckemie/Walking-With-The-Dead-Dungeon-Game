@@ -5,6 +5,7 @@ module WWTD
   class TerminalClient
     def initialize
       @db = WWTD.db
+      @player = nil
       puts "Welcome to Walking with the Dead (name credits definitively go to Walking with the Dead and Robert Kirkman."
       login_info = ask("Please enter sign in if you have played before and sign up if you are new")
       login(login_info)
@@ -17,6 +18,7 @@ module WWTD
         result = WWTD::SignIn.new.run(username: un, password: pw)
         if result.success?
           # send to run method and run current room's description
+
         else
           errors = errors_helper(result.reasons.values)
           p "Sorry. Your log-in was not successful for these reasons: " + errors
@@ -27,7 +29,14 @@ module WWTD
         desc = ask("Enter a description for your player: ")
         result = WWTD::SignUp.new.run(username: un, password: pw, description: desc)
         if result.success?
-          @db.create
+          # Set current player in first room
+          enter_room_result = WWTD::EnterRoom.run('start', result.player)
+          @player = enter_room_result.player
+          # binding.pry
+          # print game introduction text
+          game_intro
+          response = ask("What would you like to do? ")
+          play_game(response)
         else
           errors = errors_helper(result.reasons.values)
           p "Sorry, your sign up was not successful for these reasons: " + errors + ". If you're going to try to fight zombies, you may want to sharpen up those skills..."
@@ -42,7 +51,11 @@ module WWTD
       end
     end
 
-    def play_game()
+    def play_game(response)
+      if response
+      if response == 'exit'
+        p "Goodbye! Come back and try to defeat the zombies soon... brainnnnnnnssssssssss"
+      end
     end
 
     def errors_helper(errors_arr)
@@ -54,6 +67,20 @@ module WWTD
       result.slice!(-4, 5)
     end
 
+    def game_intro
+      p "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out, causing perfectly normal people to turn into, well for lack of a better word: zombies.
+       Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure. It only took around 9 months - thank god.
+       Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours. As such, everyone carries at
+       one vial on them at all times. If you inject the medicine within the alloted time frame, it has thus far proven to be effective at stopping ZV."
+      p "You currently work at a major hospital in the area as a pharmaceutical tech. Today is your first full day off in awhile, and you've planned to take
+       full advantage of that by sleeping in at home."
+      p "Damn. Your cell phone is ringing, threatening to make you get up if you choose to answer it. It's probably just work anyways, and who wants to talk to their boss on their day off?"
+    end
+
+    def display_room_desc(room_id)
+      room = WWTD.db.get_room(room_id)
+      p "Current room: " + room.description
+    end
   end
 end
 

@@ -1,4 +1,4 @@
-require_relative '../lib/wwtd/wwtd.rb'
+require_relative '../lib/wwtd.rb'
 
 # Creating World
 # Rooms

@@ -3,8 +3,8 @@ require 'ostruct'
 module WWTD
   class Command
     # Convenience method that lets us call `.run` directly on the class
-    def self.run(inputs)
-      self.new.run(inputs)
+    def self.run(*inputs)
+      self.new.run(*inputs)
     end
 
     def failure(error, data={})

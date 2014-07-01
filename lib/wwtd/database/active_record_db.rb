@@ -9,10 +9,10 @@ module WWTD
 
   class ActiveRecordDatabase
     def initialize
-      ActiveRecord::Base.establish_connection(
-      :adapter => 'postgresql',
-      :database => 'walking_with_the_dead_test'
-      )
+      config_path = File.expand_path('../../../../db/config.yml', __FILE__)
+      config = YAML.load_file(config_path)
+      app_env = ENV['DB_ENV'] || 'development'
+      ActiveRecord::Base.establish_connection(config[app_env])
     end
 
     # Move specific class methods to other files
