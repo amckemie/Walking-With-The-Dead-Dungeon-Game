@@ -6,8 +6,9 @@ describe WWTD::EnterRoom do
     @quest = db.create_quest(name: 'Quest Test (haha)')
     room1 = db.create_room(name: 'Bedroom', description: 'test', quest_id: 0, canE: false)
     @room2 = db.create_room(name: 'Kitchen', description: 'room with food', south: room1.id, quest_id: @quest.id, start_new_quest: true)
+    @room3 = db.create_room(name: 'New Room', description: 'eff these tests', east: room1.id, quest_id: @quest.id)
     @locked_room = db.create_room(name: "secret room", description: "locked room", west: room1.id, quest_id: @quest.id)
-    @updated_room1 = db.update_room(room1.id, north: @room2.id, east: @locked_room.id)
+    @updated_room1 = db.update_room(room1.id, north: @room2.id, east: @locked_room.id, west: @room3.id)
     @player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player", room_id: @updated_room1.id)
   end
 
@@ -52,29 +53,18 @@ describe WWTD::EnterRoom do
   end
 
   describe 'Check for new quest' do
-    xit "returns new_quest? true if the room is supposed to start a new quest" do
-      result = subject.run(@updated_room1, @player)
+    it "returns new_quest? true if the room is supposed to start a new quest" do
+      result = subject.run('north', @player)
+      expect(result.success?).to eq(true)
+      expect(result.room.id).to eq(@room2.id)
       expect(result.start_new_quest?).to eq(true)
     end
 
-    xit "returns new_quest? falase if the room is not supposed to start a new quest" do
-      result2 = subject.run(@room2, @player)
-      expect(result2.start_new_quest?).to eq(false)
-    end
-  end
-
-  describe 'creating new quests' do
-    xit 'creates a new quest for the player if the room has returns true for new_quest?' do
-      result = subject.run(@updated_room1, @player)
-      expect(result.quest_progress.class).to eq(WWTD::QuestProgress)
-      expect(result.quest_progress.complete).to eq(false)
-      expect(result.quest_progress.player_id).to eq(@player)
-      expect(result.quest_progress.quest_id).to eq(@quest.id)
-    end
-
-    xit 'does not create a new quest if the room returns false for new_quest?' do
-      result = subject.run(@room2, @player)
-      expect(result.quest_progress).to eq(false)
+    it "returns new_quest? falase if the room is not supposed to start a new quest" do
+      result = subject.run('west', @player)
+      expect(result.success?).to eq(true)
+      expect(result.room.id).to eq(@room3.id)
+      expect(result.start_new_quest?).to eq(false)
     end
   end
 end

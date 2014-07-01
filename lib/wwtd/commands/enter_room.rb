@@ -9,7 +9,8 @@ module WWTD
         if room.north && room.canN
           new_room = WWTD.db.get_room(room.north)
           new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
-          return success :player => new_player, :room => new_room
+          is_new_quest = start_new_quest?(new_room, player)
+          return success :player => new_player, :room => new_room, :start_new_quest? => is_new_quest
         elsif !room.north
           return failure("Silly you. There is nothing there; You can't go that way")
         else
@@ -19,7 +20,8 @@ module WWTD
         if room.south && room.canS
           new_room = WWTD.db.get_room(room.south)
           new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
-          return success :player => new_player, :room => new_room
+          is_new_quest = start_new_quest?(new_room, player)
+          return success :player => new_player, :room => new_room, :start_new_quest? => is_new_quest
         elsif !room.south
           return failure("Silly you. There is nothing there; You can't go that way")
         else
@@ -29,7 +31,8 @@ module WWTD
         if room.east && room.canE
           new_room = WWTD.db.get_room(room.east)
           new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
-          return success :player => new_player, :room => new_room
+          is_new_quest = start_new_quest?(new_room, player)
+          return success :player => new_player, :room => new_room, :start_new_quest? => is_new_quest
         elsif !room.east
           return failure("Silly you. There is nothing there; You can't go that way")
         else
@@ -39,7 +42,8 @@ module WWTD
         if room.west && room.canW
           new_room = WWTD.db.get_room(room.west)
           new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
-          return success :player => new_player, :room => new_room
+          is_new_quest = start_new_quest?(new_room, player)
+          return success :player => new_player, :room => new_room, :start_new_quest? => is_new_quest
         elsif !room.west
           return failure("Silly you. There is nothing there; You can't go that way")
         else
@@ -49,12 +53,15 @@ module WWTD
         return failure("Sorry, that is not a known direction. Which way do you want to go?")
       end
 
-      # if room.start_new_quest
-      #   qp = WWTD.db.create_quest_progress(quest_id: room.quest_id, player_id: player_id, room_id: room.id)
-      #   return success :start_new_quest? => true, :quest_progress => qp
-      # else
-      #   return success :start_new_quest? => false, :quest_progress => false
-      # end
+    end
+
+    def start_new_quest?(room, player)
+      if room.start_new_quest
+        WWTD.db.create_quest_progress(quest_id: room.quest_id, player_id: player.id, room_id: room.id)
+        return true
+      else
+        return false
+      end
     end
   end
 end
