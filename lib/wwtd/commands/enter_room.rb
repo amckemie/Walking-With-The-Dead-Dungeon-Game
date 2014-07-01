@@ -2,12 +2,13 @@ require 'ostruct'
 
 module WWTD
   class EnterRoom < Command
-    def run(dir, room, player_id)
+    def run(dir, player)
       dir.downcase!
-
+      room = WWTD.db.get_room(player.room_id)
       if dir == 'north' || dir == 'n'
         if room.north && room.canN
-          return true
+
+          return success
         elsif !room.north
           return failure("Silly you. There is nothing there; You can't go that way")
         else
