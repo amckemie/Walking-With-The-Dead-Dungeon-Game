@@ -43,13 +43,14 @@ describe WWTD::ActiveRecordDatabase do
       db.change_quest_data(quest_2.id, save_friend: false)
       updated2 = db.get_quest(quest_2.id)
       expect(updated2.data.keys).to eq(["have_backpack", "save_friend"])
-    end
+      end
     end
 
     it 'can be retrieved by id' do
       retrieved_quest = db.get_quest(quest_1.id)
       expect(retrieved_quest.class).to eq(WWTD::Quest)
       expect(retrieved_quest.name).to eq('the holy grail')
+      expect(retrieved_quest.data).to be_a(Hash)
     end
 
     it 'can be updated' do
@@ -469,8 +470,8 @@ describe WWTD::ActiveRecordDatabase do
   # questProgress join table
   describe 'questProgress' do
     before(:each) do
-      @quest_progress = db.create_quest_progress(quest_id: quest_1.id, player_id: player_1.id, complete: false, data: {answer_phone: false, enter_lr: false})
-      db.create_quest_progress(quest_id: quest_2.id, player_id: player_1.id, complete: false, data: {kill_zombie: true})
+      @quest_progress = db.create_quest_progress(quest_id: quest_1.id, player_id: player_1.id, complete: false, data: JSON.parse(quest_1.data))
+      db.create_quest_progress(quest_id: quest_2.id, player_id: player_1.id, complete: false, data: JSON.parse(quest_2.data))
     end
     # make more specific about what record contains
     it 'creates a record of player progress with quest id, player id, a complete status, and critical quest data (converted to json in database)' do
@@ -488,7 +489,6 @@ describe WWTD::ActiveRecordDatabase do
       expect(quest_1_progress.complete). to eq(false)
       expect(quest_1_progress.data).to be_a(Hash)
       expect(quest_1_progress.data["answer_phone"]).to eq(false)
-      expect(quest_1_progress.data["enter_lr"]).to eq(false)
     end
 
     it 'returns all records for a player' do
@@ -527,7 +527,7 @@ describe WWTD::ActiveRecordDatabase do
       # add
       db.change_qp_data(player_1.id, quest_2.id, save_friend: false)
       updated2 = db.get_quest_progress(player_1.id, quest_2.id)
-      expect(updated2.data.keys).to eq(["kill_zombie", "save_friend"])
+      expect(updated2.data.keys).to eq(["have_backpack", "save_friend"])
     end
   end
   after(:each) do

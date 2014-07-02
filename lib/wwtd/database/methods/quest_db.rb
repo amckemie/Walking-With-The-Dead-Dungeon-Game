@@ -30,7 +30,7 @@ module WWTD
 
     def get_quest(q_id)
       ar_quest = Quest.find(q_id)
-      ar_quest.data = parse_data_attribute(ar_quest)
+      ar_quest.data = parse_quest_data_attribute(ar_quest)
       build_quest(ar_quest)
     end
 
@@ -40,7 +40,7 @@ module WWTD
       return true if !Quest.exists?(q_id)
     end
 
-    def parse_data_attribute(quest)
+    def parse_quest_data_attribute(quest)
       JSON.parse(quest.data)
     end
   end

@@ -10,6 +10,7 @@ module WWTD
       end
 
       if dir == 'north' || dir == 'n'
+
         if room.north && room.canN
           new_room = WWTD.db.get_room(room.north)
           new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
@@ -66,7 +67,8 @@ module WWTD
 
     def start_new_quest?(room, player)
       if room.start_new_quest
-        WWTD.db.create_quest_progress(quest_id: room.quest_id, player_id: player.id, room_id: room.id)
+        quest = WWTD.db.get_quest(room.quest_id)
+        WWTD.db.create_quest_progress(quest_id: quest.id, player_id: player.id, room_id: room.id, data: quest.data)
         return true
       else
         return false
