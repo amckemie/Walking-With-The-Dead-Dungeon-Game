@@ -6,6 +6,7 @@ module WWTD
       WWTD::QuestProgress.new(quest_progress)
     end
 
+    # May want to convert data back to hash when building QP object
     def create_quest_progress(attrs)
       data = attrs[:data].to_json
       attrs[:data] = data
@@ -48,7 +49,7 @@ module WWTD
       build_quest_progress(ar_quest_progress)
     end
 
-    def change_data(player_id, quest_id, input)
+    def change_qp_data(player_id, quest_id, input)
       ar_quest_progress = get_quest_progress(player_id, quest_id)
       input.each do |key, value|
         ar_quest_progress.data[key] = value

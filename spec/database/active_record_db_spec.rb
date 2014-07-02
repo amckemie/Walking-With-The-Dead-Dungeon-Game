@@ -9,10 +9,10 @@ describe WWTD::ActiveRecordDatabase do
   let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'item', actions: 'take, eat', room_id: 1)}
   let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing", actions: 'take, stab, cut', parent_item: item_1.id, room_id: kitchen.id)}
   let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', start_new_quest: true, north: kitchen.id, canW: false)}
-  let(:quest_1) {db.create_quest(name: 'the holy grail')}
+  let(:quest_1) {db.create_quest(name: 'the holy grail', data: {answer_phone: false})}
   let(:zombie_1) {db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
   let(:character_1) {db.create_character(name: 'Susie', description: "best friend", classification: 'person', quest_id: quest_1.id, room_id: kitchen.id)}
-  let(:quest_2) {db.create_quest(name: 'beat the zombie!')}
+  let(:quest_2) {db.create_quest(name: 'beat the zombie!', data: {have_backpack: false})}
   let(:room_item1) {db.create_room_item(player_id: player_1.id, quest_id: quest_1.id, room_id: kitchen.id, item_id: item_1.id)}
   let(:room_item2) {db.create_room_item(player_id: player_1.id, quest_id: quest_2.id, room_id: kitchen.id, item_id: weapon_1.id, parent_item_id: item_1.id)}
 
@@ -27,6 +27,23 @@ describe WWTD::ActiveRecordDatabase do
         expect(quest_1.id).to_not be_nil
         expect(quest_1.name).to eq('the holy grail')
       end
+
+      it 'has a data attribute that is inputted and accessed as a hash but stored as text in the db' do
+        expect(quest_1.data).to_not be_nil
+        expect(quest_1.data).to be_a(String)
+      end
+
+      xit 'can update and add new data' do
+      # update
+      db.change_quest_data(player_1.id, quest_1.id, answer_phone: true)
+      updated = db.get_quest_progress(player_1.id, quest_1.id)
+      expect(updated.data["answer_phone"]).to eq(true)
+
+      # add
+      db.change_quest_data(player_1.id, quest_2.id, save_friend: false)
+      updated2 = db.get_quest_progress(player_1.id, quest_2.id)
+      expect(updated2.data.keys).to eq(["kill_zombie", "save_friend"])
+    end
     end
 
     it 'can be retrieved by id' do
@@ -165,7 +182,6 @@ describe WWTD::ActiveRecordDatabase do
       expect(player_1).to be_a WWTD::PlayerNode
       expect(player_1.id).to_not be_nil
       expect(player_1.username).to eq('zombiekilla')
-      expect(player_1.password).to eq('eightletters')
       expect(player_1.description).to eq('a zombie killing machine')
       expect(player_1.strength).to eq(100)
       expect(player_1.dead).to eq(false)
@@ -176,7 +192,6 @@ describe WWTD::ActiveRecordDatabase do
       it 'retrieves a player' do
         retrieved_player = db.get_player(player_1.id)
         expect(retrieved_player.username).to eq('zombiekilla')
-        expect(retrieved_player.password).to eq('eightletters')
       end
 
       it 'returns nil if there is no player with that id' do
@@ -189,7 +204,6 @@ describe WWTD::ActiveRecordDatabase do
       it "retrieves a player by their username" do
         retrieved_player = db.get_player_by_username(player_1.username)
         expect(retrieved_player.username).to eq('zombiekilla')
-        expect(retrieved_player.password).to eq('eightletters')
       end
 
       it 'returns nil if there is no player with that username' do
@@ -202,7 +216,6 @@ describe WWTD::ActiveRecordDatabase do
       db.update_player(player_1.id, strength: 50)
       updated_player = db.get_player(player_1.id)
       expect(updated_player.username).to eq('zombiekilla')
-      expect(updated_player.password).to eq('eightletters')
       expect(updated_player.description).to eq('a zombie killing machine')
       expect(updated_player.strength).to eq(50)
       expect(updated_player.dead).to eq(false)
@@ -507,12 +520,12 @@ describe WWTD::ActiveRecordDatabase do
 
     it 'can update and add new data' do
       # update
-      db.change_data(player_1.id, quest_1.id, answer_phone: true)
+      db.change_qp_data(player_1.id, quest_1.id, answer_phone: true)
       updated = db.get_quest_progress(player_1.id, quest_1.id)
       expect(updated.data["answer_phone"]).to eq(true)
 
       # add
-      db.change_data(player_1.id, quest_2.id, save_friend: false)
+      db.change_qp_data(player_1.id, quest_2.id, save_friend: false)
       updated2 = db.get_quest_progress(player_1.id, quest_2.id)
       expect(updated2.data.keys).to eq(["kill_zombie", "save_friend"])
     end
