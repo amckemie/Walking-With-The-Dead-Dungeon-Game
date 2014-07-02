@@ -1,11 +1,14 @@
 require_relative '../lib/wwtd.rb'
 
 # Creating World
+quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {answer_phone: false, last_completed_action: 'Nothing'})
 # Rooms
 bedroom = WWTD.db.create_room(name: "Player's Bedroom",
                     description: "A cozy room that you don't see nearly enough of due to your demanding job at the hospital",
                     canS: false,
-                    canE: false
+                    canE: false,
+                    quest_id: quest1.id,
+                    start_new_quest: true
                     )
 
 bathroom = WWTD.db.create_room(name: "Player's Bathroom",
@@ -13,7 +16,8 @@ bathroom = WWTD.db.create_room(name: "Player's Bathroom",
                     west: bedroom.id,
                     canS: false,
                     canN: false,
-                    canW: false
+                    canW: false,
+                    quest_id: quest1.id
                     )
 
 living_room = WWTD.db.create_room(name: "Player's Living Room",
@@ -21,14 +25,12 @@ living_room = WWTD.db.create_room(name: "Player's Living Room",
                     south: bedroom.id,
                     canN: false,
                     canE: false,
-                    canW: false
+                    canW: false,
+                    quest_id: quest1.id
                     )
 
 
 WWTD.db.update_room(bedroom.id, west: bathroom.id, north: living_room.id)
-
-# Quests
-quest1 = WWTD.db.create_quest(name: 'Quest 1')
 
 # Characters
 WWTD.db.create_character(name: "HOLY SHIT! IT'S A REAL ZOMBIE AGAIN!",

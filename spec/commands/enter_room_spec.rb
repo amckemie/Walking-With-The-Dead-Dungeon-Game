@@ -5,7 +5,7 @@ describe WWTD::EnterRoom do
   before(:each) do
     db.clear_tables
     @quest = db.create_quest(name: 'Quest Test (haha)', data: {answer_phone: true})
-    @room1 = db.create_room(name: 'Bedroom', description: 'test', quest_id: 0, canE: false, start_new_quest: true)
+    @room1 = db.create_room(name: 'Bedroom', description: 'test', quest_id: @quest.id, canE: false, start_new_quest: true)
     @room2 = db.create_room(name: 'Kitchen', description: 'room with food', south: @room1.id, quest_id: @quest.id, start_new_quest: true)
     @room3 = db.create_room(name: 'New Room', description: 'eff these tests', east: @room1.id, quest_id: @quest.id)
     @locked_room = db.create_room(name: "secret room", description: "locked room", west: @room1.id, quest_id: @quest.id)
