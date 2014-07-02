@@ -33,16 +33,16 @@ describe WWTD::ActiveRecordDatabase do
         expect(quest_1.data).to be_a(String)
       end
 
-      xit 'can update and add new data' do
+      it 'can update and add new data' do
       # update
-      db.change_quest_data(player_1.id, quest_1.id, answer_phone: true)
-      updated = db.get_quest_progress(player_1.id, quest_1.id)
+      db.change_quest_data(quest_1.id, answer_phone: true)
+      updated = db.get_quest(quest_1.id)
       expect(updated.data["answer_phone"]).to eq(true)
 
       # add
-      db.change_quest_data(player_1.id, quest_2.id, save_friend: false)
-      updated2 = db.get_quest_progress(player_1.id, quest_2.id)
-      expect(updated2.data.keys).to eq(["kill_zombie", "save_friend"])
+      db.change_quest_data(quest_2.id, save_friend: false)
+      updated2 = db.get_quest(quest_2.id)
+      expect(updated2.data.keys).to eq(["have_backpack", "save_friend"])
     end
     end
 
