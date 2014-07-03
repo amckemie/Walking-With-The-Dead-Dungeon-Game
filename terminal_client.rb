@@ -17,8 +17,10 @@ module WWTD
       if input == 'sign in'
         result = WWTD::SignIn.new.run(username: un, password: pw)
         if result.success?
-          # send to run method and run current room's description
-
+          current_quest = WWTD.db.get_latest_quest(result.player.id)
+          display_room_desc(current_quest.room_id)
+          response = ask(" ")
+          check_user_input(response)
         else
           errors = errors_helper(result.reasons.values)
           p "Sorry. Your log-in was not successful for these reasons: " + errors
@@ -44,7 +46,7 @@ module WWTD
           login(response)
         end
       elsif input == 'exit'
-        p "Scared of zombies I see...Well maybe next time you'll muster the courage to play."
+        p "Scared of zombies I see...Well maybe next time you'll muster up the courage to play."
       else
         response = ask("I'm sorry, I don't recognize that command. Please type sign in or sign up to play or exit to leave the game.")
         login(response)
@@ -70,12 +72,11 @@ module WWTD
       elsif response.include?('help')
         help_menu
         continue_game
+      elsif response == 'exit'
+        p "Goodbye! Come back and try to defeat the zombies soon... brainnnnnnnssssssssss"
       else
         response = ask("Speak English why dontcha? What is it that you want to do? ")
         check_user_input(response)
-      end
-      if response == 'exit'
-        p "Goodbye! Come back and try to defeat the zombies soon... brainnnnnnnssssssssss"
       end
     end
 
@@ -89,11 +90,9 @@ module WWTD
     end
 
     def game_intro
-      p "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out, causing perfectly normal people to turn into, well for lack of a better word: zombies. Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure. It only took around 9 months - thank god.
-       Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours. As such, everyone carries at
+      p "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out, causing perfectly normal people to turn into, well for lack of a better word: zombies. Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure. It only took around 9 months - thank god. Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours. As such, everyone carries at
        one vial on them at all times. If you inject the medicine within the alloted time frame, it has thus far proven to be effective at stopping ZV."
-      p "You currently work at a major hospital in the area as a pharmaceutical tech. Today is your first full day off in awhile, and you've planned to take
-       full advantage of that by sleeping in at home."
+      p "You currently work at a major hospital in the area as a pharmaceutical tech. Today is your first full day off in awhile, and you've planned to take full advantage of that by sleeping in at home."
       p "Damn. Your cell phone is ringing, threatening to make you get up if you choose to answer it. It's probably just work anyways, and who wants to talk to their boss on their day off?"
     end
 
