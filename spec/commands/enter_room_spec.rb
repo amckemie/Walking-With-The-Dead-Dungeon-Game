@@ -11,6 +11,13 @@ describe WWTD::EnterRoom do
     @locked_room = db.create_room(name: "secret room", description: "locked room", west: @room1.id, quest_id: @quest.id)
     @updated_room1 = db.update_room(@room1.id, north: @room2.id, east: @locked_room.id, west: @room3.id)
     @player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player", room_id: @updated_room1.id)
+    @cell = db.create_item(classification: 'item',
+                                name: 'Your cell phone',
+                                description: "An iPhone that's been dropped nearly one too many times",
+                                actions: 'answer, pick up, call',
+                                room_id: @room1.id
+                                )
+    db.create_quest_item(item_id: @cell.id, room_id: @room1.id, quest_id: @quest.id)
   end
 
   describe 'move to new room' do
@@ -75,6 +82,16 @@ describe WWTD::EnterRoom do
       expect(result.success?).to eq(true)
       expect(result.room.id).to eq(@room1.id)
       expect(result.start_new_quest?).to eq(true)
+    end
+
+    it 'adds cell phone to a persons inventory at the start of the game' do
+      player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player")
+      result = subject.run('start', player)
+      expect(result.success?).to eq(true)
+
+      inventory = db.get_player_inventory(result.player.id)
+      expect(inventory.count).to eq(1)
+      expect(inventory[0].name).to eq("Your cell phone")
     end
   end
 

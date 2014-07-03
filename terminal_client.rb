@@ -83,10 +83,12 @@ module WWTD
     end
 
     def play_game(room_id)
-      # case room_id
-      # when
-      # else
-      # end
+      case room_id
+      when 1
+        # if phone answered
+      when 2
+      else
+      end
     end
 
     def errors_helper(errors_arr)

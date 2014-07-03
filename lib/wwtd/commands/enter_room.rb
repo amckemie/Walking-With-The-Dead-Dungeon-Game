@@ -72,6 +72,7 @@ module WWTD
         WWTD.db.create_quest_progress(quest_id: quest.id, player_id: player.id, room_id: room.id, data: quest.data, complete: false)
         insert_player_quest_characters(player.id, quest.id)
         insert_player_room_items(player.id, quest.id)
+        # WWTD.create_inventory()
         return true
       else
         return false

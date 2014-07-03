@@ -371,8 +371,8 @@ describe WWTD::ActiveRecordDatabase do
     before(:each) do
       room_item1
       room_item2
-      @inventory_item = db.create_inventory(room_item1)
-      @inventory_item2 = db.create_inventory(room_item2)
+      @inventory_item = db.create_inventory(player_1.id, kitchen.id, item_1.id, quest_1.id)
+      @inventory_item2 = db.create_inventory(player_1.id, kitchen.id, weapon_1.id, quest_2.id)
     end
 
     describe 'createNewInventoryItem' do

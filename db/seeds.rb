@@ -2,7 +2,9 @@ require_relative '../lib/wwtd.rb'
 
 # Creating World
 quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {answer_phone: false, last_completed_action: 'Nothing'})
+
 # Rooms
+# Room ID 1
 bedroom = WWTD.db.create_room(name: "Player's Bedroom",
                     description: "A cozy room that you don't see nearly enough of due to your demanding job at the hospital",
                     canS: false,
@@ -10,7 +12,7 @@ bedroom = WWTD.db.create_room(name: "Player's Bedroom",
                     quest_id: quest1.id,
                     start_new_quest: true
                     )
-
+# Room ID 2
 bathroom = WWTD.db.create_room(name: "Player's Bathroom",
                     description: "Just your average bathroom with an inviting shower, the basics (toothbrush, toothpaste, comb), and a toilet.",
                     west: bedroom.id,
@@ -19,7 +21,7 @@ bathroom = WWTD.db.create_room(name: "Player's Bathroom",
                     canW: false,
                     quest_id: quest1.id
                     )
-
+# Room ID 3
 living_room = WWTD.db.create_room(name: "Player's Living Room",
                     description: "Man, it's bright in your living room today. Guess you must have left the curtains open.",
                     south: bedroom.id,
