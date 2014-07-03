@@ -262,6 +262,12 @@ describe WWTD::ActiveRecordDatabase do
       expect(retrieved_item.name).to eq('apple')
     end
 
+    it 'gets the first item added to the db - which is a cellphone' do
+      cell = db.create_item(name: 'cell phone', description: "your cell phone", classification: 'item', actions: 'answer, call', room_id: 1)
+      first_item = db.get_first_item
+      expect(first_item.name).to eq(cell.name)
+    end
+
     it 'updates a item' do
       db.update_item(item_1.id, description: "gross wormy apple", actions: 'throw', room_id: nil)
       updated = db.get_item(item_1.id)

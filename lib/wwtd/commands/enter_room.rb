@@ -57,7 +57,9 @@ module WWTD
       elsif dir == 'start'
         new_room = WWTD.db.get_first_room
         new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
+        first_item = WWTD.db.get_first_item
         is_new_quest = start_new_quest?(new_room, player)
+        result = WWTD::AddToInventory.run(new_player, first_item)
         return success :player => new_player, :room => new_room, :start_new_quest? => is_new_quest
       else
         return failure("Sorry, that is not a known direction. Which way do you want to go?")
@@ -72,7 +74,6 @@ module WWTD
         WWTD.db.create_quest_progress(quest_id: quest.id, player_id: player.id, room_id: room.id, data: quest.data, complete: false)
         insert_player_quest_characters(player.id, quest.id)
         insert_player_room_items(player.id, quest.id)
-        # WWTD.create_inventory()
         return true
       else
         return false
