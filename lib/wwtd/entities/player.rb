@@ -1,7 +1,7 @@
 module WWTD
   class PlayerNode
-    attr_reader :id, :description, :inventory, :dead, :room_id, :password
-    attr_accessor :strength, :username
+    attr_reader :id, :description, :dead, :room_id, :password
+    attr_accessor :strength, :username, :inventory
 
     def initialize(input)
       @id = input[:id]
@@ -16,14 +16,6 @@ module WWTD
 
     def getBit
       @dead = true
-    end
-
-    def addToInventory(itemNode)
-      @inventory << itemNode
-    end
-
-    def removeFromInventory(itemNode)
-      @inventory.delete(itemNode)
     end
 
     def eat(food)

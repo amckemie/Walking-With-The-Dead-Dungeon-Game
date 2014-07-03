@@ -41,8 +41,7 @@ describe WWTD::PlayerNode do
 
   describe 'Inventory' do
     before(:each) do
-      player.addToInventory(apple)
-      player.addToInventory(apple2)
+      player.inventory = [apple, apple2]
     end
 
     it "has a method inInventory? that checks if an item is in a playerNode's inventory" do
@@ -50,22 +49,11 @@ describe WWTD::PlayerNode do
       expect(player.inInventory?(apple)).to eq(true)
       expect(player.inInventory?(apple3)).to eq(false)
     end
-
-    it "addToInventory adds an item to a playerNode's inventory array" do
-      expect(player.inventory.size).to eq(2)
-      expect(player.inventory).to eq([apple, apple2])
-    end
-
-    it "removes an item from a playerNode's inventory array" do
-      player.removeFromInventory(apple)
-      expect(player.inventory.size).to eq(1)
-      expect(player.inventory).to eq([apple2])
-    end
   end
 
   describe 'eat' do
     before(:each) do
-      player.addToInventory(apple)
+      player.inventory = [apple]
     end
 
     it "only allows a player to eat an item if it's in their inventory and returns true if the action was successful" do
@@ -99,8 +87,7 @@ describe WWTD::PlayerNode do
       @water = WWTD::ItemNode.new(id: 4, type: 'item', name: 'water', actions: ['drink', 'sip'])
       @juice = WWTD::ItemNode.new(id: 5, type: 'item', name: 'juice', actions: ['drink'])
       @coffee = WWTD::ItemNode.new(id: 6, type: 'item', name: 'coffee', actions: ['drink'])
-      player.addToInventory(@juice)
-      player.addToInventory(@water)
+      player.inventory = [@juice, @water]
       player.strength = 50
     end
 
