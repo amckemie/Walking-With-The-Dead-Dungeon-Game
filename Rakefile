@@ -17,3 +17,9 @@ namespace :db do
     require './db/seeds.rb'
   end
 end
+
+namespace :game do
+  task :start => ["db:drop", "db:create", "db:migrate", "db:seed"] do
+    puts "Database set up!"
+  end
+end

@@ -33,6 +33,7 @@ module WWTD
         if result.success?
           # Set current player in first room
           enter_room_result = WWTD::EnterRoom.run('start', result.player)
+          binding.pry
           @player = enter_room_result.player
           # binding.pry
           # print game introduction text
@@ -54,6 +55,7 @@ module WWTD
     end
 
     def check_user_input(response)
+      # possibly rewrite to be case statement
       response.downcase!
       # sanitize input: squeeze to get rid of extra white space, split, - only do this after the .include checks for specific words.
       # fight
@@ -78,6 +80,13 @@ module WWTD
         response = ask("Speak English why dontcha? What is it that you want to do? ")
         check_user_input(response)
       end
+    end
+
+    def play_game(room_id)
+      # case room_id
+      # when
+      # else
+      # end
     end
 
     def errors_helper(errors_arr)
