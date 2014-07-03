@@ -6,7 +6,7 @@ module WWTD
     def initialize
       @db = WWTD.db
       @player = nil #may not need this/may not be helpful
-      puts "Welcome to Walking with the Dead (name credits definitively go to Walking with the Dead and Robert Kirkman."
+      puts "Welcome to Walking with the Dead (name credits definitively go to the Walking Dead and Robert Kirkman."
       login_info = ask("Please enter sign in if you have played before and sign up if you are new")
       login(login_info)
     end
@@ -17,8 +17,9 @@ module WWTD
       if input == 'sign in'
         result = WWTD::SignIn.new.run(username: un, password: pw)
         if result.success?
+          @player = result.player
           current_quest = WWTD.db.get_latest_quest(result.player.id)
-          display_room_desc(current_quest.room_id)
+          display_room_name(current_quest.room_id)
           response = ask(" ")
           check_user_input(response)
         else
@@ -33,9 +34,7 @@ module WWTD
         if result.success?
           # Set current player in first room
           enter_room_result = WWTD::EnterRoom.run('start', result.player)
-          binding.pry
           @player = enter_room_result.player
-          # binding.pry
           # print game introduction text
           game_intro
           response = ask("What would you like to do? ")
@@ -56,30 +55,43 @@ module WWTD
 
     def check_user_input(response)
       # possibly rewrite to be case statement
+      # Sanitize basic command inputs
       response.downcase!
-      # sanitize input: squeeze to get rid of extra white space, split, - only do this after the .include checks for specific words.
-      # fight
-      # inventory
-      # move
-      # use items
-      # help
-      # where am i
+      response.squeeze(" ")
+
+      if response.include?('where am i')
+        # shows room name
+        display_room_name(@player.room_id)
+        continue_game
+      end
+
+      # break response into array
+      response = response.split(' ')
+
       if response.include?('inventory')
         inventory = WWTD.db.get_player_inventory(@player.id)
-        # list items?
-        p inventory
+        inventory.each do |item|
+          p item.name
+        end
         continue_game
-      elsif response.include?('fight')
-
+      elsif response.include?('look')
+        # shows room description
+        display_room_desc(@player.room_id)
+        continue_game
       elsif response.include?('help')
         help_menu
         continue_game
-      elsif response == 'exit'
-        p "Goodbye! Come back and try to defeat the zombies soon... brainnnnnnnssssssssss"
+      elsif response.first == 'quit'
+        p "Goodbye. Come back and try to defeat the zombies soon... brainnnnnnnssssssssss"
       else
-        response = ask("Speak English why dontcha? What is it that you want to do? ")
-        check_user_input(response)
+        p "I'm sorry, what was that? I didn't understand."
+        continue_game
       end
+
+      # sanitize input: squeeze to get rid of extra white space, split, - only do this after the .include checks for specific words.
+      # fight
+      # move
+      # use items
     end
 
     def play_game(room_id)
@@ -107,14 +119,25 @@ module WWTD
       p "Damn. Your cell phone is ringing, threatening to make you get up if you choose to answer it. It's probably just work anyways, and who wants to talk to their boss on their day off?"
     end
 
+    def display_room_name(room_id)
+      room = WWTD.db.get_room(room_id)
+      p "You are currently in: " + room.name
+    end
+
     def display_room_desc(room_id)
       room = WWTD.db.get_room(room_id)
-      p "Current room: " + room.description
+      p room.description
     end
 
     def help_menu
       p "I won't be of much help; This is a zombie eat zombie (ahem, person) world, and you have to figure things out for yourself."
-      p "I wil tell you that you can navigate your way around with the cardinal directions (for ex: North or N) and see what items you have on you by typing 'inventory'. God speed."
+      p "I will tell you the following though:"
+      p "You can navigate your way around with the cardinal directions (for ex: North or N)"
+      p "You can find out where you are by typing 'where am I'"
+      p "You can get a description of your location by typing 'look'"
+      p "You can see what items you have on you by typing 'inventory'."
+      p "To quit, type 'quit' "
+      p "God speed."
     end
 
     def continue_game

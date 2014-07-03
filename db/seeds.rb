@@ -1,12 +1,12 @@
 require_relative '../lib/wwtd.rb'
 
 # Creating World
-quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {answer_phone: false, last_completed_action: 'Nothing'})
+quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {answer_phone: nil, last_completed_action: 'Nothing'})
 
 # Rooms
 # Room ID 1
-bedroom = WWTD.db.create_room(name: "Player's Bedroom",
-                    description: "A cozy room that you don't see nearly enough of due to your demanding job at the hospital",
+bedroom = WWTD.db.create_room(name: "Your Bedroom",
+                    description: "It's a cozy room that is relatively small. Your dresser is in the far corner with a jacket tossed on top of it. There's a bedstand next to your bed with a few pictures on it, including one of you and your good friend Susie.",
                     canS: false,
                     canE: false,
                     quest_id: quest1.id,
@@ -14,7 +14,7 @@ bedroom = WWTD.db.create_room(name: "Player's Bedroom",
                     )
 # Room ID 2
 bathroom = WWTD.db.create_room(name: "Player's Bathroom",
-                    description: "Just your average bathroom with an inviting shower, the basics (toothbrush, toothpaste, comb), and a toilet.",
+                    description: "Just your average bathroom with an inviting shower, the basics (toothbrush, toothpaste, comb) laying on the counter, and a toilet.",
                     west: bedroom.id,
                     canS: false,
                     canN: false,
@@ -23,7 +23,7 @@ bathroom = WWTD.db.create_room(name: "Player's Bathroom",
                     )
 # Room ID 3
 living_room = WWTD.db.create_room(name: "Player's Living Room",
-                    description: "Man, it's bright in your living room today. Guess you must have left the curtains open.",
+                    description: "Man, it's bright in your living room today. Guess you must have left the curtains open. The TV, which hangs on the left wall is off, and your backpack is tossed in the corner near the door.",
                     south: bedroom.id,
                     canN: false,
                     canE: false,
@@ -108,7 +108,7 @@ tv = WWTD.db.create_item(classification: 'item',
                                 )
 backpack = WWTD.db.create_item(classification: 'item',
                                 name: 'backpack',
-                                description: "A trusty backpack that can fit a surprising number of calculus textbooks",
+                                description: "A trusty backpack that can fit a surprising number of medical books",
                                 actions: 'use, take, brush',
                                 room_id: living_room.id
                                 )
