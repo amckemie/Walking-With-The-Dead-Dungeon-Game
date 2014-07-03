@@ -8,6 +8,7 @@ module WWTD
     end
 
     def build_quest(quest)
+      quest.data = parse_quest_data_attribute(quest)
       WWTD::Quest.new(id: quest.id, name: quest.name, data: quest.data)
     end
 
@@ -30,7 +31,6 @@ module WWTD
 
     def get_quest(q_id)
       ar_quest = Quest.find(q_id)
-      ar_quest.data = parse_quest_data_attribute(ar_quest)
       build_quest(ar_quest)
     end
 

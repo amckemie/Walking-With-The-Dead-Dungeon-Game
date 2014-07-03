@@ -30,7 +30,7 @@ describe WWTD::ActiveRecordDatabase do
 
       it 'has a data attribute that is inputted and accessed as a hash but stored as text in the db' do
         expect(quest_1.data).to_not be_nil
-        expect(quest_1.data).to be_a(String)
+        expect(quest_1.data).to be_a(Hash)
       end
 
       it 'can update and add new data' do
@@ -481,8 +481,8 @@ describe WWTD::ActiveRecordDatabase do
   # questProgress join table
   describe 'questProgress' do
     before(:each) do
-      @quest_progress = db.create_quest_progress(quest_id: quest_1.id, player_id: player_1.id, complete: false, data: JSON.parse(quest_1.data))
-      db.create_quest_progress(quest_id: quest_2.id, player_id: player_1.id, complete: false, data: JSON.parse(quest_2.data))
+      @quest_progress = db.create_quest_progress(quest_id: quest_1.id, player_id: player_1.id, complete: false, data: quest_1.data)
+      db.create_quest_progress(quest_id: quest_2.id, player_id: player_1.id, complete: false, data: quest_2.data)
     end
     # make more specific about what record contains
     it 'creates a record of player progress with quest id, player id, a complete status, and critical quest data (converted to json in database)' do
