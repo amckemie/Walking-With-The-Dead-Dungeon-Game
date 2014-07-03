@@ -26,6 +26,11 @@ module WWTD
       create_item_objects(items)
     end
 
+    def room_item_exists?(player_id, room_id, item_id)
+      result = RoomItem.where('player_id = ? AND room_id = ? AND item_id = ?', player_id, room_id, item_id)
+      result.length > 0 ? true : false
+    end
+
     def delete_player_room_item(player_id, room_id, item_id)
       item = RoomItem.where('player_id = ? AND room_id = ? AND item_id = ?', player_id, room_id, item_id).first
       item.destroy

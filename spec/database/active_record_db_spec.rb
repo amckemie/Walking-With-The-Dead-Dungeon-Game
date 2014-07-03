@@ -217,6 +217,7 @@ describe WWTD::ActiveRecordDatabase do
       db.update_player(player_1.id, strength: 50)
       updated_player = db.get_player(player_1.id)
       expect(updated_player.username).to eq('zombiekilla')
+      expect(updated_player.id).to eq(player_1.id)
       expect(updated_player.description).to eq('a zombie killing machine')
       expect(updated_player.strength).to eq(50)
       expect(updated_player.dead).to eq(false)
@@ -464,6 +465,16 @@ describe WWTD::ActiveRecordDatabase do
       db.delete_all_player_items(player_1.id)
       items = db.get_all_player_items(player_1.id)
       expect(items.size).to eq(0)
+    end
+
+    # This may be bad practice??
+    it 'returns true if a record for a player, item, and room exists, false otherwise' do
+      updated_player = db.update_player(player_1.id, room_id: kitchen.id)
+      result = db.room_item_exists?(player_1.id, updated_player.room_id, item_1.id)
+      expect(result).to eq(true)
+
+      result = db.room_item_exists?(player_1.id, player_1.room_id, item_1.id)
+      expect(result).to eq(false)
     end
   end
 
