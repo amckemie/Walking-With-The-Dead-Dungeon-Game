@@ -14,6 +14,11 @@ module WWTD
       build_item(ar_item)
     end
 
+    def get_first_item
+      ar_item = Item.first
+      build_item(ar_item)
+    end
+
     def update_item(item_id, data)
       ar_item = Item.find(item_id)
       ar_item.update(data)
