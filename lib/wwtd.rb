@@ -33,6 +33,8 @@ require_relative './wwtd/commands/sign_up.rb'
 require_relative './wwtd/commands/enter_room.rb'
 require_relative './wwtd/commands/add_to_inventory.rb'
 
+require_relative './wwtd/modules/start_new_quest.rb'
+
 # require_relative './commands/unlock_door.rb'
 
 

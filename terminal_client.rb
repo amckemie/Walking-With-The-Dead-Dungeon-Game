@@ -6,7 +6,7 @@ module WWTD
   class TerminalClient
     def initialize
       @db = WWTD.db
-      @player = nil #may not need this/may not be helpful
+      @player = nil
       puts "Welcome to Walking with the Dead (name credits definitively go to the Walking Dead and Robert Kirkman.".white.on_light_blue
       login_info = ask("Please enter sign in if you have played before and sign up if you are new")
       login(login_info)
