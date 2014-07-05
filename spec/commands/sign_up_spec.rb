@@ -11,12 +11,19 @@ describe WWTD::SignUp do
     @room1 = db.create_room(name: 'Bedroom', description: 'test', quest_id: @quest.id, canE: false, start_new_quest: true)
     @char = db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: @quest.id, room_id: @room1.id, strength: 20)
     @cell = db.create_item(classification: 'item',
-                                name: 'Your cell phone',
-                                description: "An iPhone that's been dropped nearly one too many times",
-                                actions: 'answer, pick up, call',
-                                room_id: @room1.id
-                                )
+                          name: 'Your cell phone',
+                          description: "An iPhone that's been dropped nearly one too many times",
+                          actions: 'answer, pick up, call',
+                          room_id: @room1.id
+                          )
+    @sword = db.create_item(classification: 'weapon',
+                            name: 'Sword',
+                            description: "sharp and pointy",
+                            actions: 'stab, cut',
+                            room_id: @room1.id
+                            )
     db.create_quest_item(item_id: @cell.id, room_id: @room1.id, quest_id: @quest.id)
+    db.create_quest_item(item_id: @sword.id, room_id: @room1.id, quest_id: @quest.id)
   end
 
   it 'exists' do
@@ -93,6 +100,11 @@ describe WWTD::SignUp do
     it 'adds records for the player in the roomItems table' do
       room_items = WWTD.db.get_quest_items_left(@result.player.id, @quest.id)
       expect(room_items.count).to eq(1)
+    end
+
+    it 'adds the cell phone to their inventory' do
+      inventory = WWTD.db.get_player_inventory(@result.player.id)
+      expect(inventory.count).to eq(1)
     end
   end
 end

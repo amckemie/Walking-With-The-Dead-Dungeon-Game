@@ -22,8 +22,13 @@ module WWTD
           password_digest = BCrypt::Password.create(password)
           params[:password_digest] = password_digest
           first_room = WWTD.db.get_first_room
+          # Creating player
           new_player = WWTD.db.create_player(username: params[:username], password: params[:password_digest], description: params[:description], room_id: first_room.id)
+          # Creating their first questProgress, roomItems, questCharacters, and unique rooms
           WWTD::StartNewQuest.start_new_quest?(first_room, new_player)
+          # Putting the cell phone in their inventory (first item)
+          first_item = WWTD.db.get_first_item
+          WWTD::AddToInventory.run(new_player, first_item)
           return success(:player => new_player, :message => "Player successfully signed up.")
         end
       end

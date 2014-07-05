@@ -14,7 +14,7 @@ module WWTD
 
     def login(input)
       if input == 'quit'
-        puts "Scared of zombies I see...Well maybe next time you'll muster up the courage to play.".white.on_light_red
+        puts "Scared of zombies I see...Well maybe next time you'll muster up the courage to play.".white.on_light_red.bold
       else
         un = ask("Enter your username: ")
         pw = ask("Enter your password:  ") { |q| q.echo = '*' }
@@ -36,9 +36,8 @@ module WWTD
           desc = ask("Enter a description for your player: ")
           result = WWTD::SignUp.new.run(username: un, password: pw, description: desc)
           if result.success?
-            # Set current player in first room
-            enter_room_result = WWTD::EnterRoom.run('start', result.player)
-            @player = enter_room_result.player
+            # Set @player to new player
+            @player = result.player
             # print game introduction text
             game_intro
             response = ask("What would you like to do? ")
@@ -102,9 +101,9 @@ module WWTD
         help_menu
         continue_game
       elsif response.first == 'quit'
-        p "Goodbye. Come back and try to defeat the zombies soon... brainnnnnnnssssssssss"
+        puts "Goodbye. Come back and try to defeat the zombies soon... brainnnnnnnssssssssss".white.on_light_red.bold
       else
-        p "I'm sorry, what was that? I didn't understand."
+        puts "I'm sorry, what was that? I didn't understand.".white.on_cyan
         continue_game
       end
 
@@ -135,30 +134,30 @@ module WWTD
     end
 
     def game_intro
-      p "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out, causing perfectly normal people to turn into, well for lack of a better word: zombies. Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure. It only took around 9 months - thank god. Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours. As such, everyone carries at least one vial on them at all times. If you inject the medicine within the alloted time frame, it has thus far proven to be effective at stopping ZV."
-      p "You currently work at a major hospital in the area as a pharmaceutical tech. Today is your first full day off in awhile, and you've planned to take full advantage of that by sleeping in at home."
-      p "Damn. Your cell phone is ringing, threatening to make you get up if you choose to answer it. It's probably just work anyways, and who wants to talk to their boss on their day off?"
+      puts "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out, causing perfectly normal people to turn into, well for lack of a better word: zombies. Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure. It only took around 9 months - thank god. Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours. As such, everyone carries at least one vial on them at all times. If you inject the medicine within the alloted time frame, it has thus far proven to be effective at stopping ZV.".white.on_light_blue
+      puts "You currently work at a major hospital in the area as a pharmaceutical tech. Today is your first full day off in awhile, and you've planned to take full advantage of that by sleeping in at home.".white.on_light_blue
+      puts "Damn. Your cell phone is ringing, threatening to make you get up if you choose to answer it. It's probably just work anyways, and who wants to talk to their boss on their day off?".white.on_light_blue
     end
 
     def display_room_name(room_id)
       room = WWTD.db.get_room(room_id)
-      p "You are currently in: " + room.name
+      puts "You are currently in: ".white.on_light_green + room.name.white.on_light_green
     end
 
     def display_room_desc(room_id)
       room = WWTD.db.get_room(room_id)
-      p room.description
+      puts room.description.white.on_light_green
     end
 
     def help_menu
-      p "I won't be of much help; This is a zombie eat zombie (ahem, person) world, and you have to figure things out for yourself."
-      p "I will tell you the following though:"
-      p "You can navigate your way around with the cardinal directions (for ex: North or N)"
-      p "You can find out where you are by typing 'where am I'"
-      p "You can get a description of your location by typing 'look'"
-      p "You can see what items you have on you by typing 'inventory'."
-      p "To quit, type 'quit' "
-      p "God speed."
+      puts "I won't be of much help; This is a zombie eat zombie (ahem, person) world, and you have to figure things out for yourself.".white.on_light_blue
+      puts "I will tell you the following though:".white.on_light_blue
+      puts "You can navigate your way around with the cardinal directions (for ex: North or N)".white.on_light_blue
+      puts "You can find out where you are by typing 'where am I'".white.on_light_blue
+      puts "You can get a description of your location by typing 'look'".white.on_light_blue
+      puts "You can see what items you have on you by typing 'inventory'.".white.on_light_blue
+      puts "To quit, type 'quit' ".white.on_light_blue
+      puts "God speed.".white.on_light_blue
     end
 
     def continue_game
