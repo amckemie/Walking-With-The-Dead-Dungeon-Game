@@ -10,6 +10,7 @@ module WWTD
         WWTD.db.create_quest_progress(quest_id: quest.id, player_id: player.id, room_id: room.id, data: quest.data, complete: false)
         insert_player_quest_characters(player.id, quest.id)
         insert_player_room_items(player.id, quest.id)
+        insert_player_rooms(player.id, quest.id)
         return true
       else
         return false
@@ -27,6 +28,22 @@ module WWTD
       items = WWTD.db.get_items_for_quest(quest_id)
       items.each do |item|
         WWTD.db.create_room_item(quest_id: quest_id, player_id: player_id, room_id: item.room_id, item_id: item.id)
+      end
+    end
+
+    def self.insert_player_rooms(player_id, quest_id)
+      rooms = WWTD.db.get_all_quest_rooms(quest_id)
+      rooms.each do |room|
+      WWTD.db.create_player_room(player_id: player_id,
+                                quest_id: quest_id,
+                                room_id: room.id,
+                                canN: room.canN,
+                                canE: room.canE,
+                                canS: room.canS,
+                                canW: room.canW,
+                                start_new_quest: room.start_new_quest,
+                                description: room.description
+                                )
       end
     end
   end

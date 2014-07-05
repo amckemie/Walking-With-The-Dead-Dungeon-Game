@@ -81,4 +81,12 @@ describe WWTD::StartNewQuest do
       expect(quest_characters.count).to eq(2)
     end
   end
+
+  describe 'creating player rooms' do
+    it 'creates a record for a player for each room in the new quest' do
+      WWTD::StartNewQuest.start_new_quest?(@room1, @player)
+      expect(db.get_player_room(@player.id, @room1.id)).to_not be_nil
+      expect(db.get_player_room(@player.id, @room2.id)).to_not be_nil
+    end
+  end
 end

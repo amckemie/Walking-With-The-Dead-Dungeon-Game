@@ -578,6 +578,7 @@ describe WWTD::ActiveRecordDatabase do
       expect(@player_room.canS).to eq(true)
       expect(@player_room.start_new_quest).to eq(false)
       expect(@player_room.description).to eq(kitchen.description)
+      expect(db.get_player_room(player_1.id, 9999)).to eq(nil)
     end
 
     it 'updates a room in the playerRoom table' do
