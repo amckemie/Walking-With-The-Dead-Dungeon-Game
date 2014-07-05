@@ -8,7 +8,7 @@ module WWTD
       if room.start_new_quest && !quest_progress
         puts "Congratulations! You've made it to the start of a new quest.".white.on_light_blue
         WWTD.db.create_quest_progress(quest_id: quest.id, player_id: player.id, room_id: room.id, data: quest.data, complete: false)
-        # insert_player_quest_characters(player.id, quest.id)
+        insert_player_quest_characters(player.id, quest.id)
         insert_player_room_items(player.id, quest.id)
         return true
       else

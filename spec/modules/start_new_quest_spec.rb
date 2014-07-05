@@ -71,8 +71,6 @@ describe WWTD::StartNewQuest do
     before(:each) do
       @char = db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: @quest.id, room_id: @room1.id, strength: 20)
       @char2 = db.create_character(name: 'susie', classification: 'character', description: 'best friend', quest_id: @quest.id, room_id: @room2.id)
-      db.create_quest_character(player_id: @player.id, character_id: @char.id, quest_id: @quest.id, room_id: @room1.id)
-      db.create_quest_character(player_id: @player.id, character_id: @char2.id, quest_id: @quest.id, room_id: @room2.id)
     end
 
     it 'creates a record for every character in the quest for the player' do
