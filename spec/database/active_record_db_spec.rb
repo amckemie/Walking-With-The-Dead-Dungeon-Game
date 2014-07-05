@@ -551,6 +551,46 @@ describe WWTD::ActiveRecordDatabase do
       expect(updated2.data.keys).to eq(["have_backpack", "save_friend"])
     end
   end
+
+  describe 'playerRooms' do
+    before(:each) do
+      db.create_player_room(player_id: player_1.id, room_id: kitchen.id, description: kitchen.description, quest_id: kitchen.quest_id, canN: false)
+      @player_room = db.get_player_room(player_1.id, kitchen.id)
+    end
+
+    it 'adds a record to the playerRoom table and ' do
+      expect(@player_room.id).to_not be_nil
+    end
+
+    it 'gets a room for a player from the table' do
+      expect(@player_room.room_id).to eq(kitchen.id)
+      expect(@player_room.canN).to eq(false)
+      expect(@player_room.canS).to eq(true)
+      expect(@player_room.start_new_quest).to eq(false)
+      expect(@player_room.description).to eq(kitchen.description)
+    end
+
+    it 'updates a room in the playerRoom table' do
+      db.update_player_room(player_1.id, kitchen.id, {canN: true})
+      updated_player_room = db.get_player_room(player_1.id, kitchen.id)
+      expect(updated_player_room.room_id).to eq(kitchen.id)
+      expect(updated_player_room.canN).to eq(true)
+      expect(updated_player_room.canS).to eq(true)
+
+      # test updating multiple attributes at once
+      db.update_player_room(player_1.id, kitchen.id, {canS: false, description: 'A formerly bright room that is now splattered with blood'})
+      updated_2 = db.get_player_room(player_1.id, kitchen.id)
+      expect(updated_2.room_id).to eq(kitchen.id)
+      expect(updated_2.canS).to eq(false)
+      expect(updated_2.canW).to eq(true)
+      expect(updated_2.description).to eq('A formerly bright room that is now splattered with blood')
+    end
+
+    it 'removes a record from the playerRoom table' do
+      db.delete_player_room(player_1.id, kitchen.id)
+      expect(db.get_player_room(player_1.id, kitchen.id)).to eq(nil)
+    end
+  end
   after(:each) do
     db.clear_tables
   end

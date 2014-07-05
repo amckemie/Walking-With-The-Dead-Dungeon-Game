@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140705111611) do
+ActiveRecord::Schema.define(version: 20140705113234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20140705111611) do
     t.boolean "canS",            default: true
     t.boolean "canW",            default: true
     t.boolean "start_new_quest", default: false
+    t.text    "description"
   end
 
   add_index "player_rooms", ["player_id", "room_id"], name: "index_player_rooms_on_player_id_and_room_id", using: :btree

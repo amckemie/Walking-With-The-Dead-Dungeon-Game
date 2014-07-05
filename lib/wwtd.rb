@@ -22,6 +22,7 @@ require_relative './wwtd/database/methods/quest_characters_db.rb'
 require_relative './wwtd/database/methods/inventory_db.rb'
 require_relative './wwtd/database/methods/room_item_db.rb'
 require_relative './wwtd/database/methods/quest_progress_db.rb'
+require_relative './wwtd/database/methods/player_room_db.rb'
 
 require_relative './wwtd/commands/use_case_validations.rb'
 require_relative './wwtd/commands/command_class.rb'
