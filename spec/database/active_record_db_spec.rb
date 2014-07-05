@@ -8,8 +8,8 @@ describe WWTD::ActiveRecordDatabase do
   let(:kitchen) {db.create_room(name: 'kitchen', quest_id: quest_2.id, description: 'a bright sunny room with food')}
   let(:item_1) {db.create_item(name: 'apple', description: "yummy red apple", classification: 'item', actions: 'take, eat', room_id: 1)}
   let(:weapon_1) {db.create_item(name: 'sword', classification: 'weapon', description: "a sharp pointy thing", actions: 'take, stab, cut', parent_item: item_1.id, room_id: kitchen.id)}
-  let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', start_new_quest: true, north: kitchen.id, canW: false)}
   let(:quest_1) {db.create_quest(name: 'the holy grail', data: {answer_phone: false})}
+  let(:bedroom) {db.create_room(name: 'bedroom', description: 'a place to sleep', quest_id: quest_1.id, start_new_quest: true, north: kitchen.id, canW: false)}
   let(:zombie_1) {db.create_character(name: 'bloody clown zombie', classification: 'zombie', description: 'a scary zombie', quest_id: quest_1.id, room_id: bedroom.id, strength: 20)}
   let(:character_1) {db.create_character(name: 'Susie', description: "best friend", classification: 'person', quest_id: quest_1.id, room_id: kitchen.id)}
   let(:quest_2) {db.create_quest(name: 'beat the zombie!', data: {have_backpack: false})}
@@ -308,6 +308,16 @@ describe WWTD::ActiveRecordDatabase do
       kitchen
       start_room = db.get_first_room
       expect(start_room.id).to eq(kitchen.id)
+    end
+
+    it 'gets all the rooms associated with a quest' do
+      bedroom
+      kitchen
+      quest_1_rooms = db.get_all_quest_rooms(quest_1.id)
+      expect(quest_1_rooms.count).to eq(1)
+      expect(quest_1_rooms[0].name).to eq("bedroom")
+
+      expect(db.get_all_quest_rooms(10)).to eq(nil)
     end
 
     it 'retrieves a room' do

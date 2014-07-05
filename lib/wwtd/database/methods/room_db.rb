@@ -33,6 +33,12 @@ module WWTD
       build_room(ar_room)
     end
 
+    def get_all_quest_rooms(quest_id)
+      ar_rooms = Room.where('quest_id = ?', quest_id)
+      return nil if ar_rooms.length < 1
+      ar_rooms.map {|room| build_room(room)}
+    end
+
     def update_room(room_id, data)
       ar_room = Room.find(room_id)
       ar_room.update(data)
