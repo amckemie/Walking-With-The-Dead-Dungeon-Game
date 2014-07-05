@@ -37,12 +37,13 @@ module WWTD
       has_many :inventory, dependent: :destroy
       has_many :quests, through: :quest_progress
       has_many :items, through: :inventory
+      has_many :rooms, through: :player_rooms
+      has_many :player_rooms, dependent: :destroy
     end
 
     class Item < ActiveRecord::Base
       has_many :inventory, dependent: :destroy
       has_many :quest_items, dependent: :destroy
-      # may need to get rid
       has_many :room_items, dependent: :destroy
       has_many :players, through: :inventory
       has_many :quests, through: :quest_items
@@ -68,22 +69,26 @@ module WWTD
     class RoomItem < ActiveRecord::Base
       belongs_to :room
       belongs_to :item
-      # belongs_to :player
     end
 
     class Room < ActiveRecord::Base
-      # has_many :players
-      # may not need this: double check at end
       has_many :room_items, dependent: :destroy
       has_many :quest_characters
       has_many :quest_items
       has_many :items, through: :quest_items
       has_many :characters, through: :quest_characters
+      has_many :player_rooms
+      has_many :players, through: :player_rooms
     end
 
     class QuestCharacter < ActiveRecord::Base
       belongs_to :quest
       belongs_to :character
+    end
+
+    class PlayerRoom < ActiveRecord::Base
+      belongs_to :player
+      belongs_to :room
     end
 
     def clear_tables
@@ -97,6 +102,7 @@ module WWTD
       QuestProgress.delete_all
       QuestCharacter.delete_all
       QuestItem.delete_all
+      PlayerRoom.delete_all
     end
   end
 end
