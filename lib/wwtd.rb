@@ -12,6 +12,7 @@ require_relative './wwtd/entities/zombie.rb'
 require_relative './wwtd/entities/quest.rb'
 require_relative './wwtd/entities/quest_progress.rb'
 require_relative './wwtd/database/active_record_db.rb'
+require_relative './wwtd/modules/start_new_quest.rb'
 require_relative './wwtd/database/methods/quest_db.rb'
 require_relative './wwtd/database/methods/character_db.rb'
 require_relative './wwtd/database/methods/room_db.rb'
@@ -33,7 +34,6 @@ require_relative './wwtd/commands/sign_up.rb'
 require_relative './wwtd/commands/enter_room.rb'
 require_relative './wwtd/commands/add_to_inventory.rb'
 
-require_relative './wwtd/modules/start_new_quest.rb'
 
 # require_relative './commands/unlock_door.rb'
 
