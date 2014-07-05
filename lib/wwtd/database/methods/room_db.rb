@@ -7,7 +7,7 @@ module WWTD
 
     def build_room(room)
       # WWTD::RoomNode.new(room)
-      WWTD::RoomNode.new(id: room.id,
+      WWTD::Room.new(id: room.id,
         name: room.name,
         description: room.description,
         quest_id: room.quest_id,

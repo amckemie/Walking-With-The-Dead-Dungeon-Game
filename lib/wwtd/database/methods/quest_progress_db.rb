@@ -16,6 +16,7 @@ module WWTD
 
     def get_quest_progress(player_id, quest_id)
       ar_quest_progress = QuestProgress.where('player_id = ? AND quest_id = ?', player_id, quest_id).first
+      return nil if ar_quest_progress.nil?
       ar_quest_progress.data = parse_data_attribute(ar_quest_progress)
       build_quest_progress(ar_quest_progress)
     end

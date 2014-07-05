@@ -4,7 +4,7 @@ module WWTD
   end
 end
 
-require_relative './wwtd/entities/structure.rb'
+require_relative './wwtd/entities/room.rb'
 require_relative './wwtd/entities/item.rb'
 require_relative './wwtd/entities/player.rb'
 require_relative './wwtd/entities/character.rb'

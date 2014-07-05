@@ -1,4 +1,5 @@
 require 'highline/import'
+require 'colorize'
 require_relative './lib/wwtd.rb'
 
 module WWTD
@@ -6,59 +7,63 @@ module WWTD
     def initialize
       @db = WWTD.db
       @player = nil #may not need this/may not be helpful
-      puts "Welcome to Walking with the Dead (name credits definitively go to the Walking Dead and Robert Kirkman."
+      puts "Welcome to Walking with the Dead (name credits definitively go to the Walking Dead and Robert Kirkman.".white.on_light_blue
       login_info = ask("Please enter sign in if you have played before and sign up if you are new")
       login(login_info)
     end
 
     def login(input)
-      un = ask("Enter your username: ")
-      pw = ask("Enter your password:  ") { |q| q.echo = '*' }
-      if input == 'sign in'
-        result = WWTD::SignIn.new.run(username: un, password: pw)
-        if result.success?
-          @player = result.player
-          current_quest = WWTD.db.get_latest_quest(result.player.id)
-          display_room_name(current_quest.room_id)
-          response = ask(" ")
-          check_user_input(response)
-        else
-          errors = errors_helper(result.reasons.values)
-          p "Sorry. Your log-in was not successful for these reasons: " + errors
-          response = ask("Please type sign in to try again or sign up to create an account. ")
-          login(response)
-        end
-      elsif input == 'sign up'
-        desc = ask("Enter a description for your player: ")
-        result = WWTD::SignUp.new.run(username: un, password: pw, description: desc)
-        if result.success?
-          # Set current player in first room
-          enter_room_result = WWTD::EnterRoom.run('start', result.player)
-          @player = enter_room_result.player
-          # print game introduction text
-          game_intro
-          response = ask("What would you like to do? ")
-          check_user_input(response)
-        else
-          errors = errors_helper(result.reasons.values)
-          p "Sorry, your sign up was not successful for these reasons: " + errors + ". If you're going to try to fight zombies, you may want to sharpen up those skills..."
-          response = ask("Please type sign up to try again or sign in to log into an account. ")
-          login(response)
-        end
-      elsif input == 'exit'
-        p "Scared of zombies I see...Well maybe next time you'll muster up the courage to play."
+      if input == 'quit'
+        puts "Scared of zombies I see...Well maybe next time you'll muster up the courage to play.".white.on_light_red
       else
-        response = ask("I'm sorry, I don't recognize that command. Please type sign in or sign up to play or exit to leave the game.")
-        login(response)
+        un = ask("Enter your username: ")
+        pw = ask("Enter your password:  ") { |q| q.echo = '*' }
+        if input == 'sign in'
+          result = WWTD::SignIn.new.run(username: un, password: pw)
+          if result.success?
+            @player = result.player
+            current_quest = WWTD.db.get_latest_quest(result.player.id)
+            display_room_name(current_quest.room_id)
+            response = ask(" ")
+            check_user_input(response)
+          else
+            errors = errors_helper(result.reasons.values)
+            puts "Sorry. Your log-in was not successful for these reasons: ".white.on_yellow.bold + errors.white.on_yellow.bold
+            response = ask("Please type sign in to try again or sign up to create an account. ")
+            login(response)
+          end
+        elsif input == 'sign up'
+          desc = ask("Enter a description for your player: ")
+          result = WWTD::SignUp.new.run(username: un, password: pw, description: desc)
+          if result.success?
+            # Set current player in first room
+            enter_room_result = WWTD::EnterRoom.run('start', result.player)
+            @player = enter_room_result.player
+            # print game introduction text
+            game_intro
+            response = ask("What would you like to do? ")
+            check_user_input(response)
+          else
+            errors = errors_helper(result.reasons.values)
+            puts "Sorry, your sign up was not successful for these reasons: ".white.on_yellow.bold + errors.white.on_yellow.bold + ". If you're going to try to fight zombies, you may want to sharpen up those skills...".white.on_yellow.bold
+            response = ask("Please type sign up to try again or sign in to log into an account. ")
+            login(response)
+          end
+        else
+          response = ask("I'm sorry, I don't recognize that command. Please type sign in or sign up to play or exit to leave the game.")
+          login(response)
+        end
       end
     end
 
     def check_user_input(response)
+      directions = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w']
       # possibly rewrite to be case statement
       # Sanitize basic command inputs
       response.downcase!
       response.squeeze(" ")
 
+      # check this before others due to input being split up afterwards
       if response.include?('where am i')
         # shows room name
         display_room_name(@player.room_id)
@@ -67,8 +72,23 @@ module WWTD
 
       # break response into array
       response = response.split(' ')
-
-      if response.include?('inventory')
+      # Check to see if person is trying to move in game
+      attempt_move = directions & response
+      # check if input includes a direction
+      if attempt_move.length > 0
+        result = WWTD::EnterRoom.run(attempt_move.first, @player)
+        if result.success?
+          # set player to updated player
+          @player = result.player
+          display_room_name(result.room.id)
+          display_room_desc(result.room.id)
+          WWTD.db.update_quest_progress(@player.id, result.room.quest_id, room_id: result.room.id)
+          continue_game
+        else
+          p result.error
+          continue_game
+        end
+      elsif response.include?('inventory')
         inventory = WWTD.db.get_player_inventory(@player.id)
         inventory.each do |item|
           p item.name
@@ -88,7 +108,6 @@ module WWTD
         continue_game
       end
 
-      # sanitize input: squeeze to get rid of extra white space, split, - only do this after the .include checks for specific words.
       # fight
       # move
       # use items
@@ -98,8 +117,11 @@ module WWTD
       case room_id
       when 1
         # if phone answered
+
       when 2
+
       else
+
       end
     end
 
@@ -113,8 +135,7 @@ module WWTD
     end
 
     def game_intro
-      p "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out, causing perfectly normal people to turn into, well for lack of a better word: zombies. Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure. It only took around 9 months - thank god. Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours. As such, everyone carries at
-       one vial on them at all times. If you inject the medicine within the alloted time frame, it has thus far proven to be effective at stopping ZV."
+      p "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out, causing perfectly normal people to turn into, well for lack of a better word: zombies. Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure. It only took around 9 months - thank god. Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours. As such, everyone carries at least one vial on them at all times. If you inject the medicine within the alloted time frame, it has thus far proven to be effective at stopping ZV."
       p "You currently work at a major hospital in the area as a pharmaceutical tech. Today is your first full day off in awhile, and you've planned to take full advantage of that by sleeping in at home."
       p "Damn. Your cell phone is ringing, threatening to make you get up if you choose to answer it. It's probably just work anyways, and who wants to talk to their boss on their day off?"
     end

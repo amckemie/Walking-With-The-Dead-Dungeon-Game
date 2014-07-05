@@ -22,6 +22,7 @@ GEM
     bcrypt (3.1.7)
     builder (3.2.2)
     coderay (1.1.0)
+    colorize (0.7.3)
     columnize (0.8.9)
     debugger (1.6.8)
       columnize (>= 0.3.1)
@@ -65,6 +66,7 @@ DEPENDENCIES
   active_record_tasks (~> 1.1.0)
   activerecord (~> 4.1.1)
   bcrypt (~> 3.1.7)
+  colorize (~> 0.7.3)
   highline (~> 1.6.21)
   pg
   pry-debugger (~> 0.2.2)

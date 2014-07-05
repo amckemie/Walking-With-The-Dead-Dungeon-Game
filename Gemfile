@@ -6,6 +6,7 @@ gem 'activerecord', '~> 4.1.1'
 gem 'active_record_tasks', '~> 1.1.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'highline', '~> 1.6.21'
+gem 'colorize', '~> 0.7.3'
 
 group :test, :development do
   gem 'rspec', '~> 2.14.0'

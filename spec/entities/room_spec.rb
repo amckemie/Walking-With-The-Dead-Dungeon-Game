@@ -2,30 +2,12 @@ require 'spec_helper'
 
 describe 'world structure' do
   before(:each) do
-    @head = WWTD::RoomNode.new(name: "Bedroom", description: "A room in which people sleep", canN: true, canE: true, canS: true, canW: true, start_new_quest: true)
-    @south = WWTD::RoomNode.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head, canN: true, canE: true, canS: true, canW: true, start_new_quest: false)
-    @north = WWTD::RoomNode.new(id: 1, quest_id: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head, canN: true, canE: true, canS: true, canW: true, start_new_quest: false)
-    @world = WWTD::World.new(@head)
+    @head = WWTD::Room.new(name: "Bedroom", description: "A room in which people sleep", canN: true, canE: true, canS: true, canW: true, start_new_quest: true)
+    @south = WWTD::Room.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head, canN: true, canE: true, canS: true, canW: true, start_new_quest: false)
+    @north = WWTD::Room.new(id: 1, quest_id: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head, canN: true, canE: true, canS: true, canW: true, start_new_quest: false)
   end
 
-  describe 'world' do
-    describe 'initialize' do
-      it "points to the head/starting point" do
-        expect(@world.head).to_not be(nil)
-      end
-
-      it "has a head node that points to other nodes" do
-        head = @world.head
-        head.north = @north
-        expect(head.name).to eq('Bedroom')
-        expect(head.north).to be_a(WWTD::RoomNode)
-        expect(head.north).to eq(@north)
-      end
-    end
-
-  end
-
-  describe 'roomNode' do
+  describe 'room' do
     it "has a name" do
       expect(@north.name).to eq('living room')
     end

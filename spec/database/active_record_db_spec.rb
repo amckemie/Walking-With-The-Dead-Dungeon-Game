@@ -312,7 +312,7 @@ describe WWTD::ActiveRecordDatabase do
 
     it 'retrieves a room' do
       retrieved_room = db.get_room(kitchen.id)
-      expect(retrieved_room).to be_a(WWTD::RoomNode)
+      expect(retrieved_room).to be_a(WWTD::Room)
       expect(retrieved_room.id).to_not be_nil
       expect(retrieved_room.description).to eq('a bright sunny room with food')
       expect(retrieved_room.name).to eq('kitchen')
@@ -506,6 +506,10 @@ describe WWTD::ActiveRecordDatabase do
       expect(quest_1_progress.complete). to eq(false)
       expect(quest_1_progress.data).to be_a(Hash)
       expect(quest_1_progress.data["answer_phone"]).to eq(false)
+    end
+
+    it 'returns nil if a quest progress that doesnt exist is requested' do
+      expect(db.get_quest_progress(player_1.id, 10)).to eq(nil)
     end
 
     it 'returns all records for a player' do
