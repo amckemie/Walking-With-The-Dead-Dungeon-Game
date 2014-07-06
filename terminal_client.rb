@@ -14,12 +14,12 @@ module WWTD
       █  █  █ █  █ ███▄ █  █  ▐█ █ █  █ █   █     █  █  █ ▐█    █    █   █        █    █   █ █▄   ▄▀     █  █  █▄   ▄▀ █  █ █  █
        █ █ █     █     ▀  █    ▐ █  █ █  ███       █ █ █   ▐   ▀        █        ▀        █  ▀███▀       ███▀  ▀███▀      █ ███▀
         ▀ ▀     █        ▀       █   ██             ▀ ▀                ▀                 ▀                               █
-               ▀                                                                                                        ▀         ".red.on_black
+               ▀                                                                                                        ▀          ".red.on_black
 
       zombie = AsciiArt.new("./lib/assets/zombie.jpeg")
-      attacking_zombie = AsciiArt.new("./lib/assets/attacking_zombie.jpg")
       puts zombie.to_ascii_art
-      puts "Welcome to Walking with the Dead (name credits definitively go to the Walking Dead and Robert Kirkman.".white.on_light_blue
+      puts "Welcome to Walking with the Dead, a single-player, text-based game! Name credits definitively go to the Walking Dead and Robert Kirkman.".white.on_light_blue
+      puts "Enter if you dare".white.on_light_blue
       login_info = ask("Please enter sign in if you have played before and sign up if you are new")
       login(login_info)
     end
