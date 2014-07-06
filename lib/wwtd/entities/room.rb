@@ -22,32 +22,36 @@ module WWTD
       @items = input[:items] ||= []
     end
 
-    def addRoom(node, direction)
-      case direction
-      when 'north'
-        @north = node
-      when 'east'
-        @east = node
-      when 'south'
-        @south = node
-      when 'west'
-        @west = node
-      else
-        return nil
-      end
+    def has_connection?(dir)
+      self.send(dir) != nil ? true : false
     end
 
-    def removeRoom(direction)
-      case direction
-      when 'north'
-        @north = nil
-      when 'east'
-        @east = nil
-      when 'south'
-        @south = nil
-      when 'west'
-        @west = nil
-      end
-    end
+    # def addRoom(node, direction)
+    #   case direction
+    #   when 'north'
+    #     @north = node
+    #   when 'east'
+    #     @east = node
+    #   when 'south'
+    #     @south = node
+    #   when 'west'
+    #     @west = node
+    #   else
+    #     return nil
+    #   end
+    # end
+
+    # def removeRoom(direction)
+    #   case direction
+    #   when 'north'
+    #     @north = nil
+    #   when 'east'
+    #     @east = nil
+    #   when 'south'
+    #     @south = nil
+    #   when 'west'
+    #     @west = nil
+    #   end
+    # end
   end
 end

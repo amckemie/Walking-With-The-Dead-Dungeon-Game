@@ -35,7 +35,8 @@ module WWTD
           if result.success?
             @player = result.player
             current_quest = WWTD.db.get_latest_quest(result.player.id)
-            display_room_name(current_quest.room_id)
+            current_room = WWTD.db.get_room(current_quest.room_id)
+            puts "You are currently in: ".white.on_light_blue + current_room.name.white.on_light_blue
             response = ask(" ")
             check_user_input(response)
           else
@@ -80,23 +81,6 @@ module WWTD
         continue_game
       end
 
-      # directions = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w']
-      # # possibly rewrite to be case statement
-      # # Sanitize basic command inputs
-      # response.downcase!
-      # response.squeeze(" ")
-
-      # # check this before others due to input being split up afterwards
-      # if response.include?('where am i')
-      #   # shows room name
-      #   display_room_name(@player.room_id)
-      #   continue_game
-      # end
-
-      # break response into array
-      # response = response.split(' ')
-      # # Check to see if person is trying to move in game
-      # attempt_move = directions & response
       # # check if input includes a direction
       # if attempt_move.length > 0
       #   result = WWTD::EnterRoom.run(attempt_move.first, @player)
@@ -149,18 +133,6 @@ module WWTD
       puts "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out, causing perfectly normal people to turn into, well for lack of a better word: zombies. Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure. It only took around 9 months - thank god. Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours. As such, everyone carries at least one vial on them at all times. If you inject the medicine within the alloted time frame, it has thus far proven to be effective at stopping ZV.".white.on_light_blue
       puts "You currently work at a major hospital in the area as a pharmaceutical tech. Today is your first full day off in awhile, and you've planned to take full advantage of that by sleeping in at home.".white.on_light_blue
       puts "Damn. Your cell phone is ringing, threatening to make you get up if you choose to answer it. It's probably just work anyways, and who wants to talk to their boss on their day off?".white.on_light_blue
-    end
-
-    # move to default command
-    def display_room_name(room_id)
-      room = WWTD.db.get_room(room_id)
-      puts "You are currently in: ".white.on_light_green + room.name.white.on_light_green
-    end
-
-    # move to default command
-    def display_room_desc(room_id)
-      room = WWTD.db.get_room(room_id)
-      puts room.description.white.on_light_green
     end
 
     def help_menu

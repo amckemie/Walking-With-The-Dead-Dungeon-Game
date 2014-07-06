@@ -1,13 +1,12 @@
 require 'spec_helper'
 
-describe 'world structure' do
+describe 'room' do
   before(:each) do
     @head = WWTD::Room.new(name: "Bedroom", description: "A room in which people sleep", canN: true, canE: true, canS: true, canW: true, start_new_quest: true)
     @south = WWTD::Room.new(name: 'bathroom', description: 'Just your normal bathroom', north: @head, canN: true, canE: true, canS: true, canW: true, start_new_quest: false)
     @north = WWTD::Room.new(id: 1, quest_id: 10, name: 'living room', description: 'A room with a couch, tv, and zombie', south: @head, canN: true, canE: true, canS: true, canW: true, start_new_quest: false)
   end
 
-  describe 'room' do
     it "has a name" do
       expect(@north.name).to eq('living room')
     end
@@ -62,23 +61,32 @@ describe 'world structure' do
       expect(@north.canS).to eq(true)
       expect(@north.canW).to eq(true)
     end
-  end
 
-  describe 'addRoom' do
-    it "adds a RoomNode to it's 'parent' node in the specified direction" do
-      @south.addRoom(@north, 'east')
-      expect(@south.east).to eq(@north)
+    describe 'has_connection' do
+      it "returns true if the room is connected to another room in the specified direction" do
+        expect(@south.has_connection?('north')).to eq(true)
+      end
+
+      it 'returns false if the room does not have another room connected to it in specified direction' do
+        expect(@south.has_connection?("east")).to eq(false)
+      end
     end
 
-    it "returns nil if an improper direction is given" do
-      expect(@south.addRoom(@north, 'northeast')).to eq(nil)
-    end
-  end
+  # describe 'addRoom' do
+  #   it "adds a RoomNode to it's 'parent' node in the specified direction" do
+  #     @south.addRoom(@north, 'east')
+  #     expect(@south.east).to eq(@north)
+  #   end
 
-  describe 'removeRoom' do
-    it "removes a RoomNode from it's parent based on specified direction" do
-      @south.removeRoom('north')
-      expect(@south.north).to eq(nil)
-    end
-  end
+  #   it "returns nil if an improper direction is given" do
+  #     expect(@south.addRoom(@north, 'northeast')).to eq(nil)
+  #   end
+  # end
+
+  # describe 'removeRoom' do
+  #   it "removes a RoomNode from it's parent based on specified direction" do
+  #     @south.removeRoom('north')
+  #     expect(@south.north).to eq(nil)
+  #   end
+  # end
 end

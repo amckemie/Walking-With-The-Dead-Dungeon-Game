@@ -5,11 +5,6 @@ module WWTD
     # include WWTD::StartNewQuest
 
     def run(dir, player)
-      dir.downcase!
-
-      if dir != 'start'
-        room = WWTD.db.get_room(player.room_id)
-      end
 
       direction = case dir
       when 'north', 'n' then 'north'
