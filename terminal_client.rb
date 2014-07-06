@@ -1,5 +1,6 @@
 require 'highline/import'
 require 'colorize'
+require 'asciiart'
 require_relative './lib/wwtd.rb'
 
 module WWTD
@@ -7,6 +8,16 @@ module WWTD
     def initialize
       @db = WWTD.db
       @player = nil
+      puts "        ▄ ▄   ██   █    █  █▀ ▄█    ▄     ▄▀        ▄ ▄   ▄█    ▄▄▄▄▀ ▄  █        ▄▄▄▄▀ ▄  █ ▄███▄       ██▄   ▄███▄   ██   ██▄
+       █   █  █ █  █    █▄█   ██     █  ▄▀         █   █  ██ ▀▀▀ █   █   █     ▀▀▀ █   █   █ █▀   ▀      █  █  █▀   ▀  █ █  █  █
+      █ ▄   █ █▄▄█ █    █▀▄   ██ ██   █ █ ▀▄      █ ▄   █ ██     █   ██▀▀█         █   ██▀▀█ ██▄▄        █   █ ██▄▄    █▄▄█ █   █
+      █  █  █ █  █ ███▄ █  █  ▐█ █ █  █ █   █     █  █  █ ▐█    █    █   █        █    █   █ █▄   ▄▀     █  █  █▄   ▄▀ █  █ █  █
+       █ █ █     █     ▀  █    ▐ █  █ █  ███       █ █ █   ▐   ▀        █        ▀        █  ▀███▀       ███▀  ▀███▀      █ ███▀
+        ▀ ▀     █        ▀       █   ██             ▀ ▀                ▀                 ▀                               █
+               ▀                                                                                                        ▀         ".red.on_black
+
+      zombie = AsciiArt.new("./lib/assets/zombie.jpeg")
+      puts zombie.to_ascii_art
       puts "Welcome to Walking with the Dead (name credits definitively go to the Walking Dead and Robert Kirkman.".white.on_light_blue
       login_info = ask("Please enter sign in if you have played before and sign up if you are new")
       login(login_info)
@@ -56,72 +67,72 @@ module WWTD
     end
 
     def check_user_input(response)
-      directions = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w']
-      # possibly rewrite to be case statement
-      # Sanitize basic command inputs
-      response.downcase!
-      response.squeeze(" ")
-
-      # check this before others due to input being split up afterwards
-      if response.include?('where am i')
-        # shows room name
-        display_room_name(@player.room_id)
-        continue_game
-      end
-
-      # break response into array
-      response = response.split(' ')
-      # Check to see if person is trying to move in game
-      attempt_move = directions & response
-      # check if input includes a direction
-      if attempt_move.length > 0
-        result = WWTD::EnterRoom.run(attempt_move.first, @player)
-        if result.success?
-          # set player to updated player
-          @player = result.player
-          display_room_name(result.room.id)
-          display_room_desc(result.room.id)
-          WWTD.db.update_quest_progress(@player.id, result.room.quest_id, room_id: result.room.id)
-          continue_game
-        else
-          p result.error
-          continue_game
-        end
-      elsif response.include?('inventory')
-        inventory = WWTD.db.get_player_inventory(@player.id)
-        inventory.each do |item|
-          p item.name
-        end
-        continue_game
-      elsif response.include?('look')
-        # shows room description
-        display_room_desc(@player.room_id)
-        continue_game
+      if response.include?('quit')
+        puts "Goodbye. Come back and try to defeat the zombies soon... BRAAAAAAIIIIIIIINNNNNNNNNNSSSSSSSSSSSSSSSSS".white.on_light_red.bold
       elsif response.include?('help')
         help_menu
         continue_game
-      elsif response.first == 'quit'
-        puts "Goodbye. Come back and try to defeat the zombies soon... brainnnnnnnssssssssss".white.on_light_red.bold
       else
-        puts "I'm sorry, what was that? I didn't understand.".white.on_cyan
+        result = WWTD::UserAction.run(@player, response)
+        @player = result.player
+        puts result.message.white.on_light_blue
         continue_game
       end
+
+      # directions = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w']
+      # # possibly rewrite to be case statement
+      # # Sanitize basic command inputs
+      # response.downcase!
+      # response.squeeze(" ")
+
+      # # check this before others due to input being split up afterwards
+      # if response.include?('where am i')
+      #   # shows room name
+      #   display_room_name(@player.room_id)
+      #   continue_game
+      # end
+
+      # break response into array
+      # response = response.split(' ')
+      # # Check to see if person is trying to move in game
+      # attempt_move = directions & response
+      # # check if input includes a direction
+      # if attempt_move.length > 0
+      #   result = WWTD::EnterRoom.run(attempt_move.first, @player)
+      #   if result.success?
+      #     # set player to updated player
+      #     @player = result.player
+      #     display_room_name(result.room.id)
+      #     display_room_desc(result.room.id)
+      #     WWTD.db.update_quest_progress(@player.id, result.room.quest_id, room_id: result.room.id)
+      #     continue_game
+      #   else
+      #     p result.error
+      #     continue_game
+      #   end
+      # elsif response.include?('inventory')
+      #   inventory = WWTD.db.get_player_inventory(@player.id)
+      #   inventory.each do |item|
+      #     p item.name
+      #   end
+      #   continue_game
+      # elsif response.include?('look')
+      #   # shows room description
+      #   display_room_desc(@player.room_id)
+      #   continue_game
+      # elsif response.include?('help')
+      #   help_menu
+      #   continue_game
+      # elsif response.first == 'quit'
+      #   puts "Goodbye. Come back and try to defeat the zombies soon... brainnnnnnnssssssssss".white.on_light_red.bold
+      # else
+      #   puts "I'm sorry, what was that? I didn't understand.".white.on_cyan
+      #   continue_game
+      # end
 
       # fight
       # move
       # use items
-    end
-
-    def play_game(room_id)
-      case room_id
-      when 1
-        # if phone answered
-
-      when 2
-
-      else
-
-      end
     end
 
     def errors_helper(errors_arr)
@@ -139,11 +150,13 @@ module WWTD
       puts "Damn. Your cell phone is ringing, threatening to make you get up if you choose to answer it. It's probably just work anyways, and who wants to talk to their boss on their day off?".white.on_light_blue
     end
 
+    # move to default command
     def display_room_name(room_id)
       room = WWTD.db.get_room(room_id)
       puts "You are currently in: ".white.on_light_green + room.name.white.on_light_green
     end
 
+    # move to default command
     def display_room_desc(room_id)
       room = WWTD.db.get_room(room_id)
       puts room.description.white.on_light_green

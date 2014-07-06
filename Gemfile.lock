@@ -19,6 +19,9 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
+    asciiart (0.0.7)
+      rainbow
+      rmagick
     bcrypt (3.1.7)
     builder (3.2.2)
     coderay (1.1.0)
@@ -46,6 +49,7 @@ GEM
       pry (~> 0.9.10)
     rainbow (2.0.0)
     rake (10.3.2)
+    rmagick (2.13.2)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -65,6 +69,7 @@ PLATFORMS
 DEPENDENCIES
   active_record_tasks (~> 1.1.0)
   activerecord (~> 4.1.1)
+  asciiart (~> 0.0.7)
   bcrypt (~> 3.1.7)
   colorize (~> 0.7.3)
   highline (~> 1.6.21)
