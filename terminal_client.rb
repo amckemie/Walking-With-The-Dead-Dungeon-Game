@@ -17,6 +17,7 @@ module WWTD
                ▀                                                                                                        ▀         ".red.on_black
 
       zombie = AsciiArt.new("./lib/assets/zombie.jpeg")
+      attacking_zombie = AsciiArt.new("./lib/assets/attacking_zombie.jpg")
       puts zombie.to_ascii_art
       puts "Welcome to Walking with the Dead (name credits definitively go to the Walking Dead and Robert Kirkman.".white.on_light_blue
       login_info = ask("Please enter sign in if you have played before and sign up if you are new")
