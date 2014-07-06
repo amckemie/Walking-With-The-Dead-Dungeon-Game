@@ -7,7 +7,7 @@ module WWTD
       directions = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w']
       # Sanitize input
       input.downcase!
-      input.squeeze(" ")
+      input = input.squeeze(" ")
 
       # Get Player's current room and quest
       current_room = WWTD.db.get_room(player.room_id)
@@ -24,6 +24,11 @@ module WWTD
       # Check if player is attempting to move
       if attempt_move.length > 0
         result = WWTD::EnterRoom.run(attempt_move.first, player)
+        if result.success?
+          return result
+        else
+          return success :message => result.error, :player => player
+        end
       # Shows room description
       elsif input.include?('look')
         return success :message => current_room.description, :player => player

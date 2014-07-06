@@ -81,36 +81,11 @@ module WWTD
         continue_game
       end
 
-      # # check if input includes a direction
-      # if attempt_move.length > 0
-      #   result = WWTD::EnterRoom.run(attempt_move.first, @player)
-      #   if result.success?
-      #     # set player to updated player
-      #     @player = result.player
-      #     display_room_name(result.room.id)
-      #     display_room_desc(result.room.id)
-      #     WWTD.db.update_quest_progress(@player.id, result.room.quest_id, room_id: result.room.id)
-      #     continue_game
-      #   else
-      #     p result.error
-      #     continue_game
-      #   end
-      # elsif response.include?('inventory')
-      #   inventory = WWTD.db.get_player_inventory(@player.id)
-      #   inventory.each do |item|
-      #     p item.name
-      #   end
-      #   continue_game
       # elsif response.include?('look')
       #   # shows room description
       #   display_room_desc(@player.room_id)
       #   continue_game
-      # elsif response.include?('help')
-      #   help_menu
-      #   continue_game
-      # elsif response.first == 'quit'
-      #   puts "Goodbye. Come back and try to defeat the zombies soon... brainnnnnnnssssssssss".white.on_light_red.bold
-      # else
+
       #   puts "I'm sorry, what was that? I didn't understand.".white.on_cyan
       #   continue_game
       # end

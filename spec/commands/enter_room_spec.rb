@@ -45,21 +45,23 @@ describe WWTD::EnterRoom do
       result = subject.run('north', @player)
       expect(result.success?).to eq(true)
       expect(result.player.room_id).to eq(@room2.id)
-      expect(result.room.id).to eq(@room2.id)
     end
 
-    it 'returns the player for success and failure' do
-      result = subject.run('south', @player)
-      result2 = subject.run('north', @player)
-
+    it 'returns the player when move is successful' do
+      result = subject.run('north', @player)
       expect(result.player).to_not be_nil
-      expect(result2.player).to_not be_nil
     end
 
     it 'updates the players quest progress to mark new room as furthest room if its the highest room # so far' do
-      subject.run('north', @player)
-      quest_progress = db.get_quest_progress(@player.id, @quest.id)
+      result = subject.run('north', @player)
+      quest_progress = db.get_quest_progress(result.player.id, @quest.id)
+      expect(result.player.room_id).to eq(@room2.id)
       expect(quest_progress.furthest_room_id).to eq(@room2.id)
+
+      result2 = subject.run('south', result.player)
+      quest_progress2 = db.get_quest_progress(result2.player.id, @quest.id)
+      expect(result2.player.room_id).to eq(@room1.id)
+      expect(quest_progress2.furthest_room_id).to eq(@room2.id)
     end
 
     it 'returns the new rooms description in the message key' do
