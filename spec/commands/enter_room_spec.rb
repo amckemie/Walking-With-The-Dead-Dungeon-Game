@@ -18,21 +18,16 @@ describe WWTD::EnterRoom do
                                 room_id: @room1.id
                                 )
     db.create_quest_item(item_id: @cell.id, room_id: @room1.id, quest_id: @quest.id)
+    db.create_quest_progress(quest_id: @quest.id, player_id: @player.id, complete: false, furthest_room_id: @updated_room1.id, data: {answer_phone: true})
   end
 
   describe 'move to new room' do
-    it 'returns success false and error message of direction not recognized if the dir is not N/E/S/W' do
-      result = subject.run('test', @player)
-      expect(result.success?).to eq(false)
-      expect(result.error).to eq("Sorry, that is not a known direction. Which way do you want to go?")
-    end
-
     it 'checks room for an available room in inputted direction and returns false if there is no room in that direction' do
       result = subject.run('south', @player)
       updated_player = db.update_player(@player.id, room_id: @room2.id)
-      result2 = subject.run('NORTH', updated_player)
+      result2 = subject.run('north', updated_player)
       result3 = subject.run('e', updated_player)
-      result4 = subject.run('W', updated_player)
+      result4 = subject.run('w', updated_player)
 
       expect(result.success?).to eq(false)
       expect(result2.success?).to eq(false)
@@ -45,55 +40,49 @@ describe WWTD::EnterRoom do
       expect(result4.error).to eq("Silly you. There is nothing there; You can't go that way")
     end
 
-    it 'checks the rooms can* direction attribute if there is a room in that direction and returns false if the attribute = false' do
-      result = subject.run('east', @player)
-      expect(result.success?).to eq(false)
-      expect(result.error).to eq("Sorry, that direction is not currently accessible.")
-    end
 
-    it 'updates a players room id to the new room if there was a room and the can* attribute was true' do
+    it 'updates a players room id to the new room if there is a room to move to' do
       result = subject.run('north', @player)
       expect(result.success?).to eq(true)
       expect(result.player.room_id).to eq(@room2.id)
       expect(result.room.id).to eq(@room2.id)
     end
-  end
 
-  describe 'Check for new quest' do
-    it "returns new_quest? true if the room is supposed to start a new quest" do
+    it 'returns the player for success and failure' do
+      result = subject.run('south', @player)
+      result2 = subject.run('north', @player)
+
+      expect(result.player).to_not be_nil
+      expect(result2.player).to_not be_nil
+    end
+
+    it 'updates the players quest progress to mark new room as furthest room if its the highest room # so far' do
+      subject.run('north', @player)
+      quest_progress = db.get_quest_progress(@player.id, @quest.id)
+      expect(quest_progress.furthest_room_id).to eq(@room2.id)
+    end
+
+    it 'returns the new rooms description in the message key' do
       result = subject.run('north', @player)
-      expect(result.success?).to eq(true)
-      expect(result.room.id).to eq(@room2.id)
-      expect(result.start_new_quest?).to eq(true)
-    end
-
-    it "returns new_quest? false if the room is not supposed to start a new quest" do
-      result = subject.run('west', @player)
-      expect(result.success?).to eq(true)
-      expect(result.room.id).to eq(@room3.id)
-      expect(result.start_new_quest?).to eq(false)
+      expect(result.message).to eq(@room2.description)
     end
   end
 
-  describe 'hedge case for starting the game' do
-    it "updates a player's room_id to the 'first' room if the dir is start and they have no room_id" do
-      player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player")
-      result = subject.run('start', player)
-      expect(result.success?).to eq(true)
-      expect(result.room.id).to eq(@room1.id)
-      expect(result.start_new_quest?).to eq(true)
-    end
+  # describe 'Check for new quest' do
+  #   xit "returns new_quest? true if the room is supposed to start a new quest" do
+  #     result = subject.run('north', @player)
+  #     expect(result.success?).to eq(true)
+  #     expect(result.room.id).to eq(@room2.id)
+  #     expect(result.start_new_quest?).to eq(true)
+  #   end
 
-    it 'adds cell phone to a persons inventory at the start of the game' do
-      player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player")
-      result = subject.run('start', player)
-      expect(result.success?).to eq(true)
-
-      inventory = db.get_player_inventory(result.player.id)
-      expect(inventory.count).to eq(1)
-      expect(inventory[0].name).to eq("Your cell phone")
-    end
-  end
+  #   xit "returns new_quest? false if the room is not supposed to start a new quest" do
+  #     result = subject.run('west', @player)
+  #     expect(result.success?).to eq(true)
+  #     expect(result.room.id).to eq(@room3.id)
+  #     expect(result.start_new_quest?).to eq(false)
+  #   end
+  # end
 
   after(:each) do
     db.clear_tables
