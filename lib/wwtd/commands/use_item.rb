@@ -18,6 +18,17 @@ module WWTD
       end
     end
 
+    def prepare_input(item, input)
+      # Delete item, commonly used articles, and anything past 4 words from input
+      input.slice!(4..-1)
+      input.delete(item)
+      input.delete('the')
+      input.delete('a')
+      input.delete('an')
+      input.delete('with')
+      input.delete('in')
+      input
+    end
     # Prepare input before sending to this method using input.delete(item) and delete articles
     def check_item_actions(item_name, input)
       item = WWTD.db.get_item_by_name(item_name)

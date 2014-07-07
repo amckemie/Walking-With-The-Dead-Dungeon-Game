@@ -14,6 +14,29 @@ describe WWTD::UseItem do
                                 )
   end
 
+  describe 'preparing input' do
+    it 'parses the array down to the 1st 4 inputted words' do
+      input = WWTD::UseItem.new.prepare_input('jacket', ['put','on', 'two', 'shirt', 'with','my', 'hands'])
+      expect(input).to eq(['put', 'on', 'two', 'shirt'])
+
+      input2 = WWTD::UseItem.new.prepare_input('jacket', ['wear', 'two', 'shirt'])
+      expect(input2).to eq(['wear', 'two', 'shirt'])
+    end
+
+    it 'deletes the item' do
+      input = WWTD::UseItem.new.prepare_input('jacket', ['put','on', 'two', 'jacket', 'with','my', 'hands'])
+      expect(input).to eq(['put', 'on','two'])
+
+      input2 = WWTD::UseItem.new.prepare_input('jacket', ['put','on', 'jacket','too', 'with','my', 'hands'])
+      expect(input2).to eq(['put', 'on','too'])
+    end
+
+    it 'deletes common articles/conjunctions' do
+      input = WWTD::UseItem.new.prepare_input('jacket', ['put','on', 'the', 'jacket', 'with','my', 'hands'])
+      expect(input).to eq(['put', 'on'])
+    end
+  end
+
   describe 'checking items actions' do
     before(:each) do
       @result = WWTD::UseItem.new.check_item_actions('jacket', ['wear'])
