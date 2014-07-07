@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'asciiart'
 
 module WWTD
   class UseItem < Command
@@ -9,6 +10,9 @@ module WWTD
       if result.success? && (result.action == 'take' || result.action == 'pick up') && item_name != 'shower'
         result = take_item(item_name, player)
         if result.success?
+          new_item = WWTD.db.get_item_by_name(item_name)
+          WWTD::AddToInventory.run(player, new_item)
+          # binding.pry
           return success :message => result.message
         else
           return success :message => result.error
@@ -41,21 +45,35 @@ module WWTD
         else
           return success :message => result.error
         end
-      when 'toothbrush'
-        # if result.success?
-        #   if result.action == 'clean'
-        #     return success :message => "Well, that's one way to start your day. But the shower is now clean."
-        #   else
-        #   # update quest progress to include taken_shower
-        #     return success :message => "You're so fresh and so clean clean now."
-        #   end
-        # else
-        #   return success :message => result.error
-        # end
-      when 'toothpaste'
+      # when 'toothbrush'
+      #   if result.success?
+      #     if result.action == 'clean'
+      #       return success :message => "Well, that's one way to start your day. But the shower is now clean."
+      #     else
+      #     # update quest progress to include taken_shower
+      #       return success :message => "You're so fresh and so clean clean now."
+      #     end
+      #   else
+      #     return success :message => result.error
+      #   end
+      # when 'toothpaste'
       when 'tv'
-      else
-        # must be backpack
+        if result.success?
+          ppgirls = AsciiArt.new("./lib/assets/ppgirls.jpeg")
+          puts ppgirls.to_ascii_art
+          return success :message => "You're going to watch the powder puff girls?? Really??"
+        else
+          return success :message => result.error
+        end
+      when 'backpack'
+        if result.success?
+          new_item = WWTD.db.get_item_by_name('backpack')
+          result = WWTD::AddToInventory.run(player, new_item)
+          message = result.message ||= "Good idea. You'll probably need this."
+          return success :message => message
+        else
+          return success :message => result.error
+        end
       end
     end
 
@@ -87,17 +105,21 @@ module WWTD
       end
     end
 
-    def take_item(item, player)
-      backpack_id = WWTD.db.get_item_by_name('backpack').id
+    def take_item(item_name, player)
+      backpack = WWTD.db.get_item_by_name('backpack')
+      if item_name == "backpack"
+        return success :message => "Good idea. You'll probably need this."
+      end
+
       inventory = WWTD.db.get_player_inventory(player.id)
       has_backpack = false
       inventory.each do |item|
-        has_backpack = true if item.id == backpack_id
+        has_backpack = true if item.id == backpack.id
       end
-      # binding.pry
+
 
       if has_backpack
-        return success :message => "Item taken."
+        return success :message => "Item picked up!"
       else
         return failure("Sorry, you have nothing to take this item in yet.")
       end
