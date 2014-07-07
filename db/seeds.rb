@@ -109,7 +109,7 @@ tv = WWTD.db.create_item(classification: 'item',
 backpack = WWTD.db.create_item(classification: 'item',
                                 name: 'backpack',
                                 description: "A trusty backpack that can fit a surprising number of medical books",
-                                actions: 'use, take, brush',
+                                actions: 'put on, take',
                                 room_id: living_room.id
                                 )
 

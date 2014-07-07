@@ -6,7 +6,7 @@ describe WWTD::UseItem do
     db.clear_tables
     @room = db.create_room(name: 'Bedroom', description: 'test', quest_id: 1)
     @player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player", room_id: @room.id)
-    @jacket = WWTD.db.create_item(classification: 'item',
+    @jacket = db.create_item(classification: 'item',
                                 name: 'jacket',
                                 description: "A comfy UT jacket left over from the good ole days",
                                 actions: 'put on, wear, pick up, take',
@@ -56,6 +56,45 @@ describe WWTD::UseItem do
     it 'returns success false if the inputted action is not recognized for the item' do
       result3 = WWTD::UseItem.new.check_item_actions('jacket', ['put', 'the', 'on'])
       expect(result3.success?).to eq(false)
+      expect(result3.error).to eq('Sorry, that item cannot do that.')
+    end
+  end
+
+  describe 'jacket' do
+    it "returns 'You are now nice and toasty with the jacket on.' if input is 'put on' or 'wear'" do
+      result = WWTD::UseItem.run(@player, 'jacket', ['put', 'on','the', 'jacket'])
+      expect(result.message).to eq('You are now nice and toasty with the jacket on.')
+
+      result2 = WWTD::UseItem.run(@player, 'jacket', ['wear','the', 'jacket'])
+      expect(result2.message).to eq('You are now nice and toasty with the jacket on.')
+    end
+
+    xit "returns the failure message if the input is not either put on or wear" do
+    end
+  end
+
+  describe 'take_item' do
+    before(:each) do
+      @backpack = db.create_item(classification: 'item',
+                          name: 'backpack',
+                          description: "A trusty backpack that can fit a surprising number of medical books",
+                          actions: 'put on, take',
+                          room_id: @room.id
+                          )
+    end
+
+    it "returns a failure message of 'Sorry, you have nothing to take this item in yet.' if the backpack hasn't been picked up." do
+      result = WWTD::UseItem.new.take_item('jacket', @player)
+      expect(result.success?).to eq(false)
+      expect(result.error).to eq("Sorry, you have nothing to take this item in yet.")
+    end
+
+    it 'returns success with a message of "Item taken." if player has backpack' do
+      db.create_room_item(player_id: @player.id, quest_id: 1, room_id: @room.id, item_id: @backpack.id)
+      db.create_inventory(@player.id, @player.room_id, @backpack.id, 1)
+      result = WWTD::UseItem.new.take_item('jacket', @player)
+      expect(result.success?).to eq(true)
+      expect(result.message).to eq('Item taken.')
     end
   end
 
