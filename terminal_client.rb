@@ -35,7 +35,7 @@ module WWTD
           if result.success?
             @player = result.player
             current_quest = WWTD.db.get_latest_quest(result.player.id)
-            current_room = WWTD.db.get_room(current_quest.room_id)
+            current_room = WWTD.db.get_room(@player.room_id)
             puts "You are currently in: ".white.on_light_blue + current_room.name.white.on_light_blue
             response = ask(" ")
             check_user_input(response)

@@ -36,6 +36,7 @@ require_relative './wwtd/commands/add_to_inventory.rb'
 require_relative './wwtd/commands/show_inventory.rb'
 require_relative './wwtd/commands/user_action.rb'
 require_relative './wwtd/commands/use_item.rb'
+require_relative './wwtd/commands/use_phone.rb'
 
 # require_relative './commands/unlock_door.rb'
 

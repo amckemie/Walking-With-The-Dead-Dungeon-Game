@@ -66,7 +66,7 @@ describe WWTD::EnterRoom do
 
     it 'returns the new rooms description in the message key' do
       result = subject.run('north', @player)
-      expect(result.message).to eq(@room2.description)
+      expect(result.message).to eq(@room2.name)
     end
   end
 

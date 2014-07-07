@@ -1,7 +1,7 @@
 require_relative '../lib/wwtd.rb'
 
 # Creating World
-quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {answer_phone: nil, last_completed_action: 'Nothing'})
+quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {answer_phone: nil, first_completed_action: nil})
 
 # Rooms
 # Room ID 1
@@ -50,59 +50,59 @@ WWTD.db.create_character(name: "Susie",
                         )
 
 # items
-cell = WWTD.db.create_item(classification: 'item',
-                                name: 'Your cell phone',
+phone = WWTD.db.create_item(classification: 'item',
+                                name: 'phone',
                                 description: "An iPhone that's been dropped nearly one too many times",
                                 actions: 'answer, pick up, call',
                                 room_id: bedroom.id
                                 )
 dresser = WWTD.db.create_item(classification: 'item',
-                                name: 'Bedroom dresser',
+                                name: 'dresser',
                                 description: "An elegant cherry wood dresser with a jacket tossed on top and 2 drawers, one slightly ajar",
                                 actions: 'open',
                                 room_id: bedroom.id
                                 )
 jacket = WWTD.db.create_item(classification: 'item',
-                                name: 'Jacket',
+                                name: 'jacket',
                                 description: "A comfy UT jacket left over from the good ole days",
                                 actions: 'put on, wear, pick up, take',
                                 room_id: bedroom.id
                                 )
 socks = WWTD.db.create_item(classification: 'item',
-                                name: 'White socks',
+                                name: 'socks',
                                 description: "A pair of grungy white socks that have held up over the years",
                                 actions: 'put on, wear, pick up, take',
                                 parent_item: dresser.id,
                                 room_id: bedroom.id
                                 )
 shower = WWTD.db.create_item(classification: 'item',
-                                name: 'Your bathroom shower',
+                                name: 'shower',
                                 description: "You know what it is. ",
                                 actions: 'get in, use, clean, take, shower',
                                 room_id: bathroom.id
                                 )
 toothpaste = WWTD.db.create_item(classification: 'item',
-                                name: 'Toothpaste',
+                                name: 'toothpaste',
                                 description: "So fresh and so clean, clean. ",
-                                actions: 'use, put on, take',
+                                actions: 'take',
                                 room_id: bathroom.id
                                 )
 toothbrush = WWTD.db.create_item(classification: 'item',
-                                name: 'Toothbrush',
+                                name: 'toothbrush',
                                 description: "Don't you think you're a little old for a Spiderman toothbrush? Nah.... ",
                                 actions: 'use, take, brush',
                                 room_id: bathroom.id
                                 )
 tv = WWTD.db.create_item(classification: 'item',
-                                name: 'TV',
+                                name: 'tv',
                                 description: "A badass 80inch TV that a roommate once left in your lucky lucky possession.",
-                                actions: 'turn on, watch, take',
+                                actions: 'turn on, watch',
                                 room_id: living_room.id
                                 )
 backpack = WWTD.db.create_item(classification: 'item',
                                 name: 'backpack',
                                 description: "A trusty backpack that can fit a surprising number of medical books",
-                                actions: 'put on, take',
+                                actions: 'put on, take, pick up',
                                 room_id: living_room.id
                                 )
 
@@ -111,7 +111,6 @@ WWTD.db.create_quest_item(item_id: tv.id, quest_id: quest1.id, room_id: tv.room_
 WWTD.db.create_quest_item(item_id: toothbrush.id, quest_id: quest1.id, room_id: toothbrush.room_id)
 WWTD.db.create_quest_item(item_id: toothpaste.id, quest_id: quest1.id, room_id: toothpaste.room_id)
 WWTD.db.create_quest_item(item_id: shower.id, quest_id: quest1.id, room_id: shower.room_id)
-WWTD.db.create_quest_item(item_id: underwear.id, quest_id: quest1.id, room_id: underwear.room_id)
 WWTD.db.create_quest_item(item_id: socks.id, quest_id: quest1.id, room_id: socks.room_id)
 WWTD.db.create_quest_item(item_id: jacket.id, quest_id: quest1.id, room_id: jacket.room_id)
 WWTD.db.create_quest_item(item_id: dresser.id, quest_id: quest1.id, room_id: dresser.room_id)

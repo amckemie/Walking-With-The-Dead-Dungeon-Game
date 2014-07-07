@@ -5,22 +5,27 @@ module WWTD
   class UseItem < Command
     def run(player, item_name, input)
       new_input = prepare_input(item_name, input)
+      new_item = WWTD.db.get_item_by_name(item_name)
+      if input.include?("look") || input.include?('examine')
+        return success :message => new_item.description
+      end
+
       result = check_item_actions(item_name, new_input)
 
       if result.success? && (result.action == 'take' || result.action == 'pick up') && item_name != 'shower'
         result = take_item(item_name, player)
         if result.success?
-          new_item = WWTD.db.get_item_by_name(item_name)
           WWTD::AddToInventory.run(player, new_item)
-          # binding.pry
           return success :message => result.message
         else
           return success :message => result.error
         end
       end
 
+
       case item_name
       when 'phone'
+        result = WWTD::UsePhone.run(player)
       when 'dresser'
       when 'jacket'
         if result.success?
@@ -45,18 +50,6 @@ module WWTD
         else
           return success :message => result.error
         end
-      # when 'toothbrush'
-      #   if result.success?
-      #     if result.action == 'clean'
-      #       return success :message => "Well, that's one way to start your day. But the shower is now clean."
-      #     else
-      #     # update quest progress to include taken_shower
-      #       return success :message => "You're so fresh and so clean clean now."
-      #     end
-      #   else
-      #     return success :message => result.error
-      #   end
-      # when 'toothpaste'
       when 'tv'
         if result.success?
           ppgirls = AsciiArt.new("./lib/assets/ppgirls.jpeg")
@@ -98,7 +91,6 @@ module WWTD
       end
 
       if actions.include?(input)
-        # binding.pry
         return success :action => input
       else
         return failure('Sorry, that is not a known action for that.')

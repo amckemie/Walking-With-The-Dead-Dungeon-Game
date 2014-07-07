@@ -18,7 +18,7 @@ module WWTD
         new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
         update_furthest_room(new_player, new_room)
         # is_new_quest = start_new_quest?(new_room, player)
-        return success :message => new_room.description, :player => new_player
+        return success :message => new_room.name, :player => new_player
       else
         return failure("Silly you. There is nothing there; You can't go that way", {player: player})
       end

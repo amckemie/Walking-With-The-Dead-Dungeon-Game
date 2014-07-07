@@ -27,7 +27,4 @@ describe WWTD::UserAction do
       expect(result.player).to eq(@player)
     end
   end
-
-  describe 'move' do
-  end
 end

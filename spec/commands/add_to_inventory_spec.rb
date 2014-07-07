@@ -15,7 +15,7 @@ describe WWTD::AddToInventory do
                                 )
     db.create_quest_item(item_id: @cell.id, room_id: @room1.id, quest_id: @quest.id)
     WWTD.db.create_room_item(quest_id: @quest.id, player_id: @player.id, room_id: @cell.room_id, item_id: @cell.id)
-    WWTD.db.create_quest_progress(quest_id: @quest.id, player_id: @player.id, room_id: @room1.id, data: @quest.data, complete: false)
+    WWTD.db.create_quest_progress(quest_id: @quest.id, player_id: @player.id, furthest_room_id: @room1.id, data: @quest.data, complete: false)
   end
 
   it 'checks the players room id and the items rood id for a match. Returns success false if they dont' do
