@@ -14,8 +14,8 @@ bedroom = WWTD.db.create_room(name: "Your Bedroom",
                     )
 # Room ID 2
 bathroom = WWTD.db.create_room(name: "Player's Bathroom",
-                    description: "Just your average bathroom with an inviting shower, the basics (toothbrush, toothpaste, comb) laying on the counter, and a toilet.",
-                    west: bedroom.id,
+                    description: "A pretty average bathroom with an inviting shower, the basics (toothbrush, toothpaste, comb) laying on the counter, and a toilet.",
+                    east: bedroom.id,
                     canS: false,
                     canN: false,
                     canW: false,
@@ -103,7 +103,7 @@ toothbrush = WWTD.db.create_item(classification: 'item',
 tv = WWTD.db.create_item(classification: 'item',
                                 name: 'TV',
                                 description: "A badass 80inch TV that a roommate once left in your lucky lucky possession.",
-                                actions: 'turn on, watch',
+                                actions: 'turn on, watch, take',
                                 room_id: living_room.id
                                 )
 backpack = WWTD.db.create_item(classification: 'item',

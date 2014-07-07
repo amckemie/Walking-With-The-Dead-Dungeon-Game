@@ -30,5 +30,10 @@ module WWTD
       ar_item.destroy
       return true if !Item.exists?(item_id)
     end
+
+    def get_item_by_name(name)
+      ar_item = Item.find_by(name: name)
+      ar_item ? build_item(ar_item) : nil
+    end
   end
 end

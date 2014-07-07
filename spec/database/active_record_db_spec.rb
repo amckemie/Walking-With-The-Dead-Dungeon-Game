@@ -268,6 +268,16 @@ describe WWTD::ActiveRecordDatabase do
       expect(first_item.name).to eq(cell.name)
     end
 
+    it 'gets an item by name' do
+      item_1
+      retrieved_item = db.get_item_by_name('apple')
+      expect(retrieved_item.id).to eq(item_1.id)
+      expect(retrieved_item.actions).to eq('take, eat')
+
+      # Testing nil return if no item with that name
+      expect(db.get_item_by_name('worm')).to eq(nil)
+    end
+
     it 'updates a item' do
       db.update_item(item_1.id, description: "gross wormy apple", actions: 'throw', room_id: nil)
       updated = db.get_item(item_1.id)
