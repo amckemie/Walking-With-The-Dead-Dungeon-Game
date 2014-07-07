@@ -56,7 +56,7 @@ describe WWTD::UseItem do
     it 'returns success false if the inputted action is not recognized for the item' do
       result3 = WWTD::UseItem.new.check_item_actions('jacket', ['put', 'the', 'on'])
       expect(result3.success?).to eq(false)
-      expect(result3.error).to eq('Sorry, that item cannot do that.')
+      expect(result3.error).to eq('Sorry, that is not a known action for that.')
     end
   end
 
@@ -71,9 +71,54 @@ describe WWTD::UseItem do
 
     it "returns the failure message if the input is not either put on or wear" do
       result = WWTD::UseItem.run(@player, 'jacket', ['use','the', 'jacket'])
-      expect(result.message).to eq('Sorry, that item cannot do that.')
+      expect(result.message).to eq('Sorry, that is not a known action for that.')
+    end
+  end
+
+  describe 'socks' do
+    before(:each) do
+      @socks = WWTD.db.create_item(classification: 'item',
+                                name: 'socks',
+                                description: "A pair of grungy white socks that have held up over the years",
+                                actions: 'put on, wear, pick up, take',
+                                room_id: @room.id
+                                )
+    end
+    it "returns 'You are now wearing the socks, which is kinda gross, but what can you do?' if input is 'put on' or 'wear'" do
+      result = WWTD::UseItem.run(@player, 'socks', ['put', 'on','the', 'socks'])
+      expect(result.message).to eq('You are now wearing the socks, which is kinda gross, but what can you do?')
+
+      result2 = WWTD::UseItem.run(@player, 'socks', ['wear', 'socks'])
+      expect(result2.message).to eq('You are now wearing the socks, which is kinda gross, but what can you do?')
     end
 
+    it "returns the failure message if the input is not either put on or wear" do
+      result = WWTD::UseItem.run(@player, 'socks', ['use','the', 'socks'])
+      expect(result.message).to eq('Sorry, that is not a known action for that.')
+    end
+  end
+
+  describe 'shower' do
+    before(:each) do
+      @shower = WWTD.db.create_item(classification: 'item',
+                                name: 'shower',
+                                description: "Just astand up shower in your bathroom.",
+                                actions: 'get in, use, take, shower, clean',
+                                room_id: @room.id
+                                )
+    end
+    it "returns You're so fresh and so clean clean now.'' if input is 'get in', 'take', or 'shower'" do
+      result = WWTD::UseItem.run(@player, 'shower', ['get', 'in','the', 'shower'])
+      expect(result.message).to eq("You're so fresh and so clean clean now.")
+
+      result2 = WWTD::UseItem.run(@player, 'shower', ['clean', 'shower'])
+      expect(result2.message).to eq("Well, that's one way to start your day. But the shower is now clean.")
+    end
+
+    it "returns the failure message if the input is not either put on or wear" do
+      result = WWTD::UseItem.run(@player, 'shower', ['wear','the', 'shower'])
+      expect(result.message).to eq('Sorry, that is not a known action for that.')
+    end
   end
 
   describe 'take_item' do

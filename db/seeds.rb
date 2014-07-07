@@ -75,17 +75,10 @@ socks = WWTD.db.create_item(classification: 'item',
                                 parent_item: dresser.id,
                                 room_id: bedroom.id
                                 )
-underwear = WWTD.db.create_item(classification: 'item',
-                                name: 'Underwear',
-                                description: "Your last clean pair of underwear (it really is time to do some laundry)",
-                                actions: 'put on, wear, pick up, take',
-                                parent_item: dresser.id,
-                                room_id: bedroom.id
-                                )
 shower = WWTD.db.create_item(classification: 'item',
                                 name: 'Your bathroom shower',
                                 description: "You know what it is. ",
-                                actions: 'get in, use, take, shower',
+                                actions: 'get in, use, clean, take, shower',
                                 room_id: bathroom.id
                                 )
 toothpaste = WWTD.db.create_item(classification: 'item',

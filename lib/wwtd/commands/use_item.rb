@@ -6,7 +6,7 @@ module WWTD
       new_input = prepare_input(item_name, input)
       result = check_item_actions(item_name, new_input)
 
-      if result.success? && (result.action == 'take' || result.action == 'pick up')
+      if result.success? && (result.action == 'take' || result.action == 'pick up') && item_name != 'shower'
         result = take_item(item_name, player)
         if result.success?
           return success :message => result.message
@@ -25,14 +25,33 @@ module WWTD
           return success :message => result.error
         end
       when 'socks'
+        if result.success?
+          return success :message => 'You are now wearing the socks, which is kinda gross, but what can you do?'
+        else
+          return success :message => result.error
+        end
+      when 'shower'
+        if result.success?
+          if result.action == 'clean'
+            return success :message => "Well, that's one way to start your day. But the shower is now clean."
+          else
+          # update quest progress to include taken_shower
+            return success :message => "You're so fresh and so clean clean now."
+          end
+        else
+          return success :message => result.error
+        end
+      when 'toothbrush'
         # if result.success?
-        #   return success :message => 'You are now nice and toasty with the jacket on.'
+        #   if result.action == 'clean'
+        #     return success :message => "Well, that's one way to start your day. But the shower is now clean."
+        #   else
+        #   # update quest progress to include taken_shower
+        #     return success :message => "You're so fresh and so clean clean now."
+        #   end
         # else
         #   return success :message => result.error
         # end
-      when 'underwear'
-      when 'shower'
-      when 'toothbrush'
       when 'toothpaste'
       when 'tv'
       else
@@ -48,7 +67,6 @@ module WWTD
       input.delete('a')
       input.delete('an')
       input.delete('with')
-      input.delete('in')
       input
     end
     # Prepare input before sending to this method using input.delete(item) and delete articles
@@ -62,9 +80,10 @@ module WWTD
       end
 
       if actions.include?(input)
+        # binding.pry
         return success :action => input
       else
-        return failure('Sorry, that item cannot do that.')
+        return failure('Sorry, that is not a known action for that.')
       end
     end
 
