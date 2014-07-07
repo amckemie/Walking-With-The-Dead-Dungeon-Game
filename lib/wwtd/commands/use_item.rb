@@ -6,7 +6,7 @@ module WWTD
       new_input = prepare_input(item_name, input)
       result = check_item_actions(item_name, new_input)
 
-      if result.success? && result.action == 'take'
+      if result.success? && (result.action == 'take' || result.action == 'pick up')
         result = take_item(item_name, player)
         if result.success?
           return success :message => result.message
@@ -85,6 +85,7 @@ module WWTD
     end
 
     def pick_up_item(item)
+
     end
   end
 end

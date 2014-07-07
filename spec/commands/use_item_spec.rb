@@ -69,8 +69,11 @@ describe WWTD::UseItem do
       expect(result2.message).to eq('You are now nice and toasty with the jacket on.')
     end
 
-    xit "returns the failure message if the input is not either put on or wear" do
+    it "returns the failure message if the input is not either put on or wear" do
+      result = WWTD::UseItem.run(@player, 'jacket', ['use','the', 'jacket'])
+      expect(result.message).to eq('Sorry, that item cannot do that.')
     end
+
   end
 
   describe 'take_item' do
@@ -95,6 +98,17 @@ describe WWTD::UseItem do
       result = WWTD::UseItem.new.take_item('jacket', @player)
       expect(result.success?).to eq(true)
       expect(result.message).to eq('Item taken.')
+    end
+
+    # testing take / pick up through whole command
+    it 'returns successfully routes to take_item method if input is take or pick up' do
+      db.create_room_item(player_id: @player.id, quest_id: 1, room_id: @room.id, item_id: @backpack.id)
+      db.create_inventory(@player.id, @player.room_id, @backpack.id, 1)
+      result = WWTD::UseItem.run(@player, 'jacket', ['take', "the", "jacket"])
+      expect(result.message).to eq("Item taken.")
+
+      result2 = WWTD::UseItem.run(@player, 'jacket', ['pick', "up", "the", "jacket"])
+      expect(result2.message).to eq("Item taken.")
     end
   end
 
