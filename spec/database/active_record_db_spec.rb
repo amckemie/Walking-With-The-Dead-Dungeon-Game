@@ -235,6 +235,10 @@ describe WWTD::ActiveRecordDatabase do
       expect(update2.username).to eq('zombiekilla')
       expect(update2.strength).to eq(75)
       expect(update2.room_id).to eq(2)
+
+      updated = db.update_player(player_1.id, dead: true)
+      expect(updated.id).to eq(player_1.id)
+      expect(updated.dead).to eq(true)
     end
 
     it 'deletes a player' do

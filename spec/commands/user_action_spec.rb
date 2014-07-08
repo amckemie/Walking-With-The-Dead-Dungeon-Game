@@ -6,6 +6,7 @@ describe WWTD::UserAction do
     db.clear_tables
     @room = db.create_room(name: 'Bedroom', description: 'test', quest_id: 1)
     @player = db.create_player(username: 'Ashley', password: 'eightletters', description: "Test player", room_id: @room.id)
+    db.create_quest_progress(quest_id: 1, player_id: @player.id, complete: false, furthest_room_id: 2, data: {first_completed_action: nil, last_completed_action: nil, entered_living_room: false, killed_first_zombie: false})
   end
 
   describe 'where am i' do
@@ -25,6 +26,17 @@ describe WWTD::UserAction do
       result = subject.run(@player, 'look')
       expect(result.message).to eq(@room.description)
       expect(result.player).to eq(@player)
+      qp_data = db.get_quest_progress(@player.id, 1).data
+      expect(qp_data['last_completed_action']).to eq('checked description')
+    end
+  end
+
+  describe 'updating last completed action' do
+    it 'updates "where am i" to checked room' do
+      subject.run(@player, 'WHERE     am       i')
+      qp_data = db.get_quest_progress(@player.id, 1).data
+      expect(qp_data['last_completed_action']).to_not be_nil
+      expect(qp_data['last_completed_action']).to eq('checked room')
     end
   end
 end

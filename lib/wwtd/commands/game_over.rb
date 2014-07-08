@@ -12,16 +12,16 @@ module WWTD
       WWTD.db.delete_inventory_from_quest(player.id, quest_id)
 
       first_room = WWTD.db.get_first_room
-      WWTD.db.update_player(player.id, room_id: first_room.id)
-      start_player_over(first_room, player)
-      return success :player => player
+      updated_player = WWTD.db.update_player(player.id, room_id: first_room.id, dead: false)
+      start_player_over(first_room, updated_player)
+      return success :message => "What would you like to do", :player => updated_player
     end
 
     def start_player_over(room, player)
       # binding.pry
       WWTD::StartNewQuest.start_new_quest?(room, player)
       first_item = WWTD.db.get_first_item
-      WWTD::AddToInventory.run(player, first_item)
+      result = WWTD::AddToInventory.run(player, first_item)
     end
   end
 end

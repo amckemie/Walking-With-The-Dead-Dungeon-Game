@@ -70,7 +70,11 @@ module WWTD
 
     def check_user_input(response)
       if response.include?('yes') || response == "y"
+        quest_id = WWTD.db.get_latest_quest(@player.id).id
+        result = WWTD::GameOver.run(@player, quest_id)
+        @player = result.player
         game_intro
+        puts result.message
         continue_game
       elsif response.include?('quit')
         puts "Goodbye. Come back and try to defeat the zombies soon... BRAAAAAAIIIIIIIINNNNNNNNNNSSSSSSSSSSSSSSSSS".white.on_light_red.bold
@@ -80,10 +84,10 @@ module WWTD
       else
         result = WWTD::UserAction.run(@player, response)
         @player = result.player
-        if result.message == 'GAME OVER' || @player.dead
+        if @player.dead
           puts result.message.white.on_red
-          play_again = ask("Sorry. Not everyone is meant to live in the Zombie Apocalypse. Want to try again? (You can sign in again at a later date also) " )
-          check_user_input(play_again) if play_again == 'yes' || play_again == 'y'
+          play_again = ask("Want to try again? (You can sign in again at a later date also) " )
+          check_user_input(play_again)
         else
           puts result.message.white.on_light_blue
           continue_game

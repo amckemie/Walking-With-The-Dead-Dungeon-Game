@@ -13,35 +13,20 @@ module WWTD
       end
 
       connection = room.has_connection?(direction)
-      new_room = WWTD.db.get_room(room.send(direction)) if connection
-      entered_lr = WWTD.db.get_quest_progress(player.id, new_room.quest_id).data["entered_living_room"] if connection
-
-      if connection && new_room.name == "Player's Living Room" && entered_lr == false
-        first_action = WWTD.db.get_quest_progress(player.id, new_room.quest_id).data["first_completed_action"]
-        if first_action != 'answer phone'
-          attacking_zombie = AsciiArt.new("./lib/assets/attacking_zombie.jpg")
-          puts attacking_zombie.to_ascii_art
-          puts "OH NO! You thought the cure worked.".white.on_light_blue
-          puts "But nope. It didn't, and zombies are back. And one just crashed through the window, killing you.".white.on_light_blue
-          return failure("GAME OVER")
-        else
-          WWTD.db.change_qp_data(player.id, new_room.quest_id, entered_living_room: true)
-          new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
-          update_furthest_room(new_player, new_room)
-          attacking_zombie = AsciiArt.new("./lib/assets/attacking_zombie.jpg")
-          puts attacking_zombie.to_ascii_art
-          zombie = WWTD.db.get_character_by_name("First Zombie")
-          return success :message => zombie.description, :player => new_player
-        end
-      end
-
       if connection
+        new_room = WWTD.db.get_room(room.send(direction))
         new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
         update_furthest_room(new_player, new_room)
-        # is_new_quest = start_new_quest?(new_room, player)
-        return success :message => new_room.name, :player => new_player
       else
         return failure("Silly you. There is nothing there; You can't go that way", {player: player})
+      end
+
+      if new_room.name == "Player's Living Room"
+        result = WWTD::EnterLivingRoom.run(new_player, new_room)
+        return result
+      else
+        # is_new_quest = start_new_quest?(new_room, player)
+        return success :message => new_room.name, :player => new_player
       end
     end
 

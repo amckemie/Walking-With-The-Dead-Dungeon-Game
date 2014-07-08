@@ -11,7 +11,7 @@ module WWTD
       @strength = input[:strength]
       @inventory = []
       @room_id = input[:room_id]
-      @dead = false
+      @dead = false || input[:dead]
     end
 
     def getBit

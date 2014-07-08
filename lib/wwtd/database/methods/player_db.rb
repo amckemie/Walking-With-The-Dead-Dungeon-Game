@@ -27,6 +27,7 @@ module WWTD
     def update_player(player_id, data)
       ar_player = Player.find(player_id)
       ar_player.update(data)
+      # binding.pry
       build_player(ar_player)
     end
 
