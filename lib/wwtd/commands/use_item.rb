@@ -12,7 +12,7 @@ module WWTD
 
       result = check_item_actions(item_name, new_input)
 
-      if result.success? && (result.action == 'take' || result.action == 'pick up') && item_name != 'shower'
+      if result.success? && (result.action == 'take' || result.action == 'pick up') && (item_name != 'shower' || item_name != 'phone')
         result = take_item(item_name, player)
         if result.success?
           WWTD::AddToInventory.run(player, new_item)
@@ -22,10 +22,14 @@ module WWTD
         end
       end
 
-
       case item_name
       when 'phone'
-        result = WWTD::UsePhone.run(player)
+        result = WWTD::UsePhone.run(player, result.action)
+        if result.success?
+          return success :message => result.message
+        else
+          return success :message => result.error
+        end
       when 'dresser'
       when 'jacket'
         if result.success?
@@ -117,8 +121,8 @@ module WWTD
       end
     end
 
-    def pick_up_item(item)
+    # def pick_up_item(item)
 
-    end
+    # end
   end
 end

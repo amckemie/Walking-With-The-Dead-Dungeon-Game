@@ -70,6 +70,14 @@ describe WWTD::EnterRoom do
     end
   end
 
+  describe 'enter living room' do
+    it 'returns that the player died from a zombie attack if the first action is not answer phone' do
+      living_room = db.create_room(name: "Player's Living Room", description: "locked room", west: @room1.id, quest_id: @quest.id)
+      @updated_room1 = db.update_room(@room1.id, north: @room2.id, east: @locked_room.id, west: @room3.id)
+      result = subject.run
+    end
+  end
+
   # describe 'Check for new quest' do
   #   xit "returns new_quest? true if the room is supposed to start a new quest" do
   #     result = subject.run('north', @player)

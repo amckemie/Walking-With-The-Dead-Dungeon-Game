@@ -78,21 +78,12 @@ module WWTD
         result = WWTD::UserAction.run(@player, response)
         @player = result.player
         puts result.message.white.on_light_blue
-        continue_game
+        if result.message == 'GAME OVER'
+          puts "Sorry. Not everyone is meant to live in the Zombie Apocalype. Try again"
+        else
+          continue_game
+        end
       end
-
-      # elsif response.include?('look')
-      #   # shows room description
-      #   display_room_desc(@player.room_id)
-      #   continue_game
-
-      #   puts "I'm sorry, what was that? I didn't understand.".white.on_cyan
-      #   continue_game
-      # end
-
-      # fight
-      # move
-      # use items
     end
 
     def errors_helper(errors_arr)
