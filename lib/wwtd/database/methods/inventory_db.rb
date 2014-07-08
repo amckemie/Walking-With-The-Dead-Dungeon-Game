@@ -17,7 +17,7 @@ module WWTD
     def get_player_inventory(player_id)
       ar_player = Player.find(player_id)
       inventory_items = ar_player.items
-      build_inventory(inventory_items)
+      inventory_items.empty? ? nil : build_inventory(inventory_items)
     end
 
     def delete_inventory_item(player_id, item_id)

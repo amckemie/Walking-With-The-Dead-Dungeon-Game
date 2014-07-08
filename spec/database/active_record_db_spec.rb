@@ -386,10 +386,6 @@ describe WWTD::ActiveRecordDatabase do
       expect(db.get_players_quest_characters(1, 1)).to eq(nil)
     end
 
-    # may not need
-    # xit 'returns all the characters for a room' do
-    # end
-
     it 'deletes a record of a quest and character for a player' do
       expect(db.delete_quest_character(player_1.id, character_1.id)).to eq(true)
     end
@@ -425,6 +421,9 @@ describe WWTD::ActiveRecordDatabase do
       inventory = db.get_player_inventory(player_1.id)
       expect(inventory.size).to eq(2)
       expect(inventory[0].class).to eq(WWTD::ItemNode)
+
+      new_player = db.create_player(username: 'zombiekilla', password: 'eightletters', description: 'a zombie killing machine', room_id: 1)
+      expect(db.get_player_inventory(new_player.id)).to eq(nil)
     end
 
     it 'removes a record from a persons inventory' do
