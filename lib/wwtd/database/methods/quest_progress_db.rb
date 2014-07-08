@@ -23,6 +23,7 @@ module WWTD
 
     def get_player_quests(player_id)
       quests = QuestProgress.where('player_id = ? ', player_id)
+      return nil if quests.length == 0
       quests.map {|quest|
         quest.data = parse_data_attribute(quest)
         build_quest_progress(quest)
@@ -39,8 +40,8 @@ module WWTD
       JSON.parse(quest_progress.data)
     end
 
-    def delete_quest_progress(player_id, quest_id)
-      ar_quest_progress = QuestProgress.where('player_id = ? AND quest_id = ?', player_id, quest_id).first
+    def delete_quest_progress(quest_progress_id)
+      ar_quest_progress = QuestProgress.find(quest_progress_id)
       ar_quest_progress.destroy
     end
 

@@ -550,7 +550,7 @@ describe WWTD::ActiveRecordDatabase do
     end
 
     it 'deletes a record' do
-      db.delete_quest_progress(player_1.id, quest_1.id)
+      db.delete_quest_progress(@quest_progress.id)
       expect(db.get_player_quests(player_1.id).size).to eq(1)
     end
 

@@ -2,7 +2,6 @@ require 'ostruct'
 
 module WWTD
   class EnterRoom < Command
-    # include WWTD::StartNewQuest
 
     def run(dir, player)
       room = WWTD.db.get_room(player.room_id)
