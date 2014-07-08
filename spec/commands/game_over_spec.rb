@@ -26,6 +26,9 @@ describe WWTD::GameOver do
   end
 
   xit 'deletes all of a players rooms' do
+    player_room
+    subject.run(player)
+    expect(db.get_player_rooms(player.id)).to eq(nil)
   end
 
   xit 'deletes all of a players room items' do

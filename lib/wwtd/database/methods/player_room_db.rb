@@ -10,6 +10,11 @@ module WWTD
       PlayerRoom.where("player_id = ? AND room_id = ?", player_id, room_id).first
     end
 
+    def get_all_player_rooms(player_id)
+      rooms = PlayerRoom.where('player_id = ? ', player_id)
+      rooms.length == 0 ? nil : rooms
+    end
+
     def update_player_room(player_id, room_id, data)
       ar_player_room = get_player_room(player_id, room_id)
       ar_player_room.update(data)

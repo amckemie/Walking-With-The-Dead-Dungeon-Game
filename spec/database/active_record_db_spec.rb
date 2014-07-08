@@ -598,6 +598,11 @@ describe WWTD::ActiveRecordDatabase do
       expect(db.get_player_room(player_1.id, 9999)).to eq(nil)
     end
 
+    it 'gets all records for a player from the PlayerRoom table' do
+      db.create_player_room(player_id: player_1.id, room_id: 2, description: "test", quest_id: 1)
+      expect((db.get_all_player_rooms(player_1.id)).count).to eq(2)
+    end
+
     it 'updates a room in the playerRoom table' do
       db.update_player_room(player_1.id, kitchen.id, {canN: true})
       updated_player_room = db.get_player_room(player_1.id, kitchen.id)
@@ -618,6 +623,7 @@ describe WWTD::ActiveRecordDatabase do
       db.delete_player_room(player_1.id, kitchen.id)
       expect(db.get_player_room(player_1.id, kitchen.id)).to eq(nil)
     end
+
   end
   after(:each) do
     db.clear_tables
