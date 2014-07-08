@@ -128,6 +128,13 @@ describe WWTD::ActiveRecordDatabase do
       expect(retrieved_character.name).to eq('Susie')
     end
 
+    it 'retrieves a character by name' do
+      character_1
+      retrieved_character = db.get_character_by_name("Susie")
+      expect(retrieved_character.id).to eq(character_1.id)
+      expect(retrieved_character.name).to eq("Susie")
+    end
+
     it 'updates a character' do
       db.update_character(character_1.id, dead: true)
       updated = db.get_character(character_1.id)

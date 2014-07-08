@@ -1,7 +1,7 @@
 require_relative '../lib/wwtd.rb'
 
 # Creating World
-quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {answer_phone: nil, first_completed_action: nil})
+quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {first_completed_action: nil})
 
 # Rooms
 # Room ID 1
@@ -14,7 +14,7 @@ bedroom = WWTD.db.create_room(name: "Your Bedroom",
                     )
 # Room ID 2
 bathroom = WWTD.db.create_room(name: "Player's Bathroom",
-                    description: "A pretty average bathroom with an inviting shower, the basics (toothbrush, toothpaste, comb) laying on the counter, and a toilet.",
+                    description: "A pretty average bathroom with an inviting shower, the basics (toothbrush, toothpaste) laying on the counter, and a toilet.",
                     east: bedroom.id,
                     canS: false,
                     canN: false,
@@ -35,8 +35,8 @@ living_room = WWTD.db.create_room(name: "Player's Living Room",
 WWTD.db.update_room(bedroom.id, west: bathroom.id, north: living_room.id)
 
 # Characters
-WWTD.db.create_character(name: "HOLY SHIT! IT'S A REAL ZOMBIE AGAIN!",
-                        description: "Coming at ya fast and through that shining living room window",
+WWTD.db.create_character(name: "First Zombie",
+                        description: "HOLY SHIT! IT'S A REAL ZOMBIE AGAIN! Coming at ya fast and through that shining living room window",
                         strength: 20,
                         classification: 'zombie',
                         room_id: living_room.id,
@@ -50,7 +50,7 @@ WWTD.db.create_character(name: "Susie",
                         )
 
 # items
-phone = WWTD.db.create_item(classification: 'item',
+cell = WWTD.db.create_item(classification: 'item',
                                 name: 'phone',
                                 description: "An iPhone that's been dropped nearly one too many times",
                                 actions: 'answer, pick up, call',

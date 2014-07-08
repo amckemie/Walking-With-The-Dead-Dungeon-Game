@@ -14,6 +14,11 @@ module WWTD
       ar_character.classification == 'person' ? build_character(ar_character) : build_zombie(ar_character)
     end
 
+    def get_character_by_name(char_name)
+      ar_character = Character.find_by(name: char_name)
+      ar_character.classification == 'person' ? build_character(ar_character) : build_zombie(ar_character)
+    end
+
     def build_zombie(zombie)
       WWTD::ZombieNode.new(zombie)
     end
