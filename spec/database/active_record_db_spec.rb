@@ -387,6 +387,13 @@ describe WWTD::ActiveRecordDatabase do
       expect(chars).to eq(nil)
     end
 
+    it 'returns all the zombie characters for a player in a room' do
+      db.create_quest_character(player_id: player_1.id, character_id: character_1.id, quest_id: quest_1.id, room_id: bedroom.id)
+      chars = db.get_zombie_characters(player_1.id, bedroom.id)
+      expect(chars.count).to eq(1)
+      expect(chars[0].class).to eq(WWTD::ZombieNode)
+    end
+
     it 'returns an array of all the characters for a player and quest' do
       chars = db.get_players_quest_characters(player_1.id, quest_1.id)
       chars2 = db.get_players_quest_characters(player_2.id, quest_1.id)

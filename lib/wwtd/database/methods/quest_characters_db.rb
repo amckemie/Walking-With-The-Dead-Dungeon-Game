@@ -23,6 +23,11 @@ module WWTD
       }
     end
 
+    def get_zombie_characters(player_id, room_id)
+      chars = get_player_room_characters(player_id, room_id)
+      chars.delete_if {|character| character.class == WWTD::CharacterNode}
+    end
+
     def delete_quest_character(player_id, character_id)
       ar_quest_character = QuestCharacter.where('player_id = ? AND character_id = ?', player_id, character_id).first
       test_id = ar_quest_character.id

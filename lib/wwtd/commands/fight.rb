@@ -2,7 +2,7 @@ module WWTD
   class Fight < Command
     def run(player)
       player_room = player.room_id
-
+      chars = WWTD.db.get_player_room_characters(player.id, player_room.id)
       "Save your energy. There's no zombie to fight here."
     end
 
