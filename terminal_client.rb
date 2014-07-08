@@ -69,7 +69,10 @@ module WWTD
     end
 
     def check_user_input(response)
-      if response.include?('quit')
+      if response.include?('yes') || response.include?("y")
+        game_intro
+        continue_game
+      elsif response.include?('quit')
         puts "Goodbye. Come back and try to defeat the zombies soon... BRAAAAAAIIIIIIIINNNNNNNNNNSSSSSSSSSSSSSSSSS".white.on_light_red.bold
       elsif response.include?('help')
         help_menu
@@ -77,10 +80,12 @@ module WWTD
       else
         result = WWTD::UserAction.run(@player, response)
         @player = result.player
-        puts result.message.white.on_light_blue
         if result.message == 'GAME OVER'
-          puts "Sorry. Not everyone is meant to live in the Zombie Apocalype. Try again"
+          puts result.message.white.on_red
+          play_again = ask("Sorry. Not everyone is meant to live in the Zombie Apocalypse. Want to try again? (You can sign in again at a later date also) " )
+          check_user_input(play_again) if play_again == 'yes' || play_again == 'y'
         else
+          puts result.message.white.on_light_blue
           continue_game
         end
       end
@@ -114,6 +119,7 @@ module WWTD
 
     def continue_game
       response = ask(" ")
+      response.downcase!
       check_user_input(response)
     end
   end

@@ -13,7 +13,7 @@ module WWTD
       end
 
       connection = room.has_connection?(direction)
-      new_room = WWTD.db.get_room(room.send(direction))
+      new_room = WWTD.db.get_room(room.send(direction)) if connection
 
       if connection && new_room.name == "Player's Living Room"
         first_action = WWTD.db.get_quest_progress(player.id, new_room.quest_id).data["first_completed_action"]

@@ -10,11 +10,18 @@ module WWTD
       all_rooms.each {|player_room| WWTD.db.delete_player_room(player_room.id)}
       WWTD.db.delete_all_quest_characters(player.id, quest_id)
       WWTD.db.delete_inventory_from_quest(player.id, quest_id)
+
+      first_room = WWTD.db.get_first_room
+      WWTD.db.update_player(player.id, room_id: first_room.id)
+      start_player_over(first_room, player)
+      return success :player => player
     end
 
-# WWTD::StartNewQuest.start_new_quest?(first_room, new_player)
-    # # Putting the cell phone in their inventory (first item)
-    # first_item = WWTD.db.get_first_item
-    # WWTD::AddToInventory.run(new_player, first_item)
+    def start_player_over(room, player)
+      # binding.pry
+      WWTD::StartNewQuest.start_new_quest?(room, player)
+      first_item = WWTD.db.get_first_item
+      WWTD::AddToInventory.run(player, first_item)
+    end
   end
 end
