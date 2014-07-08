@@ -14,6 +14,15 @@ module WWTD
       }
     end
 
+    def get_player_room_characters(player_id, room_id)
+      chars = QuestCharacter.where('player_id = ? AND room_id = ?', player_id, room_id)
+      return nil if chars.empty?
+      chars.map { |character|
+        char = Character.find(character.character_id)
+        char.classification == 'person' ? build_character(char) : build_zombie(char)
+      }
+    end
+
     def delete_quest_character(player_id, character_id)
       ar_quest_character = QuestCharacter.where('player_id = ? AND character_id = ?', player_id, character_id).first
       test_id = ar_quest_character.id

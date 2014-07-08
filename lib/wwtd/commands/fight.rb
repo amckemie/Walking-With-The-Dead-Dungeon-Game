@@ -1,6 +1,12 @@
 module WWTD
   class Fight < Command
-    def run(player, opponent, shoot)
+    def run(player)
+      player_room = player.room_id
+
+      "Save your energy. There's no zombie to fight here."
+    end
+
+    def fight_opponent(player, opponent, shoot)
       fate = 0
       if shoot
         fate = 1 + rand(2)

@@ -376,6 +376,17 @@ describe WWTD::ActiveRecordDatabase do
       expect(@quest_character3.room_id).to eq(bedroom.id)
     end
 
+    it 'returns quest characters for a certain room' do
+      chars = db.get_player_room_characters(player_1.id, bedroom.id)
+      expect(chars.count).to eq(1)
+      expect(chars[0].class).to eq(WWTD::ZombieNode)
+      # testing for no characters
+      result = db.delete_quest_character(player_1.id, zombie_1.id)
+      # binding.pry
+      chars = db.get_player_room_characters(player_1.id, bedroom.id)
+      expect(chars).to eq(nil)
+    end
+
     it 'returns an array of all the characters for a player and quest' do
       chars = db.get_players_quest_characters(player_1.id, quest_1.id)
       chars2 = db.get_players_quest_characters(player_2.id, quest_1.id)
