@@ -25,6 +25,7 @@ module WWTD
 
     def get_zombie_characters(player_id, room_id)
       chars = get_player_room_characters(player_id, room_id)
+      return chars if chars.nil?
       chars.delete_if {|character| character.class == WWTD::CharacterNode}
     end
 

@@ -1,9 +1,13 @@
 module WWTD
   class Fight < Command
     def run(player)
-      player_room = player.room_id
-      chars = WWTD.db.get_player_room_characters(player.id, player_room.id)
-      "Save your energy. There's no zombie to fight here."
+      player_room_id = player.room_id
+      chars = WWTD.db.get_zombie_characters(player.id, player_room_id)
+      if chars.nil?
+        return failure("Save your energy. There's no zombie to fight here.")
+      else
+        return fight_opponent(player, chars[0], false)
+      end
     end
 
     def fight_opponent(player, opponent, shoot)
