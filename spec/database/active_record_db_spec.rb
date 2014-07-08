@@ -383,6 +383,7 @@ describe WWTD::ActiveRecordDatabase do
       expect(chars2.size).to eq(1)
       p chars
       expect(chars2[0].class).to eq(WWTD::CharacterNode)
+      expect(db.get_players_quest_characters(1, 1)).to eq(nil)
     end
 
     # may not need
@@ -395,7 +396,7 @@ describe WWTD::ActiveRecordDatabase do
 
     it 'deletes all records for a player' do
       db.delete_all_quest_characters(player_1.id, quest_1.id)
-      expect(db.get_players_quest_characters(player_1.id, quest_1.id).size).to eq(0)
+      expect(db.get_players_quest_characters(player_1.id, quest_1.id)).to eq(nil)
     end
   end
 
@@ -620,7 +621,7 @@ describe WWTD::ActiveRecordDatabase do
     end
 
     it 'removes a record from the playerRoom table' do
-      db.delete_player_room(player_1.id, kitchen.id)
+      db.delete_player_room(@player_room.id)
       expect(db.get_player_room(player_1.id, kitchen.id)).to eq(nil)
     end
 

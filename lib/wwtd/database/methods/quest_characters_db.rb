@@ -7,6 +7,7 @@ module WWTD
     # could be done by creating player /char association, finding all chars for player, then using .where to find quests? Which is faster?
     def get_players_quest_characters(player_id, quest_id)
       chars = QuestCharacter.where('player_id = ? AND quest_id = ?', player_id, quest_id)
+      return nil if chars.empty?
       chars.map { |character|
         char = Character.find(character.character_id)
         build_character(char)
@@ -25,7 +26,7 @@ module WWTD
       ar_quest_characters.each do |record|
         record.destroy
       end
-      return true if get_players_quest_characters(player_id, quest_id).size == 0
+      return true if !get_players_quest_characters(player_id, quest_id)
     end
   end
 end

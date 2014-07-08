@@ -20,8 +20,8 @@ module WWTD
       ar_player_room.update(data)
     end
 
-    def delete_player_room(player_id, room_id)
-      ar_player_room = get_player_room(player_id, room_id)
+    def delete_player_room(player_room_id)
+      ar_player_room = PlayerRoom.find(player_room_id)
       ar_player_room.destroy
     end
   end
