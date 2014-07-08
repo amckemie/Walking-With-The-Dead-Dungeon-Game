@@ -14,8 +14,9 @@ module WWTD
 
       connection = room.has_connection?(direction)
       new_room = WWTD.db.get_room(room.send(direction)) if connection
+      entered_lr = WWTD.db.get_quest_progress(player.id, new_room.quest_id).data["entered_living_room"] if connection
 
-      if connection && new_room.name == "Player's Living Room"
+      if connection && new_room.name == "Player's Living Room" && entered_lr == false
         first_action = WWTD.db.get_quest_progress(player.id, new_room.quest_id).data["first_completed_action"]
         if first_action != 'answer phone'
           attacking_zombie = AsciiArt.new("./lib/assets/attacking_zombie.jpg")
@@ -24,6 +25,7 @@ module WWTD
           puts "But nope. It didn't, and zombies are back. And one just crashed through the window, killing you.".white.on_light_blue
           return failure("GAME OVER")
         else
+          WWTD.db.change_qp_data(player.id, new_room.quest_id, entered_living_room: true)
           new_player = WWTD.db.update_player(player.id, room_id: new_room.id)
           update_furthest_room(new_player, new_room)
           attacking_zombie = AsciiArt.new("./lib/assets/attacking_zombie.jpg")

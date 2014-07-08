@@ -1,7 +1,7 @@
 require_relative '../lib/wwtd.rb'
 
 # Creating World
-quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {first_completed_action: nil})
+quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {first_completed_action: nil, entered_living_room: false})
 
 # Rooms
 # Room ID 1
