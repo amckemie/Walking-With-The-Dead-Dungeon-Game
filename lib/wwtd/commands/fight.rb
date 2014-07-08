@@ -1,5 +1,5 @@
- module WWTD
-  class Fight
+module WWTD
+  class Fight < Command
     def run(player, opponent, shoot)
       fate = 0
       if shoot
@@ -22,20 +22,12 @@
     def player_wins(player, opponent)
       new_strength = player.strength - opponent.strength
       WWTD.db.update_player(player.id, strength: new_strength)
-      return {
-        success?: true,
-        message: "Whew! You killed the #{opponent.name}!",
-        deleted?: WWTD.db.delete_quest_character(player.id, opponent.id)
-      }
+      return success :message => "Whew! You killed the #{opponent.name}!", :deleted? => WWTD.db.delete_quest_character(player.id, opponent.id)
     end
 
     def zombie_wins(player, opponent)
       opponent.bite(player)
-      return {
-        success?: false,
-        message: 'Oh nooossssssss! The zombie bit you! So sorry, but you are now infected.',
-        player: player
-      }
+      return success :message => ('Oh nooossssssss! The zombie bit you! So sorry, but you are now infected.'), :player => player
     end
   end
 end

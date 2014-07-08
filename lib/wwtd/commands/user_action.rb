@@ -40,6 +40,9 @@ module WWTD
         else
           return success :message => result.error, :player => player
         end
+      # fight
+      elsif input.include?('fight') || input.include?('kill')
+        result = WWTD::Fight.
       # Shows room description
       elsif input.include?('look')
         return success :message => current_room.description, :player => player
