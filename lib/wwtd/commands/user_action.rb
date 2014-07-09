@@ -12,7 +12,6 @@ module WWTD
 
       # Get Player's current room and quest
       current_room = WWTD.db.get_room(player.room_id)
-      # qp_data = WWTD.db.get_quest_progress(player.id, 1).data
 
       # enter first completed action
 
