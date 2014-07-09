@@ -28,13 +28,13 @@ describe WWTD::EnterLivingRoom do
         expect(db.get_quest_progress(@player.id, 1).data['entered_living_room']).to eq(true)
     end
 
-    it 'checks the players first action and if not answer phone, player dies' do
+    it 'checks the players first action and if not use phone, player dies' do
         result = subject.run(@player, @living_room)
         expect(result.success?).to eq(true)
         expect(result.message).to eq("GAME OVER")
     end
 
-    it 'checks the players first action and if is answer phone, player has opportunity to fight zombie' do
+    it 'checks the players first action and if is use phone, player has opportunity to fight zombie' do
         db.change_qp_data(@player.id, 1, first_completed_action: "answer phone")
         result = subject.run(@player, @living_room)
         expect(result.success?).to eq(true)

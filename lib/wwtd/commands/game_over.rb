@@ -2,6 +2,7 @@ require 'ostruct'
 
 module WWTD
   class GameOver < Command
+    include StartNewQuest
     def run(player, quest_id)
       all_qp = WWTD.db.get_player_quests(player.id)
       all_rooms = WWTD.db.get_all_player_rooms(player.id)
@@ -18,10 +19,9 @@ module WWTD
     end
 
     def start_player_over(room, player)
-      # binding.pry
-      WWTD::StartNewQuest.start_new_quest?(room, player)
+      start_new_quest?(room, player)
       first_item = WWTD.db.get_first_item
-      result = WWTD::AddToInventory.run(player, first_item)
+      WWTD::AddToInventory.run(player, first_item)
     end
   end
 end

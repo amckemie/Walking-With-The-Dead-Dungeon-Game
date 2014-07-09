@@ -2,6 +2,8 @@ require 'ostruct'
 
 module WWTD
   class UserAction < Command
+    include ManipulateQuestProgress
+
     def run(player, input)
       # Set available directions to move
       directions = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w']
@@ -16,7 +18,7 @@ module WWTD
       # enter first completed action
 
       if input.include?('fight') || input.include?('kill')
-        update_last_completed_action(player, current_room, 'fight')
+        update_quest_data(player, current_room, 'fight')
         result = WWTD::Fight.run(player, current_room)
         if result.success?
           return success :message => result.message, :player => player
@@ -49,7 +51,7 @@ module WWTD
       # Check if player is attempting to move
       if attempt_move.length > 0
         result = WWTD::EnterRoom.run(attempt_move.first, player)
-        update_last_completed_action(player, current_room, "changed rooms")
+        update_quest_data(player, current_room, "changed rooms")
         if result.success?
           return result
         else
@@ -57,8 +59,8 @@ module WWTD
         end
       # Check if player is attempting to use an item
       elsif use_item.length > 0
-        update_last_completed_action(player, current_room, "use #{use_item[0]}")
         result = WWTD::UseItem.run(player, use_item.first, input)
+        update_quest_data(player, current_room, "use #{use_item[0]}")
         if result.success?
           return success :message => result.message, :player => player
         else
@@ -66,14 +68,14 @@ module WWTD
         end
       # Shows room description
       elsif input.include?('look') && !input.include?('at')
-        update_last_completed_action(player, current_room, 'checked description')
+        update_quest_data(player, current_room, 'checked description')
         player_room = WWTD.db.get_player_room(player.id, current_room.id)
         return success :message => player_room.description, :player => player
       elsif input.include?('sleep') || input.include?('snooze')
         return success :message => "Nappy nap nap", :player => player
       # Shows items player has
       elsif input.include?('inventory') || input.include?('inv')
-        update_last_completed_action(player, current_room, 'inventory')
+        update_quest_data(player, current_room, 'inventory')
         result = WWTD::ShowInventory.run(player)
         if result.success?
           return success :message => result.message, :player => result.player
@@ -85,13 +87,15 @@ module WWTD
       end
     end
 
-    def update_last_completed_action(player, room, action)
+    # def update_quest_data(player, room, action)
+    #   quest_data = get_data(player.id, room.quest_id)
+    #   WWTD.db.change_qp_data(player.id, room.quest_id, first_completed_action: action) if !quest_data['first_completed_action']
 
-      if room.name == "Player's Living Room"
-        WWTD.db.change_qp_data(player.id, room.quest_id, last_completed_action: action)
-      else
-        WWTD.db.change_qp_data(player.id, room.quest_id, last_lr_action: action)
-      end
-     end
+    #   if room.name == "Player's Living Room"
+    #     WWTD.db.change_qp_data(player.id, room.quest_id, last_completed_action: action)
+    #   else
+    #     WWTD.db.change_qp_data(player.id, room.quest_id, last_lr_action: action)
+    #   end
+    # end
   end
 end

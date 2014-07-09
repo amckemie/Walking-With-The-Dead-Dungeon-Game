@@ -42,7 +42,7 @@ module WWTD
           else
             errors = errors_helper(result.reasons.values)
             puts "Sorry. Your log-in was not successful for these reasons: ".white.on_yellow.bold + errors.white.on_yellow.bold
-            response = ask("Please type sign in to try again or sign up to create an account. ")
+            response = ask("Please type 'SIGN IN' to try again or 'SIGN UP' if you have never played before: \n")
             login(response)
           end
         elsif input == 'sign up'
@@ -58,7 +58,7 @@ module WWTD
           else
             errors = errors_helper(result.reasons.values)
             puts "Sorry, your sign up was not successful for these reasons: ".white.on_yellow.bold + errors.white.on_yellow.bold + ". If you're going to try to fight zombies, you may want to sharpen up those skills...".white.on_yellow.bold
-            response = ask("Please type sign up to try again or sign in to log into an account. ")
+            response = ask("Please type 'SIGN UP' to try again or 'SIGN IN' to log into an already registered account: \n")
             login(response)
           end
         else
@@ -78,7 +78,7 @@ module WWTD
         continue_game
       elsif response.include?('quit')
         puts "Goodbye. Come back and try to defeat the zombies soon... BRAAAAAAIIIIIIIINNNNNNNNNNSSSSSSSSSSSSSSSSS".white.on_light_red.bold
-      elsif response.include?('help')
+      elsif response == 'help'
         help_menu
         continue_game
       else

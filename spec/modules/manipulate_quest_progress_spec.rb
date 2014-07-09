@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe WWTD::GetQuestProgress do
+describe WWTD::ManipulateQuestProgress do
   let(:db) {WWTD.db}
-  subject { Object.new.extend(WWTD::GetQuestProgress) }
+  subject { Object.new.extend(WWTD::ManipulateQuestProgress) }
 
   before(:each) do
     db.clear_tables
@@ -18,6 +18,15 @@ describe WWTD::GetQuestProgress do
       expect(qp_data.class).to eq(Hash)
       expect(qp_data["answer_phone"]).to eq(true)
       expect(qp_data["first_completed_action"]).to eq(nil)
+    end
+  end
+
+   describe 'updating quest data with latest action' do
+    it 'updates "where am i" to checked room' do
+      subject.update_quest_data(@player, @room1, 'checked room')
+      qp_data = db.get_quest_progress(@player.id, @quest.id).data
+      expect(qp_data['last_completed_action']).to_not be_nil
+      expect(qp_data['last_completed_action']).to eq('checked room')
     end
   end
 end

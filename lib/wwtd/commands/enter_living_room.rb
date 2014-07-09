@@ -2,8 +2,9 @@ require 'ostruct'
 
 module WWTD
   class EnterLivingRoom < Command
+    include ManipulateQuestProgress
     def run(player, room)
-      qp_data = WWTD.db.get_quest_progress(player.id, 1).data
+      qp_data = get_quest_data(player.id, room.quest_id)
       entered_before = qp_data["entered_living_room"]
       zombie_dead = qp_data['killed_first_zombie']
       if entered_before && zombie_dead
@@ -12,7 +13,8 @@ module WWTD
 
       WWTD.db.change_qp_data(player.id, 1, entered_living_room: true)
       first_action = qp_data["first_completed_action"]
-      if first_action != 'answer phone'
+      binding.pry
+      if first_action != 'use phone'
         attacking_zombie = AsciiArt.new("./lib/assets/attacking_zombie.jpg")
         puts attacking_zombie.to_ascii_art
         puts "OH NO! You thought the cure worked.".white.on_red

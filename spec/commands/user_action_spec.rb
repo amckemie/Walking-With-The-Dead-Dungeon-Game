@@ -30,13 +30,4 @@ describe WWTD::UserAction do
       expect(qp_data['last_completed_action']).to eq('checked description')
     end
   end
-
-  describe 'updating last completed action' do
-    it 'updates "where am i" to checked room' do
-      subject.run(@player, 'WHERE     am       i')
-      qp_data = db.get_quest_progress(@player.id, 1).data
-      expect(qp_data['last_completed_action']).to_not be_nil
-      expect(qp_data['last_completed_action']).to eq('checked room')
-    end
-  end
 end

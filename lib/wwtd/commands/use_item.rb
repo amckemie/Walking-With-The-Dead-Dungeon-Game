@@ -3,6 +3,8 @@ require 'asciiart'
 
 module WWTD
   class UseItem < Command
+    include ManipulateQuestProgress
+
     def run(player, item_name, input)
       new_input = prepare_input(item_name, input)
       new_item = WWTD.db.get_item_by_name(item_name)
@@ -135,9 +137,5 @@ module WWTD
         return failure("Sorry, you have nothing to take this item in yet.")
       end
     end
-
-    # def pick_up_item(item)
-
-    # end
   end
 end
