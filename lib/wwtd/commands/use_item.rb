@@ -12,7 +12,7 @@ module WWTD
 
       result = check_item_actions(item_name, new_input)
 
-      if result.success? && (result.action == 'take' || result.action == 'pick up') && (item_name != 'shower' || item_name != 'phone')
+      if result.success? && (result.action == 'take' || result.action == 'pick up') && (item_name != 'shower')
         result = take_item(item_name, player)
         if result.success?
           WWTD::AddToInventory.run(player, new_item)
@@ -31,6 +31,21 @@ module WWTD
           return success :message => result.error
         end
       when 'dresser'
+        if result.success?
+          return success :message => 'Inside the drawer you see a pair of socks and a wad of money stuff in the back right corner.'
+        else
+          return success :message => result.error
+        end
+      when 'drawer'
+        if result.success?
+          if result.action == 'open'
+            return success :message => 'You opened the drawer. Inside the drawer you see a pair of socks and a wad of money stuff in the back right corner.'
+          else
+            return success :message => "Drawer closed."
+          end
+        else
+          return success :message => result.error
+        end
       when 'jacket'
         if result.success?
           return success :message => 'You are now nice and toasty with the jacket on.'

@@ -62,6 +62,12 @@ dresser = WWTD.db.create_item(classification: 'item',
                                 actions: 'open',
                                 room_id: bedroom.id
                                 )
+drawer = WWTD.db.create_item(classification: 'item',
+                                name: 'drawer',
+                                description: "Just a drawer in your dresser.",
+                                actions: 'open, close',
+                                room_id: bedroom.id
+                                )
 jacket = WWTD.db.create_item(classification: 'item',
                                 name: 'jacket',
                                 description: "A comfy UT jacket left over from the good ole days",
@@ -72,6 +78,13 @@ socks = WWTD.db.create_item(classification: 'item',
                                 name: 'socks',
                                 description: "A pair of grungy white socks that have held up over the years",
                                 actions: 'put on, grab, get, wear, pick up, take',
+                                parent_item: dresser.id,
+                                room_id: bedroom.id
+                                )
+money = WWTD.db.create_item(classification: 'item',
+                                name: 'money',
+                                description: "Your emergency fund...about $350",
+                                actions: 'take, get, grab',
                                 parent_item: dresser.id,
                                 room_id: bedroom.id
                                 )
@@ -112,7 +125,9 @@ WWTD.db.create_quest_item(item_id: toothbrush.id, quest_id: quest1.id, room_id: 
 WWTD.db.create_quest_item(item_id: toothpaste.id, quest_id: quest1.id, room_id: toothpaste.room_id)
 WWTD.db.create_quest_item(item_id: shower.id, quest_id: quest1.id, room_id: shower.room_id)
 WWTD.db.create_quest_item(item_id: socks.id, quest_id: quest1.id, room_id: socks.room_id)
+WWTD.db.create_quest_item(item_id: money.id, quest_id: quest1.id, room_id: money.room_id)
 WWTD.db.create_quest_item(item_id: jacket.id, quest_id: quest1.id, room_id: jacket.room_id)
 WWTD.db.create_quest_item(item_id: dresser.id, quest_id: quest1.id, room_id: dresser.room_id)
+WWTD.db.create_quest_item(item_id: drawer.id, quest_id: quest1.id, room_id: drawer.room_id)
 WWTD.db.create_quest_item(item_id: cell.id, quest_id: quest1.id, room_id: cell.room_id)
 

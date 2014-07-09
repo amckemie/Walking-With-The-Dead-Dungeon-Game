@@ -20,7 +20,7 @@ module WWTD
       puts zombie.to_ascii_art
       puts "Welcome to Walking with the Dead, a single-player, text-based game! Name credits definitively go to the Walking Dead and Robert Kirkman.".white.on_light_blue
       puts "Enter if you dare".white.on_light_blue
-      login_info = ask("Type either 'SIGN IN' (if you've played before) or 'SIGN UP' ")
+      login_info = ask("Type either 'SIGN IN' (if you've played before) or 'SIGN UP': \n")
       login(login_info)
     end
 
@@ -105,9 +105,19 @@ module WWTD
     end
 
     def game_intro
-      puts "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out, causing perfectly normal people to turn into, well for lack of a better word: zombies. Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure. It only took around 9 months - thank god. Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours. As such, everyone carries at least one vial on them at all times. If you inject the medicine within the alloted time frame, it has thus far proven to be effective at stopping ZV.".white.on_light_blue
-      puts "You currently work at a major hospital in the area as a pharmaceutical tech. Today is your first full day off in awhile, and you've planned to take full advantage of that by sleeping in at home.".white.on_light_blue
-      puts "Damn. Your cell phone is ringing, threatening to make you get up if you choose to answer it. It's probably just work anyways, and who wants to talk to their boss on their day off?".white.on_light_blue
+      puts "It's been a little over 2 years since the ZV (Zombiaviridae) virus broke out,".white.on_light_blue
+      puts "causing perfectly normal people to turn into, well for lack of a better word: zombies.".white.on_light_blue
+      puts "Fortunately, and unlike popular comics and movies of the time suggested, it didn't take our brightest minds years to find a cure.".white.on_light_blue
+      puts "It only took around 9 months - thank god.".white.on_light_blue
+      puts "Once a person was infected - through a bite, scratch, or any transfer of bodily fluids - they have to get a shot of the cure within a few hours.".white.on_light_blue
+      puts "As such, everyone carries at least one vial on them at all times.".white.on_light_blue
+      puts "If you inject the medicine within the alloted time frame, it has thus far proven to be effective at stopping ZV.".white.on_light_blue
+      puts
+      puts "You currently work at a major hospital in the area as a pharmaceutical tech. Today is your first full day off in awhile,".white.on_light_blue
+      puts "and you've planned to take full advantage of that by sleeping in at home.".white.on_light_blue
+      puts
+      puts "Unfortunately, your cell phone is currently ringing, threatening to make you get up if you choose to answer it.".white.on_light_blue
+      puts "It's probably just work anyways, and who wants to talk to their boss on their day off?".white.on_light_blue
     end
 
     def help_menu

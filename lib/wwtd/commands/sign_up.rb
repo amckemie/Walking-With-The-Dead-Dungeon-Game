@@ -7,7 +7,7 @@ module WWTD
       result = validate_params(params) do
         allow :username, :password, :description
         validates :username, presence: true
-        validates :password, presence: true, :length => {minimum: 8}
+        validates :password, presence: true
         validates :description, presence: true
       end
 
