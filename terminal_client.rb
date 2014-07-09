@@ -20,7 +20,7 @@ module WWTD
       puts zombie.to_ascii_art
       puts "Welcome to Walking with the Dead, a single-player, text-based game! Name credits definitively go to the Walking Dead and Robert Kirkman.".white.on_light_blue
       puts "Enter if you dare".white.on_light_blue
-      login_info = ask("Please enter sign in if you have played before and sign up if you are new")
+      login_info = ask("Type either 'SIGN IN' (if you've played before) or 'SIGN UP' ")
       login(login_info)
     end
 

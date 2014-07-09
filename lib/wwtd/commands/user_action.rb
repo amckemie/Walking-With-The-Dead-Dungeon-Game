@@ -83,11 +83,10 @@ module WWTD
 
     def update_last_completed_action(player, room, action)
       if room.name == "Player's Living Room"
-        puts WWTD.db.change_qp_data(player.id, room.quest_id, last_completed_action: action)
+        WWTD.db.change_qp_data(player.id, room.quest_id, last_completed_action: action)
       else
-        puts WWTD.db.change_qp_data(player.id, room.quest_id, last_lr_action: action)
+        WWTD.db.change_qp_data(player.id, room.quest_id, last_lr_action: action)
       end
-      puts action
-    end
+     end
   end
 end
