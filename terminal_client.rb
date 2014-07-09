@@ -25,9 +25,11 @@ module WWTD
     end
 
     def login(input)
+      input.downcase!
+      binding.pry
       if input == 'quit'
         puts "Scared of zombies I see...Well maybe next time you'll muster up the courage to play.".white.on_light_red.bold
-      else
+      elsif input == 'sign in' || input == 'sign up'
         un = ask("Enter your username: ")
         pw = ask("Enter your password:  ") { |q| q.echo = '*' }
         if input == 'sign in'
@@ -61,10 +63,10 @@ module WWTD
             response = ask("Please type 'SIGN UP' to try again or 'SIGN IN' to log into an already registered account: \n")
             login(response)
           end
-        else
-          response = ask("I'm sorry, I don't recognize that command. Please type sign in or sign up to play or exit to leave the game.")
-          login(response)
         end
+      else
+        response = ask("I'm sorry, I don't recognize that command. Please type sign in or sign up to play or exit to leave the game.")
+        login(response)
       end
     end
 
