@@ -6,7 +6,7 @@ quest1 = WWTD.db.create_quest(name: 'Quest 1', data: {first_completed_action: ni
 # Rooms
 # Room ID 1
 bedroom = WWTD.db.create_room(name: "Your Bedroom",
-                    description: "It's a cozy room that is relatively small. Your dresser is in the far corner with a jacket tossed on top of it. There's a bedstand next to your bed with a few pictures on it, including one of you and your good friend Susie.",
+                    description: "It's a cozy room that is relatively small. Your dresser is in the far corner with a jacket tossed on top of it. There's a bedstand next to your bed with a few pictures on it, including one of you and your good friend Susie. To your west is the bathroom and north is your living room.",
                     canS: false,
                     canE: false,
                     quest_id: quest1.id,
@@ -14,7 +14,7 @@ bedroom = WWTD.db.create_room(name: "Your Bedroom",
                     )
 # Room ID 2
 bathroom = WWTD.db.create_room(name: "Player's Bathroom",
-                    description: "A pretty average bathroom with an inviting shower, the basics (toothbrush, toothpaste) laying on the counter, and a toilet.",
+                    description: "A pretty average bathroom with an inviting shower, the basics (toothbrush, toothpaste) laying on the counter, and a toilet. The bedroom is to your east.",
                     east: bedroom.id,
                     canS: false,
                     canN: false,
@@ -23,7 +23,7 @@ bathroom = WWTD.db.create_room(name: "Player's Bathroom",
                     )
 # Room ID 3
 living_room = WWTD.db.create_room(name: "Player's Living Room",
-                    description: "Man, it's bright in your living room today. Guess you must have left the curtains open. The TV, which hangs on the left wall is off, and your backpack is tossed in the corner near the door.",
+                    description: "Man, it's bright in your living room today. Guess you must have left the curtains open. The TV, which hangs on the left wall is off, and your backpack is tossed in the corner near the door. There is a door to your east and the bedroom is south.",
                     south: bedroom.id,
                     canN: false,
                     canE: false,
@@ -36,7 +36,7 @@ WWTD.db.update_room(bedroom.id, west: bathroom.id, north: living_room.id)
 
 # Characters
 WWTD.db.create_character(name: "First Zombie",
-                        description: "HOLY SHIT! IT'S A REAL ZOMBIE AGAIN! Coming at ya fast and through that shining living room window",
+                        description: "HOLY SHIT! IT'S A REAL ZOMBIE AGAIN! Coming at ya fast and through your living room window",
                         strength: 20,
                         classification: 'zombie',
                         room_id: living_room.id,
@@ -53,7 +53,7 @@ WWTD.db.create_character(name: "Susie",
 cell = WWTD.db.create_item(classification: 'item',
                                 name: 'phone',
                                 description: "An iPhone that's been dropped nearly one too many times",
-                                actions: 'answer, pick up, call',
+                                actions: 'answer, pick up, take, call',
                                 room_id: bedroom.id
                                 )
 dresser = WWTD.db.create_item(classification: 'item',
@@ -65,13 +65,13 @@ dresser = WWTD.db.create_item(classification: 'item',
 jacket = WWTD.db.create_item(classification: 'item',
                                 name: 'jacket',
                                 description: "A comfy UT jacket left over from the good ole days",
-                                actions: 'put on, wear, pick up, take',
+                                actions: 'put on, grab, get, wear, pick up, take',
                                 room_id: bedroom.id
                                 )
 socks = WWTD.db.create_item(classification: 'item',
                                 name: 'socks',
                                 description: "A pair of grungy white socks that have held up over the years",
-                                actions: 'put on, wear, pick up, take',
+                                actions: 'put on, grab, get, wear, pick up, take',
                                 parent_item: dresser.id,
                                 room_id: bedroom.id
                                 )
@@ -84,13 +84,13 @@ shower = WWTD.db.create_item(classification: 'item',
 toothpaste = WWTD.db.create_item(classification: 'item',
                                 name: 'toothpaste',
                                 description: "So fresh and so clean, clean. ",
-                                actions: 'take',
+                                actions: 'take, get, grab',
                                 room_id: bathroom.id
                                 )
 toothbrush = WWTD.db.create_item(classification: 'item',
                                 name: 'toothbrush',
                                 description: "Don't you think you're a little old for a Spiderman toothbrush? Nah.... ",
-                                actions: 'use, take, brush',
+                                actions: 'use, grab, get, take, brush',
                                 room_id: bathroom.id
                                 )
 tv = WWTD.db.create_item(classification: 'item',
@@ -102,7 +102,7 @@ tv = WWTD.db.create_item(classification: 'item',
 backpack = WWTD.db.create_item(classification: 'item',
                                 name: 'backpack',
                                 description: "A trusty backpack that can fit a surprising number of medical books",
-                                actions: 'put on, take, pick up',
+                                actions: 'put on, take, pick up, get, grab',
                                 room_id: living_room.id
                                 )
 
