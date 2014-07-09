@@ -2,7 +2,8 @@ require 'bcrypt'
 
 module WWTD
   class SignUp < UseCase
-    # include WWTD::StartNewQuest
+    include WWTD::StartNewQuest
+
     def run(params)
       result = validate_params(params) do
         allow :username, :password, :description
@@ -25,7 +26,7 @@ module WWTD
           # Creating player
           new_player = WWTD.db.create_player(username: params[:username], password: params[:password_digest], description: params[:description], room_id: first_room.id)
           # Creating their first questProgress, roomItems, questCharacters, and unique rooms
-          WWTD::StartNewQuest.start_new_quest?(first_room, new_player)
+          start_new_quest?(first_room, new_player)
           # Putting the cell phone in their inventory (first item)
           first_item = WWTD.db.get_first_item
           WWTD::AddToInventory.run(new_player, first_item)

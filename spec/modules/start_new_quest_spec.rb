@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe WWTD::StartNewQuest do
   let(:db) {WWTD.db}
+  subject { Object.new.extend(WWTD::StartNewQuest) }
+
   before(:each) do
     db.clear_tables
     @quest = db.create_quest(name: 'Quest Test (haha)', data: {answer_phone: true})
@@ -13,7 +15,7 @@ describe WWTD::StartNewQuest do
   describe 'Check for new quest' do
     describe 'it is a new quest' do
       before(:each) do
-        @result = WWTD::StartNewQuest.start_new_quest?(@room1, @player)
+        @result = subject.start_new_quest?(@room1, @player)
       end
       it "returns new_quest? true if the room is supposed to start a new quest" do
         expect(@result).to eq(true)
@@ -27,15 +29,14 @@ describe WWTD::StartNewQuest do
 
     describe 'not a new quest' do
       before(:each) do
-        @result = WWTD::StartNewQuest.start_new_quest?(@room2, @player)
+        @result = subject.start_new_quest?(@room2, @player)
       end
       it "returns new_quest? false if the room is not supposed to start a new quest" do
         expect(@result).to eq(false)
       end
 
       it 'does not create a new quest progress record for the player' do
-        quests = WWTD.db.get_player_quests(@player.id)
-        expect(quests.count).to eq(0)
+        expect(WWTD.db.get_player_quests(@player.id)).to eq(nil)
       end
     end
   end
@@ -59,7 +60,7 @@ describe WWTD::StartNewQuest do
     end
 
     it 'creates a record for every item in the rooms included in the new quest for the player' do
-      result = WWTD::StartNewQuest.start_new_quest?(@room1, @player)
+      result = subject.start_new_quest?(@room1, @player)
       expect(result).to eq(true)
       room_items = WWTD.db.get_quest_items_left(@player.id, @quest.id)
       expect(room_items.count).to eq(1)
@@ -74,7 +75,7 @@ describe WWTD::StartNewQuest do
     end
 
     it 'creates a record for every character in the quest for the player' do
-      result = WWTD::StartNewQuest.start_new_quest?(@room1, @player)
+      result = subject.start_new_quest?(@room1, @player)
       expect(result).to eq(true)
 
       quest_characters = WWTD.db.get_players_quest_characters(@player.id, @quest.id)
@@ -84,7 +85,7 @@ describe WWTD::StartNewQuest do
 
   describe 'creating player rooms' do
     it 'creates a record for a player for each room in the new quest' do
-      WWTD::StartNewQuest.start_new_quest?(@room1, @player)
+      subject.start_new_quest?(@room1, @player)
       expect(db.get_player_room(@player.id, @room1.id)).to_not be_nil
       expect(db.get_player_room(@player.id, @room2.id)).to_not be_nil
     end
