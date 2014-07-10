@@ -15,7 +15,7 @@ module WWTD
       first_room = WWTD.db.get_first_room
       updated_player = WWTD.db.update_player(player.id, room_id: first_room.id, dead: false)
       start_player_over(first_room, updated_player)
-      return success :message => "What would you like to do"
+      return success :message => "What would you like to do", :player => updated_player
     end
 
     def start_player_over(room, player)

@@ -52,7 +52,8 @@ describe WWTD::Fight do
     end
 
     it "deletes the opponent from the players game if they are killed when the person wins" do
-      expect(@result.deleted?).to eq(true)
+      chars = WWTD.db.get_players_quest_characters(@player_1.id, @quest.id)
+      expect(chars).to eq(nil)
     end
 
     it 'decreases the players strength by the opponents strength and saves it in the db' do
@@ -74,7 +75,8 @@ describe WWTD::Fight do
     end
 
     it "kills the person if they lose the fight" do
-      expect(@result2.player.dead).to eq(true)
+      player = WWTD.db.get_player(@player2.id)
+      expect(player.dead).to eq(true)
     end
   end
 

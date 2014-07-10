@@ -14,7 +14,7 @@ describe WWTD::ManipulateQuestProgress do
 
   describe 'get data' do
     it 'returns the data hash for a specific player and quest' do
-      qp_data = subject.get_data(@player.id, @quest.id)
+      qp_data = subject.get_quest_data(@player.id, @quest.id)
       expect(qp_data.class).to eq(Hash)
       expect(qp_data["answer_phone"]).to eq(true)
       expect(qp_data["first_completed_action"]).to eq(nil)

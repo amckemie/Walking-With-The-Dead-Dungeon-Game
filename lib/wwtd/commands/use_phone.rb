@@ -23,7 +23,7 @@ module WWTD
           puts "They can't get in yet, bu--".white.on_light_blue
           return success :message => "(You hear a sound as the phone is dropped and then the line cuts off."
         elsif first_action_string == 'use phone'
-          return success :message =>"'Susie, is in trouble. Why are you answering your phone and not trying to get to the hospital to help!?!"
+          return success :message =>"Susie, is in trouble. Why are you answering your phone and not trying to get to the hospital to help!?!"
         else
           # WWTD.db.change_qp_data(player.id, first_room.quest_id, first_completed_action: 'answer phone')
           return failure("Your phone is no longer ringing and there are no voicemails.")

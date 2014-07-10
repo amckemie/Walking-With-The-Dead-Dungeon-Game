@@ -71,7 +71,7 @@ module WWTD
 
     def check_user_input(response)
       if response.include?('yes') || response == "y"
-        quest_id = WWTD.db.get_latest_quest(@player.id).id
+        quest_id = WWTD.db.get_latest_quest(@player.id).quest_id
         result = WWTD::GameOver.run(@player, quest_id)
         @player = result.player
         game_intro

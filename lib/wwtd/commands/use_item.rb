@@ -14,7 +14,7 @@ module WWTD
 
       result = check_item_actions(item_name, new_input)
 
-      if result.success? && (result.action == 'take' || result.action == 'pick up') && (item_name != 'shower')
+      if result.success? && (result.action == 'take' || result.action == 'pick up' || result.action == 'get' || result.action == 'grab') && (item_name != 'shower')
         result = take_item(item_name, player)
         if result.success?
           WWTD::AddToInventory.run(player, new_item)
@@ -36,11 +36,15 @@ module WWTD
           return success :message => result.error
         end
       when 'phone'
-        result = WWTD::UsePhone.run(player, result.action)
         if result.success?
-          return success :message => result.message
+          result = WWTD::UsePhone.run(player, result.action)
+          if result.success?
+            return success :message => result.message
+          else
+            return success :message => result.error
+          end
         else
-          return success :message => result.error
+          return failure(result.error)
         end
       when 'dresser'
         if result.success?
@@ -79,6 +83,14 @@ module WWTD
             return success :message => "You're so fresh and so clean clean now."
           end
         else
+          return success :message => result.error
+        end
+      when 'toothbrush'
+        if !result.success?
+          return success :message => result.error
+        end
+      when 'toothpaste'
+        if !result.success?
           return success :message => result.error
         end
       when 'tv'
@@ -136,8 +148,10 @@ module WWTD
 
       inventory = WWTD.db.get_player_inventory(player.id)
       has_backpack = false
-      inventory.each do |item|
-        has_backpack = true if item.id == backpack.id
+      if !inventory.nil?
+        inventory.each do |item|
+          has_backpack = true if item.id == backpack.id
+        end
       end
 
 

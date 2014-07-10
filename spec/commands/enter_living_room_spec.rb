@@ -35,16 +35,18 @@ describe WWTD::EnterLivingRoom do
     end
 
     it 'checks the players first action and if is use phone, player has opportunity to fight zombie' do
-        db.change_qp_data(@player.id, 1, first_completed_action: "answer phone")
+        db.change_qp_data(@player.id, 1, first_completed_action: "use phone")
         result = subject.run(@player, @living_room)
         expect(result.success?).to eq(true)
         expect(result.message). to eq("HOLY SHIT! IT'S A REAL ZOMBIE AGAIN! Coming at ya fast and through that shining living room window")
     end
 
-    it 'updates the players dead attribute to true' do
+    it 'updates the players dead attribute to true if they didnt answer the phone first' do
         result = subject.run(@player, @living_room)
         expect(result.success?).to eq(true)
-        expect(result.player.dead).to eq(true)
+        expect(result.message).to eq("GAME OVER")
+        player = WWTD.db.get_player(@player.id)
+        expect(player.dead).to eq(true)
     end
   end
 

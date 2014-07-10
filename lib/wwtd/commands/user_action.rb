@@ -59,7 +59,7 @@ module WWTD
       # Check if player is attempting to use an item
       elsif use_item.length > 0
         result = WWTD::UseItem.run(player, use_item.first, input)
-        update_quest_data(player, current_room, "use #{use_item[0]}")
+        update_quest_data(player, current_room, "use #{use_item[0]}") if result.success?
         if result.success?
           return success :message => result.message
         else

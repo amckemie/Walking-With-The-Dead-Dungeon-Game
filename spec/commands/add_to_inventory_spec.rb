@@ -32,7 +32,7 @@ describe WWTD::AddToInventory do
 
   it 'adds the item to the players inventory' do
     before_inventory = db.get_player_inventory(@player.id)
-    expect(before_inventory.count).to eq(0)
+    expect(before_inventory).to eq(nil)
 
     result = subject.run(@player, @cell)
     expect(result.success?).to eq(true)

@@ -30,10 +30,6 @@ describe WWTD::PlayerNode do
       expect(player.inventory).to eq([])
     end
 
-    it 'has an dead status set to false as default' do
-      expect(player.dead).to eq(false)
-    end
-
     it 'has a room id attribute' do
       expect(player.room_id).to eq(1)
     end

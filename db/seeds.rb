@@ -53,7 +53,7 @@ WWTD.db.create_character(name: "Susie",
 cell = WWTD.db.create_item(classification: 'item',
                                 name: 'phone',
                                 description: "An iPhone that's been dropped nearly one too many times",
-                                actions: 'answer, pick up, take, call',
+                                actions: 'answer, call',
                                 room_id: bedroom.id
                                 )
 dresser = WWTD.db.create_item(classification: 'item',
@@ -84,7 +84,7 @@ socks = WWTD.db.create_item(classification: 'item',
 money = WWTD.db.create_item(classification: 'item',
                                 name: 'money',
                                 description: "Your emergency fund...about $350",
-                                actions: 'take, get, grab',
+                                actions: 'take, get, grab, pick up',
                                 parent_item: dresser.id,
                                 room_id: bedroom.id
                                 )
@@ -96,14 +96,14 @@ shower = WWTD.db.create_item(classification: 'item',
                                 )
 toothpaste = WWTD.db.create_item(classification: 'item',
                                 name: 'toothpaste',
-                                description: "So fresh and so clean, clean. ",
-                                actions: 'take, get, grab',
+                                description: "Minty fresh spearmint toothpaste.",
+                                actions: 'take, get, grab, pick up',
                                 room_id: bathroom.id
                                 )
 toothbrush = WWTD.db.create_item(classification: 'item',
                                 name: 'toothbrush',
                                 description: "Don't you think you're a little old for a Spiderman toothbrush? Nah.... ",
-                                actions: 'use, grab, get, take, brush',
+                                actions: 'grab, get, take, pick up',
                                 room_id: bathroom.id
                                 )
 tv = WWTD.db.create_item(classification: 'item',
@@ -121,8 +121,8 @@ backpack = WWTD.db.create_item(classification: 'item',
 pictures = WWTD.db.create_item(classification: 'item',
                                 name: 'pictures',
                                 description: "",
-                                actions: 'look at, take',
-                                room_id: living_room.id
+                                actions: 'look at, take, pick up',
+                                room_id: bedroom.id
                                 )
 
 WWTD.db.create_quest_item(item_id: backpack.id, quest_id: quest1.id, room_id: backpack.room_id)

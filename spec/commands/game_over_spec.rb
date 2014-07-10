@@ -29,8 +29,11 @@ describe WWTD::GameOver do
     expect((db.get_player_inventory(@player.id)).count).to eq(1)
   end
 
-  it 'returns the new player in the first room' do
+  it 'puts the new player in the first room' do
     result = subject.run(@player, @quest.id)
-    expect(result.player.id).to eq(@player.id)
+    expect(result.success?).to eq(true)
+    expect(result.message).to eq("What would you like to do")
+    player = WWTD.db.get_player(@player.id)
+    expect(player.room_id).to eq(@kitchen.id)
   end
 end

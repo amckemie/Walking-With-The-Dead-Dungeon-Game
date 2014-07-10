@@ -43,7 +43,7 @@ describe WWTD::SignUp do
     result = @sign_up.run(@test_player)
     expect(result.success?).to eq(false)
     expect(result.error).to eq(:invalid_params)
-    expect(result.reasons).to eq(password: ["can't be blank", "is too short (minimum is 8 characters)"])
+    expect(result.reasons).to eq(password: ["can't be blank"])
   end
 
   it 'returns an error message if a person does not enter a description' do

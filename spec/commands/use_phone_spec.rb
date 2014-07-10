@@ -43,10 +43,11 @@ describe WWTD::UsePhone do
       expect(result.message).to eq("(You hear a sound as the phone is dropped and then the line cuts off.")
     end
 
-    it 'prints out "Susie, is in trouble. Why are you trying to answer your phone again!?!" if answer_phone is first completed action' do
+    it 'prints out "Susie, is in trouble. Why are you trying to answer your phone again!?!" if use_phone is first completed action' do
+      WWTD.db.change_qp_data(@updated_player.id, @quest.id, first_completed_action: 'use phone')
       subject.run(@updated_player, 'answer')
       result = subject.run(@updated_player, 'answer')
-      expect(result.message).to eq("Susie, is in trouble. Why are you trying to answer your phone again!?!")
+      expect(result.message).to eq("Susie, is in trouble. Why are you answering your phone and not trying to get to the hospital to help!?!")
     end
   end
 end
