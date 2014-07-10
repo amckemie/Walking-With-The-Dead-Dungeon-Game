@@ -7,7 +7,7 @@ module WWTD
     def run(player, input)
       # Set available directions to move
       directions = ['north', 'south', 'east', 'west', 'n', 's', 'e', 'w']
-      items = ["phone", "dresser", "drawer", "money", 'jacket', 'socks', 'underwear', 'shower', 'toothbrush', 'toothpaste', 'tv', 'backpack']
+      items = ["phone", "dresser", "drawer", "money", 'jacket', 'socks', 'underwear', 'shower', 'toothbrush', 'toothpaste', 'tv', 'backpack', 'pictures']
       # Sanitize input
       input.downcase!
       input = input.squeeze(" ")

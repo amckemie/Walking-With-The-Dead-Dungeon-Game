@@ -8,7 +8,7 @@ module WWTD
     def run(player, item_name, input)
       new_input = prepare_input(item_name, input)
       new_item = WWTD.db.get_item_by_name(item_name)
-      if input.include?("look") || input.include?('examine')
+      if (input.include?("look") || input.include?('examine')) && item_name != 'pictures'
         return success :message => new_item.description
       end
 
@@ -25,6 +25,16 @@ module WWTD
       end
 
       case item_name
+      when 'pictures'
+        if result.success?
+          pic1 = AsciiArt.new("./lib/assets/susie.png")
+          pic2 = AsciiArt.new("./lib/assets/dog_pic.jpeg")
+          puts pic1.to_ascii_art(width: 50)
+          puts pic2.to_ascii_art(width: 50)
+          return success :message => 'You guys sure are photogenic'
+        else
+          return success :message => result.error
+        end
       when 'phone'
         result = WWTD::UsePhone.run(player, result.action)
         if result.success?

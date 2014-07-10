@@ -118,6 +118,12 @@ backpack = WWTD.db.create_item(classification: 'item',
                                 actions: 'put on, take, pick up, get, grab',
                                 room_id: living_room.id
                                 )
+pictures = WWTD.db.create_item(classification: 'item',
+                                name: 'pictures',
+                                description: "",
+                                actions: 'look at, take',
+                                room_id: living_room.id
+                                )
 
 WWTD.db.create_quest_item(item_id: backpack.id, quest_id: quest1.id, room_id: backpack.room_id)
 WWTD.db.create_quest_item(item_id: tv.id, quest_id: quest1.id, room_id: tv.room_id)
@@ -130,4 +136,6 @@ WWTD.db.create_quest_item(item_id: jacket.id, quest_id: quest1.id, room_id: jack
 WWTD.db.create_quest_item(item_id: dresser.id, quest_id: quest1.id, room_id: dresser.room_id)
 WWTD.db.create_quest_item(item_id: drawer.id, quest_id: quest1.id, room_id: drawer.room_id)
 WWTD.db.create_quest_item(item_id: cell.id, quest_id: quest1.id, room_id: cell.room_id)
+WWTD.db.create_quest_item(item_id: pictures.id, quest_id: quest1.id, room_id: pictures.room_id)
+
 

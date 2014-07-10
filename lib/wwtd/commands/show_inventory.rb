@@ -4,7 +4,8 @@ module WWTD
   class ShowInventory < Command
     def run(player)
       inventory = WWTD.db.get_player_inventory(player.id)
-      if inventory.length >= 1
+      # binding.pry
+      if !inventory.nil?
         inventory_string = ""
         inventory.each do |item|
           inventory_string += item.name
