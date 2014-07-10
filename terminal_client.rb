@@ -36,7 +36,7 @@ module WWTD
           result = WWTD::SignIn.new.run(username: un, password: pw)
           if result.success?
             @player = result.player
-            current_quest = WWTD.db.get_latest_quest(result.player.id)
+            # current_quest = WWTD.db.get_latest_quest(result.player.id)
             current_room = WWTD.db.get_room(@player.room_id)
             puts "You are currently in: ".white.on_light_blue + current_room.name.white.on_light_blue
             response = ask(" ")
@@ -76,7 +76,7 @@ module WWTD
         result = WWTD::GameOver.run(@player, quest_id)
         @player = result.player
         game_intro
-        puts result.message
+        puts result.message.white.on_light_blue
         continue_game
       elsif response.include?('quit')
         puts "Goodbye. Come back and try to defeat the zombies soon... BRAAAAAAIIIIIIIINNNNNNNNNNSSSSSSSSSSSSSSSSS".white.on_light_red.bold
