@@ -12,7 +12,7 @@ module WWTD
         end
         inventory_string.slice!(-2, 2)
 
-        return success :message => inventory_string, :player => player
+        return success :message => inventory_string
       else
         return failure("Ruh roh. You have no items with you. Might want to fix that...")
       end

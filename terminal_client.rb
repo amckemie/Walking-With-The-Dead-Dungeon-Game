@@ -26,7 +26,6 @@ module WWTD
 
     def login(input)
       input.downcase!
-      binding.pry
       if input == 'quit'
         puts "Scared of zombies I see...Well maybe next time you'll muster up the courage to play.".white.on_light_red.bold
       elsif input == 'sign in' || input == 'sign up'
@@ -85,7 +84,7 @@ module WWTD
         continue_game
       else
         result = WWTD::UserAction.run(@player, response)
-        @player = result.player
+        @player = WWTD.db.get_player(@player.id)
         if @player.dead
           puts result.message.white.on_red
           play_again = ask("Want to try again? (You can sign in again at a later date also) " )

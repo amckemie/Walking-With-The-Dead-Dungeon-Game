@@ -32,12 +32,14 @@ module WWTD
       new_strength = player.strength - opponent.strength
       WWTD.db.update_player(player.id, strength: new_strength)
       update_room_for_player(player, room)
-      return success :message => "Whew! You killed the #{opponent.name}!", :deleted? => WWTD.db.delete_quest_character(player.id, opponent.id), :player => player
+      WWTD.db.delete_quest_character(player.id, opponent.id)
+      return success :message => "Whew! You killed the #{opponent.name}!"
     end
 
     def zombie_wins(player, opponent)
       opponent.bite(player)
-      return success :message => ('Oh nooossssssss! The zombie bit you! So sorry, but you are now infected.'), :player => player
+      WWTD.db.update_player(player.id, dead: true)
+      return success :message => ('Oh nooossssssss! The zombie bit you! So sorry, but you are now infected.')
     end
 
     def update_room_for_player(player, room)
