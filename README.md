@@ -36,7 +36,9 @@ At the start of the game, you are awoken to a phone call on your day off from wo
 
 Status: 
 
+
  This game is currently being developed. Version 1.0 is playable in any terminal by running Ruby. Version 1.5 will expand upon the world, offering more quests, rooms to explore, zombies to fight, and more! Version 2.0 is tentatively planned to have a basic web interface and be delivered through Sinatra.
+ 
 -----------------------------------------------------------------------------------------------------------------------
 
 ## To currently play the game on your own computer:
