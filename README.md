@@ -1,18 +1,18 @@
 # <b>Walking with the Dead: A Text-Based Game</b>
 
-### <b>Description:</b> Walking with the Dead is a throw back to the popular 80's dungeon games, also known as interactive fiction games, such as Zork. This particular game is a single-player, text-based gameAfter signing up, players will be given an introductory text description of the room they are in. From there they will be able to type in commands to interact with the world. Some basic things that players will be able to do include moving from room to room, picking up and interacting with objects, and fighting opponents.
+<b>Description:</b> Walking with the Dead is a throw back to the popular 80's dungeon games, also known as interactive fiction games, such as Zork. This particular game is a single-player, text-based gameAfter signing up, players will be given an introductory text description of the room they are in. From there they will be able to type in commands to interact with the world. Some basic things that players will be able to do include moving from room to room, picking up and interacting with objects, and fighting opponents.
 
 Walking with the Dead utilizes a relational database to create the 'world of the game' and to store all player's ongoing progress throughout the game. Through the use of the relational database, player's game state is constantly stored and updated, allowing them to exit the game at any point and start right where they left off the next time they log in.
 
-### <b>Author:</b> Ashley McKemie
+<b>Author:</b> Ashley McKemie
 
-### <b>Tech Stack:</b> Currently, the application utilizes Ruby, PostgresSQL, ActiveRecord, Highline, Colorize, Asciiart, and Bcrypt
+<b>Tech Stack:</b> Currently, the application utilizes Ruby, PostgresSQL, ActiveRecord, Highline, Colorize, Asciiart, and Bcrypt
 
-### <b>Version:</b> 1.0
+<b>Version:</b> 1.0
 
-### <b>Current Implementation:</b> Terminal Client
+<b>Current Implementation:</b> Terminal Client
 
-### <b>Credits:</b> Robert Kirkman and the creators of The Walking Dead
+<b>Credits:</b> Robert Kirkman and the creators of The Walking Dead
 
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -34,10 +34,10 @@ At the start of the game, you are awoken to a phone call on your day off from wo
 
 -----------------------------------------------------------------------------------------------------------------------
 
-#### Status: This game is currently being developed. Version 1.0 is playable in any terminal by running Ruby. Version 1.5 will expand upon the world, offering more quests, rooms to explore, zombies to fight, and more! Version 2.0 is tentatively planned to have a basic web interface and be delivered through Sinatra.
+## Status: This game is currently being developed. Version 1.0 is playable in any terminal by running Ruby. Version 1.5 will expand upon the world, offering more quests, rooms to explore, zombies to fight, and more! Version 2.0 is tentatively planned to have a basic web interface and be delivered through Sinatra.
 -----------------------------------------------------------------------------------------------------------------------
 
-### To currently play the game on your own computer:
+## To currently play the game on your own computer:
 
 1) Clone this repo
 2) Run 'bundle exec ruby terminal_client.rb' in your terminal from the directory where you cloned the project to
