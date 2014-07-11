@@ -14,6 +14,7 @@ Walking with the Dead utilizes a relational database to create the 'world of the
 
 <b>Credits:</b> Robert Kirkman and the creators of The Walking Dead
 
+<a href="https://www.youtube.com/watch?v=FXcitzio3qs" target="_blank">Screen Cast of Game</a>
 -----------------------------------------------------------------------------------------------------------------------
 
 ## <b>Game Story</b>
